@@ -2,9 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "Beni";
+    font-weight: 400;
+    src: url("/fonts/Nois-Beni.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Monument-Grotes";
+    font-weight: 300;
+    src: local("Monument-Grotes"), url("/fonts/abc-monument-grotesk/ABCMonumentGrotesk-Light-Trial.otf") format("woff2");
+}
+
+@font-face {
+    font-family: "Monument-Grotes";
+    font-weight: 400;
+    src: local("Monument-Grotes"),
+    url("/fonts/abc-monument-grotesk/ABCMonumentGrotesk-Regular-Trial.otf") format("woff2");
+}
+
+@font-face {
+    font-family: "Monument-Grotes";
+    font-weight: 500;
+    src: local("Monument-Grotes"),
+    url("/fonts/abc-monument-grotesk/ABCMonumentGrotesk-Medium-Trial.otf") format("woff2");
+}
+
+@font-face {
+    font-family: "Monument-Grotes";
+    font-weight: 700;
+    src: local("Monument-Grotes"), url("/fonts/abc-monument-grotesk/ABCMonumentGrotesk-Bold-Trial.otf") format("woff2");
+}
+
+@font-face {
+    font-family: "Monument-Grotes-Mono";
+    font-weight: 700;
+    src: local("Monument-Grotes-Mono"), url("/fonts/CargoMonumentGroteskMono-Bold.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Monument-Grotesk-Ultra";
+    font-weight: 100;
+    src: local("Monument-Grotesk-Ultra"), url("/fonts/ABCMonumentGrotesk-Ultra-Trial.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Icons";
+    font-weight: 400;
+    src: local("Icons"), url("/fonts/IconFont-Regular-0.9.3.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Happy-Times-at-the-ikob";
+    font-weight: 400;
+    font-style: italic;
+    src: local("Happy-Times-at-the-ikob"),
+    url("/fonts/Happy-Times-at-the-ikob/HappyTimesAtTheIkob-Italic.ttf") format("truetype");
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+  --background-start-rgb: 255, 255, 255;
   --background-end-rgb: 255, 255, 255;
 }
 
@@ -18,10 +76,11 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    background-color: #F2F2F7;
+  /*background: linear-gradient(*/
+  /*    to bottom,*/
+  /*    transparent,*/
+  /*    rgb(var(--background-end-rgb))*/
+  /*  )*/
+  /*#F2F2F7;*/
 }

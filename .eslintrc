@@ -1,0 +1,39 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "standard-with-typescript",
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "next/core-web-vitals",
+    "prettier"
+  ],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": ["tsconfig.json"]
+  },
+  "plugins": ["react"],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/return-await": "off",
+    "@typescript-eslint/promise-function-async": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-misused-promises": "off",
+    "semi": "off",
+    "@typescript-eslint/semi": ["error"],
+    "@typescript-eslint/restrict-template-expressions": [
+      "off",
+      { "allowNumber": true }
+    ],
+    "@typescript-eslint/no-confusing-void-expression": "off"
+  }
+}

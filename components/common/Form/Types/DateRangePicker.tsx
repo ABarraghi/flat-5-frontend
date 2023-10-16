@@ -23,7 +23,7 @@ export const FormDateRangePicker = ({ name, rules, required, placeholder, disabl
             <RangePicker
               {...field}
               disabled={disabled}
-              className="h-[40px] h-full max-w-[250px] rounded-lg text-[12px] font-normal "
+              className="h-[40px] max-w-[250px] rounded-lg text-[12px] font-normal "
             />
           </div>
         )}

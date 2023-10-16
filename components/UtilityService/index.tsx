@@ -1,24 +1,23 @@
-import MaximizeEfficiencyIcon from '@/components/common/icons/MaximizeEfficiency'
-import { type JSX } from 'react'
+import { type JSX } from 'react';
 
 interface UtilityServiceProps {
-  icon: JSX.Element
-  title: string
-  content: string
+  icon: JSX.Element;
+  title: string;
+  content: string;
 }
 const UtilityService = ({ icon, title, content }: UtilityServiceProps) => {
   return (
-    <div className="flex flex-col justify-around items-center">
+    <div className="flex flex-col items-center justify-around">
       <div>{icon}</div>
       <div>
-        <span className="text-[#393978] font-medium">{title}</span>
+        <span className="font-medium text-[#393978]">{title}</span>
       </div>
       <div>
         <span className="font-thin">{content}</span>
       </div>
       <div />
     </div>
-  )
-}
+  );
+};
 
-export default UtilityService
+export default UtilityService;

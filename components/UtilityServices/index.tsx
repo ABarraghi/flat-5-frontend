@@ -1,11 +1,11 @@
-import UtilityService from '@/components/UtilityService'
-import MaximizeEfficiencyIcon from '@/components/common/icons/MaximizeEfficiencyIcon'
-import SaveTimeIcon from '@/components/common/icons/SaveTimeIcon'
-import OneStopSolutionIcon from '@/components/common/icons/OneStopSolutionIcon'
+import UtilityService from '@/components/UtilityService';
+import MaximizeEfficiencyIcon from '@/components/common/icons/MaximizeEfficiencyIcon';
+import SaveTimeIcon from '@/components/common/icons/SaveTimeIcon';
+import OneStopSolutionIcon from '@/components/common/icons/OneStopSolutionIcon';
 
 const UtilityServices = () => {
   return (
-    <div className="grid grid-cols-3 gap-32 place-content-center place-items-center">
+    <div className="grid grid-cols-3 place-content-center place-items-center gap-32">
       <UtilityService
         icon={<MaximizeEfficiencyIcon className={'h-20 w-20'} />}
         title={'Maximize Efficiency'}
@@ -22,6 +22,6 @@ const UtilityServices = () => {
         content={'Lorem ipsum dolor sit amet'}
       />
     </div>
-  )
-}
-export default UtilityServices
+  );
+};
+export default UtilityServices;

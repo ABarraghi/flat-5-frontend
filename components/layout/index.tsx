@@ -1,39 +1,37 @@
-import Footer from '@/components/layout/Footer'
-import Link from 'next/link'
-import LogoImage from '@/public/images/logo.svg'
-import LogoHome from '@/public/images/logo-home-new.svg'
-import React, { useState } from 'react'
-import Image from 'next/image'
-import cn from 'classnames'
+import Footer from '@/components/layout/Footer';
+import Link from 'next/link';
+import LogoImage from '@/public/images/logo.svg';
+import LogoHome from '@/public/images/logo-home-new.svg';
+import React, { useState } from 'react';
+import Image from 'next/image';
+import cn from 'classnames';
 
 const Layout = ({
-  data,
   children,
   isHome,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
   data?: {
-    userInfo?: Record<string, any>
-  }
-  isHome?: boolean
+    userInfo?: Record<string, any>;
+  };
+  isHome?: boolean;
 }) => {
-  const [isShowAccountDropdown, setShowAccountDropdown] = useState(false)
   return (
     <>
       <header className={cn('fixed w-full', isHome && 'z-10')}>
         <div
           className={cn(
-            'px-5 py-2 m-5 top-1 md:px-0 px-4 px-10 rounded-xl',
+            'top-1 m-5 rounded-xl px-10 px-4 px-5 py-2 md:px-0',
             isHome ? 'bg-transparent text-white' : 'bg-white text-black',
           )}
         >
-          <div className="w-full m-auto grid grid-cols-2 px-10">
+          <div className="m-auto grid w-full grid-cols-2 px-10">
             <div className="text-left">
               <Link href="/">
                 <Image src={isHome ? LogoHome : LogoImage} alt="" />
               </Link>
             </div>
-            <div className="flex justify-end gap-4 items-center">
+            <div className="flex items-center justify-end gap-4">
               <Link href="/about" className="h-fit">
                 About
               </Link>
@@ -104,12 +102,12 @@ const Layout = ({
           </div>
         </div>
       </header>
-      <div className={cn('flex h-[100vh] pb-20 w-full flex-col items-center gap-5', isHome ? '' : 'pt-20')}>
+      <div className={cn('flex h-[100vh] w-full flex-col items-center gap-5 pb-20', isHome ? '' : 'pt-20')}>
         {children}
       </div>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

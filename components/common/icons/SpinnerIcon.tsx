@@ -1,7 +1,7 @@
-import cn from 'classnames'
+import cn from 'classnames';
 
 interface SpinnerIconProps {
-  className?: string
+  className?: string;
 }
 
 const SpinnerIcon = (props: SpinnerIconProps) => {
@@ -12,7 +12,7 @@ const SpinnerIcon = (props: SpinnerIconProps) => {
         props.className,
       )}
     />
-  )
-}
+  );
+};
 
-export default SpinnerIcon
+export default SpinnerIcon;

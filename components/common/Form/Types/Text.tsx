@@ -27,7 +27,7 @@ export const FormText = ({ name, rules, required, placeholder, disabled, showMap
               required={required}
               placeholder={placeholder}
               disabled={disabled}
-              className=" h-[40px] rounded-lg font-normal "
+              className="h-[40px] rounded-lg font-normal "
               allowClear
             />
             {!value && showMapIcon && (

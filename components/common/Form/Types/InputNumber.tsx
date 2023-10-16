@@ -37,7 +37,7 @@ export const FormInputNumber = ({ name, rules, required, placeholder, disabled, 
         control={control as any}
         rules={rules}
         render={({ field }) => (
-          <div style={{ position: 'relative' }}>
+          <div>
             <Input
               {...field}
               onChange={handleChange}

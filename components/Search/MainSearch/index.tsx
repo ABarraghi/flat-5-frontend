@@ -1,6 +1,6 @@
 import { Form } from '@/components/common/Form';
 import LocationSearch from '@/components/Search/LocationSearch';
-import { EquipmentType, type SearchForm } from '@/types/search';
+import { type SearchForm } from '@/types/search';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/common/Button';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -46,9 +46,11 @@ const MainSearch = () => {
         <LocationSearch />
         <div className="m-3 flex items-center justify-between text-[16px] font-normal">
           <Form.Checkbox name="returnToOrigin" label="Return to origin after delivery" />
-          <span className="flex items-center justify-between" onClick={toggleCollapseAdvanceForm}>
-            {isOpenAdvanced ? 'Hide advanced options' : 'View advanced options'}{' '}
-            <ChevronDownIcon className={cn('h-5 w-5 origin-center', { 'rotate-180 transform': isOpenAdvanced })} />
+          <span className="flex items-center justify-between text-[#393978]" onClick={toggleCollapseAdvanceForm}>
+            {isOpenAdvanced ? 'Hide advanced options' : 'View advanced options'} &nbsp;
+            <ChevronDownIcon
+              className={cn('h-4 w-4 origin-center font-bold', { 'rotate-180 transform': isOpenAdvanced })}
+            />
           </span>
         </div>
         {isOpenAdvanced && <AdvancedForm />}

@@ -17,7 +17,7 @@ function TagList<T extends TagBase>({ label, selectedTags, tags, onTagChange }: 
   }, [onTagChange, selectedTags, tags]);
 
   return (
-    <div className="py-16">
+    <div className="pt-10">
       <div className="pb-5 text-[10px] font-bold tracking-[5%] text-black/50 lg:text-[16px]">
         <span className="text-[10px] uppercase text-[#2E2F44] opacity-50 lg:text-[12px]">{label}</span>
       </div>

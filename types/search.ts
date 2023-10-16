@@ -1,10 +1,10 @@
 export interface SearchForm {
   locations: Locations;
-  returnToOrigin?: boolean;
-  isIncludeEnRoute?: boolean;
-  isRouteMyTruck?: boolean;
-  equipmentTypes?: EquipmentType[];
-  specialNotes?: SpecialNote[];
+  returnToOrigin: boolean;
+  isIncludeEnRoute: boolean;
+  isRouteMyTruck: boolean;
+  equipmentTypes: EquipmentType[];
+  specialNotes: SpecialNote[];
   shipmentFormats?: ShipmentFormat[];
 }
 
@@ -78,12 +78,12 @@ export const SPECIAL_NOTES = [
     title: 'Drayage Services',
   },
   {
-    code: 'drop_trailer',
+    id: 'drop_trailer',
     title: 'Drop trailer',
   },
 ];
 
-export const SHIPMENT_FORMAT = [
+export const SHIPMENT_FORMATS = [
   {
     id: 'palletized',
     title: 'Palletized',

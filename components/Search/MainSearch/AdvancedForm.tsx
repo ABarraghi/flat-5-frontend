@@ -26,9 +26,14 @@ const AdvancedForm = () => {
     setValue('specialNotes', toggleSelectingItem(specialNotes, value));
   };
   return (
-    <div className="mx-3 my-10">
-      <Form.Checkbox className="mr-16" name="isIncludeEnRoute" label="Include en route" />
-      <Form.Checkbox name="isRouteMyTruck" label="Route my truck" />
+    <div className="px-5 py-10 text-[16px] font-normal">
+      <Form.Radio
+        name="routeOption"
+        options={[
+          { value: 'en_route', label: 'En Route' },
+          { value: 'route_my_truck', label: 'Route my truck' },
+        ]}
+      ></Form.Radio>
       <TagList<EquipmentType>
         label="Equipment Type"
         selectedTags={equipmentTypes}

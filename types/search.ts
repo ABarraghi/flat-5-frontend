@@ -1,8 +1,7 @@
 export interface SearchForm {
   locations: Locations;
   returnToOrigin: boolean;
-  isIncludeEnRoute: boolean;
-  isRouteMyTruck: boolean;
+  routeOption: string;
   equipmentTypes: EquipmentType[];
   specialNotes: SpecialNote[];
   shipmentFormats?: ShipmentFormat[];

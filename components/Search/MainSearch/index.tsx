@@ -7,6 +7,7 @@ import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outlin
 import cn from 'classnames';
 import { useState } from 'react';
 import AdvancedForm from '@/components/Search/MainSearch/AdvancedForm';
+import RouteOverview from '@/components/RouteOverview';
 
 const MainSearch = () => {
   const [isOpenAdvanced, setIsOpenAdvanced] = useState(false);
@@ -35,8 +36,7 @@ const MainSearch = () => {
         },
       },
       returnToOrigin: true,
-      isIncludeEnRoute: false,
-      isRouteMyTruck: true,
+      routeOption: 'route_my_truck',
       equipmentTypes: [],
       specialNotes: [],
       shipmentFormats: [],
@@ -49,10 +49,10 @@ const MainSearch = () => {
     console.log('data:', data);
   };
   return (
-    <div className="flex w-full justify-center bg-white">
+    <>
       <Form methods={methods as any}>
         <LocationSearch />
-        <div className="m-3 flex items-center justify-between text-[16px] font-normal">
+        <div className="flex items-center justify-between p-5 text-[16px] font-normal">
           <Form.Checkbox name="returnToOrigin" label="Return to origin after delivery" />
           <span className="flex items-center justify-between text-[#393978]" onClick={toggleCollapseAdvanceForm}>
             {isOpenAdvanced ? 'Hide advanced options' : 'View advanced options'} &nbsp;
@@ -63,7 +63,7 @@ const MainSearch = () => {
         </div>
         {isOpenAdvanced && <AdvancedForm />}
 
-        <div className="m-3 flex justify-end">
+        <div className="flex justify-end p-5">
           <Button
             name="Search"
             wrapperClass="rounded-md bg-[#F16521] py-[5px] justify-ebd"
@@ -75,6 +75,7 @@ const MainSearch = () => {
           </Button>
         </div>
       </Form>
+      <RouteOverview />
       {/* <input */}
       {/*   className="h-10 w-1/2 rounded-l-md border border-gray-300 bg-gray-100 px-4 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" */}
       {/*   type="text" */}
@@ -83,7 +84,7 @@ const MainSearch = () => {
       {/* <button className="h-10 w-1/12 rounded-r-md border border-gray-300 bg-gray-100 px-4 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"> */}
       {/*   Search */}
       {/* </button> */}
-    </div>
+    </>
   );
 };
 export default MainSearch;

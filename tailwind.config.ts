@@ -4,10 +4,11 @@ const config: Config = {
   content: ['./pages/**/*.tsx', './components/**/*.tsx'],
   theme: {
     fontFamily: {
+      mono: [...defaultTheme.fontFamily.mono],
       ...defaultTheme.fontFamily,
-      beni: ['Beni', 'Icons', 'Roboto', 'sans-serif'],
-      inter: ['Inter', 'Roboto', 'Oxygen', 'Ubuntu', 'sans-serif'],
-      icons: ['Icons', 'Roboto', 'sans-serif'],
+      beni: ['Outfit-Beni', 'Beni', 'Icons', 'Roboto', 'sans-serif'],
+      inter: ['Outfit', 'Inter', 'Roboto', 'Oxygen', 'Ubuntu', 'sans-serif'],
+      icons: ['Outfit-Icons', 'Icons', 'Roboto', 'sans-serif'],
       'monument-grotes': ['Monument-Grotes', 'Icons'],
       'monument-grotes-mono': ['Monument-Grotes-Mono', 'Icons'],
       'monument-grotesk-ultra': ['Monument-Grotesk-Ultra', 'Roboto', 'sans-serif'],

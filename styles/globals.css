@@ -60,6 +60,34 @@
     url("/fonts/Happy-Times-at-the-ikob/HappyTimesAtTheIkob-Italic.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: "Outfit";;
+    src: local("Outfit"), url("/fonts/outfit/ABCMonumentGrotesk-Ultra-Trial.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Outfit";
+    font-weight: 700;
+    src: local("Outfit"), url("/fonts/outfit/CargoMonumentGroteskMono-Bold.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Outfit";
+    font-weight: 700;
+    src: local("Outfit"), url("/fonts/outfit/CargoMonumentGroteskMono-Thin.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Outfit-Icons";
+    font-weight: 400;
+    src: local("Outfit-Icons"), url("/fonts/outfit/IconFont-Regular-0.9.3.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Outfit-Beni";
+    font-weight: 400;
+    src: url("/fonts/outfit/Nois-Beni.woff") format("woff");
+}
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
@@ -88,6 +116,11 @@ body {
 .ant-checkbox-checked .ant-checkbox-inner {
     background-color: #393978;
     border-color: #393978;
+}
+
+.ant-radio-checked .ant-radio-inner {
+    background-color: #393978 !important;
+    border-color: #393978 !important;
 }
 
 [class$=--ClearBtn] {

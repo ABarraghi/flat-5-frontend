@@ -3,16 +3,17 @@ import { Input } from 'antd';
 import { type BaseField } from '@/components/common/Form/Types/type';
 import React, { type ReactNode } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
+import cn from 'classnames';
 
 type Props = {
   multiline?: boolean;
   rows?: number;
   rowsMax?: number;
-  showMapIcon?: boolean;
   suffix: ReactNode;
+  customClass?: string;
 } & BaseField;
 
-export const FormInputNumber = ({ name, rules, required, placeholder, disabled, showMapIcon, suffix }: Props) => {
+export const FormInputNumber = ({ name, rules, required, placeholder, disabled, suffix, customClass }: Props) => {
   const { control, watch, setValue } = useFormContext();
   const value = watch(name);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +39,7 @@ export const FormInputNumber = ({ name, rules, required, placeholder, disabled, 
         control={control as any}
         rules={rules}
         render={({ field }) => (
-          <div>
+          <div className={cn(customClass)}>
             <Input
               {...field}
               onChange={handleChange}
@@ -46,7 +47,7 @@ export const FormInputNumber = ({ name, rules, required, placeholder, disabled, 
               required={required}
               placeholder={placeholder}
               disabled={disabled}
-              className="h-[40px] max-w-[120px] rounded-lg font-normal"
+              className="h-[40px] rounded-lg font-normal"
               allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
               suffix={suffix}
             />

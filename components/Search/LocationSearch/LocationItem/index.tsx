@@ -1,5 +1,10 @@
 import { Form } from '@/components/common/Form';
 import { Space } from 'antd';
+import dynamic from 'next/dynamic';
+const MapboxSuggestion = dynamic(() => import('@/components/MapboxSuggestion'), {
+  ssr: false,
+});
+
 interface LocationItemProps {
   name?: string;
   index?: string;
@@ -13,17 +18,18 @@ const LocationItem = ({ name, index, remove }: LocationItemProps) => {
   return (
     <>
       <div className="m-3 flex flex-col">
-        <Space size={12} className="my-2">
+        <div className="my-2 flex w-full gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#393978]">
             <span className="text-[16px] font-normal text-white">A</span>
           </div>
-          <Form.Text
-            name="locations.source.address"
-            label="Name"
-            placeholder="Enter Location"
-            required
-            showMapIcon
-          ></Form.Text>
+          <MapboxSuggestion name="locations.source" />
+          {/* <Form.Text */}
+          {/*   name="locations.source.address" */}
+          {/*   label="Name" */}
+          {/*   placeholder="Enter Location" */}
+          {/*   required */}
+          {/*   showMapIcon */}
+          {/* ></Form.Text> */}
           <Form.DateRangePicker
             name="locations.source.startDate"
             label="Name"
@@ -37,18 +43,19 @@ const LocationItem = ({ name, index, remove }: LocationItemProps) => {
             required
             suffix={<SuffixRadius />}
           ></Form.InputNumber>
-        </Space>
-        <Space size={12} className="my-2">
+        </div>
+        <div className="my-2 flex w-full gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#393978]">
             <span className="text-[16px] font-normal text-white">B</span>
           </div>
-          <Form.Text
-            name="locations.destination.address"
-            label="Name"
-            placeholder="Enter Location"
-            required
-            showMapIcon
-          ></Form.Text>
+          {/* <Form.Text */}
+          {/*   name="locations.destination.address" */}
+          {/*   label="Name" */}
+          {/*   placeholder="Enter Location" */}
+          {/*   required */}
+          {/*   showMapIcon */}
+          {/* ></Form.Text> */}
+          <MapboxSuggestion name="locations.destination" />
           <Form.DateRangePicker
             name="locations.destination.startDate"
             label="Name"
@@ -62,7 +69,7 @@ const LocationItem = ({ name, index, remove }: LocationItemProps) => {
             required
             suffix={<SuffixRadius />}
           ></Form.InputNumber>
-        </Space>
+        </div>
       </div>
     </>
   );

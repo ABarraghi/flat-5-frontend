@@ -18,12 +18,20 @@ const MainSearch = () => {
           startDate: '',
           endDate: '',
           radius: '',
+          coordinate: {
+            latitude: 0,
+            longitude: 0,
+          },
         },
         destination: {
           address: '',
           startDate: '',
           endDate: '',
           radius: '',
+          coordinate: {
+            latitude: 0,
+            longitude: 0,
+          },
         },
       },
       returnToOrigin: true,
@@ -41,7 +49,7 @@ const MainSearch = () => {
     console.log('data:', data);
   };
   return (
-    <div className="flex h-full w-full justify-center bg-white">
+    <div className="flex w-full justify-center bg-white">
       <Form methods={methods as any}>
         <LocationSearch />
         <div className="m-3 flex items-center justify-between text-[16px] font-normal">

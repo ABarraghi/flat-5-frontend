@@ -89,3 +89,7 @@ body {
     background-color: #393978;
     border-color: #393978;
 }
+
+[class$=--ClearBtn] {
+    display: none !important;
+}

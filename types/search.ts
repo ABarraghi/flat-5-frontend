@@ -13,11 +13,17 @@ export interface Locations {
   destination?: LocationBase;
 }
 
+export interface Coordinate {
+  latitude: number;
+  longitude: number;
+}
+
 export interface LocationBase {
-  address: string;
-  startDate: string;
-  endDate: string;
-  radius: string;
+  address?: string;
+  coordinate?: Coordinate;
+  startDate?: string;
+  endDate?: string;
+  radius?: string;
 }
 
 export interface TagBase {

@@ -31,25 +31,26 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
     config.accessToken = accessToken;
   }, []);
   return (
-    <SearchBox
-      className="input mb12"
-      accessToken={token}
-      onRetrieve={handleRetrieve}
-      placeholder="Enter Location"
-      value={fullAddress}
-      onChange={handleChange}
-      theme={{
-        variables: {
-          colorPrimary: '#212529',
-          colorSecondary: '#424242',
-          maxWidth: '300px',
-          boxShadow: '0 0 0 0px silver',
-          borderRadius: '0.5rem',
-          border: '1px solid #d9d9d9',
-          position: 'relative',
-        },
-        icons: { search: '', clear: '' },
-        cssText: `
+    <div className="w-full">
+      <SearchBox
+        className="input mb12 w-full"
+        accessToken={token}
+        onRetrieve={handleRetrieve}
+        placeholder="Enter Location"
+        value={fullAddress}
+        onChange={handleChange}
+        theme={{
+          variables: {
+            colorPrimary: '#212529',
+            colorSecondary: '#424242',
+            maxWidth: '300px',
+            boxShadow: '0 0 0 0px silver',
+            borderRadius: '0.5rem',
+            border: '1px solid #d9d9d9',
+            position: 'relative',
+          },
+          icons: { search: '', clear: '' },
+          cssText: `
         .Input {
             background-color: none;
             padding-left: 10px;
@@ -64,17 +65,9 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
           outline: 0;
         }
         `,
-      }}
-    >
-      <span className="absolute">ABC</span>
-      {/* <input */}
-      {/*   value={fullAddress} */}
-      {/*   className="input mb12" */}
-      {/*   placeholder="Start typing your address, e.g. 123 Main..." */}
-      {/*   autoComplete="address-line1" */}
-      {/*   id="mapbox-autofill" */}
-      {/* /> */}
-    </SearchBox>
+        }}
+      />
+    </div>
   );
 };
 export default MapboxSuggestion;

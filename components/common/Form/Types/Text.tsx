@@ -3,6 +3,7 @@ import { Input } from 'antd';
 import { type BaseField } from '@/components/common/Form/Types/type';
 import { MapPinIcon } from '@heroicons/react/24/outline';
 import { type ReactNode } from 'react';
+import { CloseOutlined } from '@ant-design/icons';
 
 type Props = {
   multiline?: boolean;
@@ -28,7 +29,7 @@ export const FormText = ({ name, rules, required, placeholder, disabled, showMap
               placeholder={placeholder}
               disabled={disabled}
               className="h-[40px] rounded-lg font-normal "
-              allowClear
+              allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
             />
             {!value && showMapIcon && (
               <MapPinIcon className="absolute right-0 top-2 z-10 h-5 w-5 text-[#2E2F44] opacity-50" />

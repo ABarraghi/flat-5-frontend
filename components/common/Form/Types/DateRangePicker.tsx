@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { DatePicker } from 'antd';
 import { type BaseField } from '@/components/common/Form/Types/type';
+import { CloseOutlined } from '@ant-design/icons';
 
 const { RangePicker } = DatePicker;
 
@@ -23,7 +24,8 @@ export const FormDateRangePicker = ({ name, rules, required, placeholder, disabl
             <RangePicker
               {...field}
               disabled={disabled}
-              className="h-[40px] max-w-[250px] rounded-lg text-[12px] font-normal "
+              className="h-[40px] max-w-[250px] rounded-lg text-[12px] font-normal"
+              allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
             />
           </div>
         )}

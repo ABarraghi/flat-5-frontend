@@ -2,6 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'antd';
 import { type BaseField } from '@/components/common/Form/Types/type';
 import React, { type ReactNode } from 'react';
+import { CloseOutlined } from '@ant-design/icons';
 
 type Props = {
   multiline?: boolean;
@@ -46,7 +47,7 @@ export const FormInputNumber = ({ name, rules, required, placeholder, disabled, 
               placeholder={placeholder}
               disabled={disabled}
               className="h-[40px] max-w-[120px] rounded-lg font-normal"
-              allowClear
+              allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
               suffix={suffix}
             />
           </div>

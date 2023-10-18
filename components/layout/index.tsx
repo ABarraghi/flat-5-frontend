@@ -17,11 +17,11 @@ const Layout = ({
   isHome?: boolean;
 }) => {
   return (
-    <>
-      <header className={cn('fixed w-full', isHome && 'z-10')}>
+    <div className="flex h-screen flex-col overflow-hidden">
+      <header className={cn(isHome ? 'fixed z-10 w-full' : 'border-grey w-full p-2 text-center')}>
         <div
           className={cn(
-            'top-1 m-5 rounded-xl px-10 px-4 px-5 py-2 md:px-0',
+            'top-1 mx-5 rounded-xl px-10 py-2 md:px-0',
             isHome ? 'bg-transparent text-white' : 'bg-white text-black',
           )}
         >
@@ -102,11 +102,11 @@ const Layout = ({
           </div>
         </div>
       </header>
-      <div className={cn('flex h-[100vh] w-full flex-col items-center gap-5 pb-20', isHome ? '' : 'pt-20')}>
+      <main className={cn('flex w-full flex-col items-center gap-5 pb-20', isHome ? '' : 'overflow-y-auto p-2')}>
         {children}
-      </div>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <div className="font-notoSans fixed bottom-0 w-full border-t bg-white px-10 py-5 text-center text-gray-500">
+    <footer className="font-notoSans fixed bottom-0 w-full border-t bg-white px-10 py-5 text-center text-gray-500">
       <div className="flex justify-between">
         <div className="justify-star align-center flex">
           <div className="mx-5 text-[16px] font-normal">Help</div>
@@ -12,7 +12,7 @@ const Footer = () => {
 
         <div className="text-[16px]">Flat5 &#169; 2023</div>
       </div>
-    </div>
+    </footer>
   );
 };
 

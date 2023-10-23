@@ -5,12 +5,18 @@ import { useForm } from 'react-hook-form';
 import Button from '@/components/common/Button';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import cn from 'classnames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AdvancedForm from '@/components/Search/MainSearch/AdvancedForm';
 import RouteOverview from '@/components/RouteOverview';
 
-const MainSearch = () => {
+interface MainSearchProps {
+  setIsOpenDetail: (isOpen: boolean) => void;
+  setStartLocation: (location: number[]) => void;
+  setEndLocation: (location: number[]) => void;
+}
+const MainSearch = ({ setIsOpenDetail, setStartLocation, setEndLocation }: MainSearchProps) => {
   const [isOpenAdvanced, setIsOpenAdvanced] = useState(false);
+  const [isEnableRouteOverview, setIsEnableRouteOverview] = useState(false);
   const methods = useForm<SearchForm>({
     defaultValues: {
       locations: {
@@ -47,7 +53,21 @@ const MainSearch = () => {
   };
   const onSubmit = (data: any) => {
     console.log('data:', data);
+    setIsEnableRouteOverview(true);
+    setIsOpenAdvanced(false);
   };
+  const sourceAddress = methods.watch('locations.source.address');
+  const destinationAddress = methods.watch('locations.destination.address');
+  useEffect(() => {
+    if (sourceAddress) {
+      const source = methods.getValues('locations.source');
+      setStartLocation([source.coordinate.longitude, source.coordinate.latitude]);
+    }
+    if (destinationAddress) {
+      const destination = methods.getValues('locations.destination');
+      setEndLocation([destination.coordinate.longitude, destination.coordinate.latitude]);
+    }
+  }, [sourceAddress, destinationAddress]);
   return (
     <>
       <Form methods={methods as any}>
@@ -75,15 +95,7 @@ const MainSearch = () => {
           </Button>
         </div>
       </Form>
-      <RouteOverview />
-      {/* <input */}
-      {/*   className="h-10 w-1/2 rounded-l-md border border-gray-300 bg-gray-100 px-4 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" */}
-      {/*   type="text" */}
-      {/*   placeholder="Search" */}
-      {/* /> */}
-      {/* <button className="h-10 w-1/12 rounded-r-md border border-gray-300 bg-gray-100 px-4 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"> */}
-      {/*   Search */}
-      {/* </button> */}
+      {isEnableRouteOverview && <RouteOverview setIsOpenDetail={setIsOpenDetail} />}
     </>
   );
 };

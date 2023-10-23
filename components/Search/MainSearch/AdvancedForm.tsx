@@ -23,7 +23,7 @@ const AdvancedForm = () => {
     setValue('specialNotes', toggleSelectingItem(specialNotes, value));
   };
   const handleChangeShipmentFormats = (value: string) => {
-    setValue('specialNotes', toggleSelectingItem(specialNotes, value));
+    setValue('shipmentFormats', toggleSelectingItem(shipmentFormats, value));
   };
   return (
     <div className="px-5 py-10 text-[16px] font-normal">

@@ -22,13 +22,6 @@ const LocationItem = ({ name, index, remove }: LocationItemProps) => {
         </div>
         <div className="flex flex-1 gap-2">
           <MapboxSuggestion name="locations.source" />
-          {/* <Form.Text */}
-          {/*   name="locations.source.address" */}
-          {/*   label="Name" */}
-          {/*   placeholder="Enter Location" */}
-          {/*   required */}
-          {/*   showMapIcon */}
-          {/* ></Form.Text> */}
           <Form.DateRangePicker
             name="locations.source.startDate"
             label="Name"

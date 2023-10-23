@@ -30,7 +30,6 @@ interface ControlButtonProps {
 }
 
 const Button = (props: ControlButtonProps) => {
-  console.log('props: ', props);
   return (
     <ButtonWrapper internalHref={props.internalHref || ''}>
       <button

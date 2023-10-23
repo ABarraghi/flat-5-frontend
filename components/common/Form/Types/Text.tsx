@@ -2,7 +2,6 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'antd';
 import { type BaseField } from '@/components/common/Form/Types/type';
 import { MapPinIcon } from '@heroicons/react/24/outline';
-import { type ReactNode } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 
 type Props = {

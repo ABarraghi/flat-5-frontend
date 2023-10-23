@@ -5,7 +5,7 @@ import ContactInfo from '@/components/ContactInfo';
 import { DownOutlined, MailFilled, PhoneFilled, WhatsAppOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 
-const Carriers = ['land-star', 'coyote'];
+// const Carriers = ['land-star', 'coyote'];
 interface StepRouteItemProps {
   carrierName: string;
 }

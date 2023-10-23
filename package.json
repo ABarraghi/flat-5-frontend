@@ -12,6 +12,7 @@
     "@heroicons/react": "^2.0.17",
     "@mapbox/search-js-react": "^1.0.0-beta.18",
     "@react-google-maps/api": "^2.19.2",
+    "@types/mapbox-gl": "^2.7.17",
     "antd": "^5.10.1",
     "mapbox-gl": "^2.15.0",
     "next": "13.5.4",

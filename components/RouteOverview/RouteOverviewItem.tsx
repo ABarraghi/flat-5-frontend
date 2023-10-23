@@ -1,13 +1,9 @@
-import { DollarCircleFilled } from '@ant-design/icons';
-import DistanceIcon from '@/components/common/icons/DistanceIcon';
 import BranchLogo from '@/components/CarrierLogo';
-import { useState } from 'react';
 import cn from 'classnames';
-// import Button from '@/components/common/Button';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
-// import Button from '@/components/common/Button';
 import { Button } from 'antd';
 import PriceAndDistance from '@/components/RouteOverview/PriceAndDistance';
+import React from 'react';
 
 const Carriers = ['land-star', 'coyote'];
 interface RouteOverviewProps {
@@ -17,10 +13,10 @@ interface RouteOverviewProps {
 }
 const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail }: RouteOverviewProps) => {
   const { id, isSelected } = data;
-  const handleClick = (id) => {
+  const handleClick = (id: string) => {
     onChangeSelected(id);
   };
-  const onClickViewDetail = (event) => {
+  const onClickViewDetail = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     setIsOpenDetail(true);
   };

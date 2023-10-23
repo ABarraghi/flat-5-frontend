@@ -1,8 +1,6 @@
 import cn from 'classnames';
 import { useCallback } from 'react';
 
-import CloseIcon from '@/components/common/icons/CloseIcon';
-
 interface TagProps {
   id: string;
   isSelected?: boolean;
@@ -13,7 +11,7 @@ interface TagProps {
 }
 
 const ToggleTag = (props: TagProps) => {
-  const { id, title, onClick, isIconHidden, className } = props;
+  const { id, title, onClick, className } = props;
 
   const handleOnClick = useCallback(() => {
     onClick(id);

@@ -1,14 +1,13 @@
-import mapboxgl from 'mapbox-gl';
-import { useEffect, useRef, useState } from 'react';
-import { type LocationBase } from '@/types/search';
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+import mapboxgl, { type Map } from 'mapbox-gl';
+import React, { useEffect, useRef, useState } from 'react';
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
 
 interface MapContainerProps {
   start: number[];
   end: number[];
 }
 
-async function getRoute(map, start, end) {
+async function getRoute(map: any, start: number[], end: number[]) {
   const query = await fetch(
     `https://api.mapbox.com/directions/v5/mapbox/cycling/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
     { method: 'GET' },
@@ -50,7 +49,7 @@ async function getRoute(map, start, end) {
   }
 }
 
-const initSource = (map, point, id, title) => {
+const initSource = (map: any, point: number[], id: string, title: string) => {
   const sourceData = {
     type: 'geojson',
     data: {
@@ -138,13 +137,13 @@ const initSource = (map, point, id, title) => {
 };
 
 const MapContainer = ({ start, end }: MapContainerProps) => {
-  const mapContainer = useRef(null);
-  const map = useRef(null);
+  const mapContainer = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const map = useRef<Map | null>(null);
   const [lng, setLng] = useState(start[0] || -87.9014469);
   const [lat, setLat] = useState(start[1] || 42.1175031);
   const [zoom, setZoom] = useState(5);
   useEffect(() => {
-    if (map.current) return; // initialize map only once
+    if (map.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v12',
@@ -152,40 +151,33 @@ const MapContainer = ({ start, end }: MapContainerProps) => {
       zoom,
     });
 
-    map.current.on('move', () => {
-      setLng(map.current.getCenter().lng.toFixed(4));
-      setLat(map.current.getCenter().lat.toFixed(4));
-      setZoom(map.current.getZoom().toFixed(2));
-    });
-  });
+    if (map.current) {
+      map.current?.on('move', () => {
+        setLng(map.current?.getCenter().lng.toFixed(4) as unknown as number);
+        setLat(map.current?.getCenter().lat.toFixed(4) as unknown as number);
+        setZoom(map.current?.getZoom().toFixed(2) as unknown as number);
+      });
+    }
+  }, [lat, lng, zoom]);
   useEffect(() => {
     if (start.length > 0) {
       initSource(map.current, start, 'start', 'A');
-      map.current.flyTo({
+      map.current?.flyTo({
         center: [start[0], start[1]],
         essential: true, // this animation is considered essential with respect to prefers-reduced-motion
       });
     }
     if (end.length > 0) {
-      initSource(map.current, end, 'end', 'B');
-    }
-    if (start.length > 0 && end.length > 0) {
-      getRoute(map.current, start, end);
-    }
-  }, [start]);
-
-  useEffect(() => {
-    if (end.length > 0) {
-      map.current.flyTo({
+      map.current?.flyTo({
         center: [end[0], end[1]],
         essential: true,
       });
       initSource(map.current, end, 'end', 'B');
     }
     if (start.length > 0 && end.length > 0) {
-      getRoute(map.current, start, end);
+      getRoute(map.current, start, end).then(() => {});
     }
-  }, [start, end]);
+  }, [end, start]);
 
   return (
     <div className="h-full">

@@ -61,13 +61,13 @@ const MainSearch = ({ setIsOpenDetail, setStartLocation, setEndLocation }: MainS
   useEffect(() => {
     if (sourceAddress) {
       const source = methods.getValues('locations.source');
-      setStartLocation([source.coordinate.longitude, source.coordinate.latitude]);
+      setStartLocation([source?.coordinate?.longitude || 0, source?.coordinate?.latitude || 0]);
     }
     if (destinationAddress) {
       const destination = methods.getValues('locations.destination');
-      setEndLocation([destination.coordinate.longitude, destination.coordinate.latitude]);
+      setEndLocation([destination?.coordinate?.longitude || 0, destination?.coordinate?.latitude || 0]);
     }
-  }, [sourceAddress, destinationAddress]);
+  }, [sourceAddress, destinationAddress, methods, setStartLocation, setEndLocation]);
   return (
     <>
       <Form methods={methods as any}>

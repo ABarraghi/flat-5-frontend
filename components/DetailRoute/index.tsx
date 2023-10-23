@@ -10,7 +10,7 @@ interface DetailRouteProps {
 
 const DetailRoute = ({ isBooked }: DetailRouteProps) => {
   const [isBookedRoute, setIsBookedRoute] = useState(isBooked);
-  const onClickBookRoute = (event) => {
+  const onClickBookRoute = () => {
     setIsBookedRoute((state) => !state);
   };
   return (

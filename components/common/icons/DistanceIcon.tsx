@@ -1,5 +1,3 @@
-import classNames from 'classnames';
-
 interface DistanceProps {
   className?: string;
 }

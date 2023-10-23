@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import RouteOverviewItem from '@/components/RouteOverview/RouteOverviewItem';
 
-const Carriers = ['land-star', 'coyote'];
+// const Carriers = ['land-star', 'coyote'];
 interface RouteOverviewProps {
-  id: string;
+  id?: string;
   isSelected?: boolean;
   setIsOpenDetail: (isOpen: boolean) => void;
 }
@@ -12,12 +12,8 @@ const data = [
   { id: '2', isSelected: false },
   { id: '3', isSelected: false },
 ];
-const RouteOverview = ({ id, setIsOpenDetail }: RouteOverviewProps) => {
-  const [enable, setEnable] = useState(false);
+const RouteOverview = ({ setIsOpenDetail }: RouteOverviewProps) => {
   const [items, setItems] = useState(data);
-  const handleClick = (e) => {
-    setEnable((state) => !state);
-  };
 
   const onChangeSelected = (id: string) => {
     const newItems = items.map((item) => {

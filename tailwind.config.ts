@@ -4,7 +4,6 @@ const config: Config = {
   content: ['./pages/**/*.tsx', './components/**/*.tsx'],
   theme: {
     fontFamily: {
-      mono: [...defaultTheme.fontFamily.mono],
       ...defaultTheme.fontFamily,
       beni: ['Outfit-Beni', 'Beni', 'Icons', 'Roboto', 'sans-serif'],
       inter: ['Outfit', 'Inter', 'Roboto', 'Oxygen', 'Ubuntu', 'sans-serif'],

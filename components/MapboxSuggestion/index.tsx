@@ -10,7 +10,7 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
   const [fullAddress, setFullAddress] = useState('');
   const { setValue } = useFormContext();
   const handleRetrieve = useCallback(
-    (res) => {
+    (res: any) => {
       const feature = res.features[0];
       setFullAddress(feature.properties.full_address);
       setValue(`${name}.address`, feature.properties.full_address);
@@ -26,14 +26,14 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
   };
 
   useEffect(() => {
-    const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+    const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
     setToken(accessToken);
     config.accessToken = accessToken;
   }, []);
   return (
     <div className="w-full">
+      {/* @ts-expect-error Server Component */}
       <SearchBox
-        className="input mb12 w-full"
         accessToken={token}
         onRetrieve={handleRetrieve}
         placeholder="Enter Location"
@@ -43,13 +43,11 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
           variables: {
             colorPrimary: '#212529',
             colorSecondary: '#424242',
-            maxWidth: '300px',
             boxShadow: '0 0 0 0px silver',
             borderRadius: '0.5rem',
             border: '1px solid #d9d9d9',
-            position: 'relative',
           },
-          icons: { search: '', clear: '' },
+          icons: { search: '' },
           cssText: `
         .Input {
             background-color: none;

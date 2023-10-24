@@ -1,19 +1,14 @@
 import { useState } from 'react';
 import RouteOverviewItem from '@/components/RouteOverview/RouteOverviewItem';
+import { type Route } from '@/types/load';
 
-// const Carriers = ['land-star', 'coyote'];
 interface RouteOverviewProps {
-  id?: string;
-  isSelected?: boolean;
   setIsOpenDetail: (isOpen: boolean) => void;
+  handleViewDetailRoute: (id: string) => void;
+  routes: Route[];
 }
-const data = [
-  { id: '1', isSelected: false },
-  { id: '2', isSelected: false },
-  { id: '3', isSelected: false },
-];
-const RouteOverview = ({ setIsOpenDetail }: RouteOverviewProps) => {
-  const [items, setItems] = useState(data);
+const RouteOverview = ({ setIsOpenDetail, routes, handleViewDetailRoute }: RouteOverviewProps) => {
+  const [items, setItems] = useState(routes);
 
   const onChangeSelected = (id: string) => {
     const newItems = items.map((item) => {
@@ -28,12 +23,13 @@ const RouteOverview = ({ setIsOpenDetail }: RouteOverviewProps) => {
 
   return (
     <>
-      {items?.map((item) => (
+      {items?.map((route) => (
         <RouteOverviewItem
-          key={item.id}
-          data={item}
+          key={route.id}
+          data={route}
           onChangeSelected={onChangeSelected}
           setIsOpenDetail={setIsOpenDetail}
+          handleViewDetailRoute={handleViewDetailRoute}
         />
       ))}
     </>

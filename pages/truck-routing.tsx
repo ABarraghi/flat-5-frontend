@@ -4,6 +4,7 @@ import DetailRoute from '@/components/DetailRoute';
 import { useState } from 'react';
 import MapContainer from '@/components/MapContainer';
 import { type LocationBase } from '@/types/search';
+import { type Route } from '@/types/load';
 
 const points = [
   // [-80.827149, 41.09671],
@@ -14,18 +15,27 @@ const points = [
   // [-74.95498182035425, 39.82891810678271],
   [-74.99402146819008, 39.86635824765436],
 ];
+
+const points2 = [[-75.15454438944138, 39.721350023945575]];
 export default function TruckRouting() {
   const [isOpenDetail, setIsOpenDetail] = useState(false);
   const [locations, setLocations] = useState<LocationBase[]>([]);
   const handleOpenDetail = (isOpen: boolean) => {
     setIsOpenDetail(isOpen);
   };
+  const [detailRoute, setDetailRoute] = useState<Route>(null);
   return (
     <Layout>
       <div className="grid h-[calc(100vh_-_15rem)] w-full grid-cols-7 gap-x-3 bg-transparent lg:items-start">
         <div className="col-span-3 h-full rounded-xl bg-white font-normal text-[#393978]">
-          {!isOpenDetail && <MainSearch setIsOpenDetail={handleOpenDetail} setLocations={setLocations} />}
-          {isOpenDetail && <DetailRoute isBooked={false} />}
+          {!isOpenDetail && (
+            <MainSearch
+              setIsOpenDetail={handleOpenDetail}
+              setLocations={setLocations}
+              setDetailRoute={setDetailRoute}
+            />
+          )}
+          {isOpenDetail && detailRoute && <DetailRoute isBooked={false} />}
         </div>
         <div className="col-span-4 h-full rounded-xl bg-white text-2xl text-[#393978]">
           <MapContainer locations={locations} points={points} />

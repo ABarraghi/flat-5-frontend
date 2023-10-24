@@ -64,7 +64,6 @@ const initSource = (map: any, point: number[], id: string, title: string, radius
 
   let circleRadius = 5;
   const strokeWidth = 1;
-  console.log(`search-radius-${id}`);
   if (title) {
     map.addLayer({
       id: `search-radius-${id}`,
@@ -84,7 +83,6 @@ const initSource = (map: any, point: number[], id: string, title: string, radius
       map.getSource(`search-radius-${id}`).setData(searchRadius);
     }
     circleRadius = 14;
-    const strokeWidth = 2;
   }
   map.addLayer({
     id: `point-layer-${id}`,
@@ -131,12 +129,6 @@ const MapContainer = ({ points, locations }: MapContainerProps) => {
         method: 'GET',
       },
     );
-    // const query = await fetch(
-    //   `https://api.mapbox.com/directions/v5/mapbox/driving/-75.30385065432206,39.86906186057394;-74.78765863345386,39.634290723702414?alternatives=true&annotations=duration&geometries=polyline6&language=en&overview=full&steps=true&access_token=${accessToken}`,
-    //   {
-    //     method: 'GET',
-    //   },
-    // );
     const json = await query.json();
     if (json.routes.length === 0) {
       // No route found
@@ -149,15 +141,14 @@ const MapContainer = ({ points, locations }: MapContainerProps) => {
         data = route;
       }
     }
+
     const zoomLevel = gettingZoomLevel(data.distance);
     setZoom(zoomLevel);
-    console.log('zoomLevel: ', zoomLevel);
     map.flyTo({
-      center: start,
       zoom: zoomLevel - 3,
       essential: true,
     });
-    console.log('data: ', data);
+
     const route = data.geometry.coordinates;
 
     const geojson = {
@@ -213,11 +204,8 @@ const MapContainer = ({ points, locations }: MapContainerProps) => {
 
   useEffect(() => {
     const [startLocation, endLocation] = locations;
-    console.log('locations: ', locations);
     const start = [startLocation?.coordinate?.longitude || 0, startLocation?.coordinate?.latitude || 0];
     const end = [endLocation?.coordinate?.longitude || 0, endLocation?.coordinate?.latitude || 0];
-    // const start = [-75.30385065432206, 39.86906186057394];
-    // const end = [-74.78765863345386, 39.634290723702414];
 
     if (startLocation?.coordinate) {
       initSource(map.current, start, 'start', 'A', startLocation.radius);
@@ -247,9 +235,6 @@ const MapContainer = ({ points, locations }: MapContainerProps) => {
 
   return (
     <div className="h-[calc(100vh_-_15rem)] h-full">
-      {/* <div className="sidebar"> */}
-      {/*   Longitude: {lng} | Latitude: {lat} | Zoom: {zoom} */}
-      {/* </div> */}
       <div ref={mapContainer} className="h-full w-[100%] rounded-xl" />
     </div>
   );

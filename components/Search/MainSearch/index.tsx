@@ -11,15 +11,18 @@ import RouteOverview from '@/components/RouteOverview';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { type Route } from '@/types/load';
 
 interface MainSearchProps {
   setIsOpenDetail: (isOpen: boolean) => void;
   setLocations: (location: LocationBase[]) => void;
+  setDetailRoute: (route: Route) => void;
 }
-const MainSearch = ({ setIsOpenDetail, setLocations }: MainSearchProps) => {
+const MainSearch = ({ setIsOpenDetail, setLocations, setDetailRoute }: MainSearchProps) => {
   const [isOpenAdvanced, setIsOpenAdvanced] = useState(false);
   const [isEnableRouteOverview, setIsEnableRouteOverview] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [routes, setRoutes] = useState<Route[]>([]);
   const methods = useForm<SearchForm>({
     defaultValues: {
       locations: {
@@ -67,13 +70,44 @@ const MainSearch = ({ setIsOpenDetail, setLocations }: MainSearchProps) => {
       },
     };
   };
+  const handleViewDetailRoute = (id: string) => {
+    setDetailRoute(routes.find((route) => route.id === id));
+  };
+
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);
       console.log('data:', data);
       const requestData = transformData(data);
+      if (
+        requestData.from.latitude === 0 ||
+        requestData.from.latitude === 0 ||
+        requestData.to.latitude === 0 ||
+        requestData.to.longitude === 0
+      ) {
+        toast('The position is not accurate; we need at least a starting point and an endpoint. ', { type: 'error' });
+        return;
+      }
       const { data: result } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/loads/available`, requestData);
+
       console.log('result: ', result);
+      const routesRs = [];
+      const obj1 = {
+        id: '1',
+        totalAmount: 5540,
+        totalDistance: 2232,
+        loads: result.data,
+      };
+      routesRs.push(obj1);
+      const obj2 = {
+        id: '2',
+        totalAmount: 5540,
+        totalDistance: 2232,
+        loads: result.data,
+        // points: []
+      };
+      routesRs.push(obj2);
+      setRoutes(routesRs);
       toast('Search data successfully', { type: 'success' });
       setIsEnableRouteOverview(true);
       setIsOpenAdvanced(false);
@@ -129,7 +163,13 @@ const MainSearch = ({ setIsOpenDetail, setLocations }: MainSearchProps) => {
           </Button>
         </div>
       </Form>
-      {isEnableRouteOverview && <RouteOverview setIsOpenDetail={setIsOpenDetail} />}
+      {isEnableRouteOverview && (
+        <RouteOverview
+          setIsOpenDetail={setIsOpenDetail}
+          routes={routes}
+          handleViewDetailRoute={handleViewDetailRoute}
+        />
+      )}
       <ToastContainer />
     </>
   );

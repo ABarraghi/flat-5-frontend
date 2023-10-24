@@ -4,14 +4,16 @@ import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from 'antd';
 import PriceAndDistance from '@/components/RouteOverview/PriceAndDistance';
 import React from 'react';
+import { type Route } from '@/types/load';
 
 const Carriers = ['land-star', 'coyote'];
 interface RouteOverviewProps {
-  data: { id: string; isSelected?: boolean };
+  data: Route;
   onChangeSelected: (id: string) => void;
   setIsOpenDetail: (isOpen: boolean) => void;
+  handleViewDetailRoute: (id: string) => void;
 }
-const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail }: RouteOverviewProps) => {
+const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleViewDetailRoute }: RouteOverviewProps) => {
   const { id, isSelected } = data;
   const handleClick = (id: string) => {
     onChangeSelected(id);
@@ -19,6 +21,7 @@ const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail }: RouteOve
   const onClickViewDetail = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     setIsOpenDetail(true);
+    handleViewDetailRoute(id);
   };
   return (
     <div
@@ -27,7 +30,7 @@ const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail }: RouteOve
       onClick={() => handleClick(id)}
     >
       <div className="flex justify-between px-6 pt-6 text-[#393978]">
-        <PriceAndDistance price={5124} distance={2242} />
+        <PriceAndDistance price={data.totalAmount} distance={data.totalDistance} />
 
         <div className="flex">
           {Carriers.map((logo, index) => (

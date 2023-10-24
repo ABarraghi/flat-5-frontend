@@ -1,3 +1,5 @@
+import { type Coordinate } from '@/types/common';
+
 export interface SearchForm {
   locations: Locations;
   returnToOrigin: boolean;
@@ -10,11 +12,6 @@ export interface SearchForm {
 export interface Locations {
   source?: LocationBase;
   destination?: LocationBase;
-}
-
-export interface Coordinate {
-  latitude: number;
-  longitude: number;
 }
 
 export interface LocationBase {

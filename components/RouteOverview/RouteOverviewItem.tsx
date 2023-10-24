@@ -50,15 +50,6 @@ const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail }: RouteOve
             </span>
             <ArrowRightIcon className="h-5 w-5 text-white" />
           </Button>
-
-          {/* <Button */}
-          {/*   name="View Details" */}
-          {/*   wrapperClass="rounded-md bg-[#F16521] w-full" */}
-          {/*   contentClass="text-white text-[16px] tracking-tight sm:tracking-normal normal-case" */}
-          {/*   // onClick={onClickViewDetail} */}
-          {/* > */}
-          {/*   <ArrowRightIcon className="h-5 w-5" /> */}
-          {/* </Button> */}
         </>
       )}
     </div>

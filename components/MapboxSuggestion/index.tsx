@@ -12,10 +12,11 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
   const handleRetrieve = useCallback(
     (res: any) => {
       const feature = res.features[0];
-      setFullAddress(feature.properties.full_address);
-      setValue(`${name}.address`, feature.properties.full_address);
-      setValue(`${name}.coordinate.latitude`, feature.properties.coordinates.latitude);
-      setValue(`${name}.coordinate.longitude`, feature.properties.coordinates.longitude);
+      const address = feature.properties?.full_address || feature.properties.place_formatted;
+      setFullAddress(address);
+      setValue(`${name}.address`, address);
+      setValue(`${name}.coordinate.latitude`, feature.properties?.coordinates.latitude);
+      setValue(`${name}.coordinate.longitude`, feature.properties?.coordinates.longitude);
     },
     [name, setValue],
   );
@@ -31,7 +32,7 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
     config.accessToken = accessToken;
   }, []);
   return (
-    <div className="w-full">
+    <div className="">
       {/* @ts-expect-error Server Component */}
       <SearchBox
         accessToken={token}

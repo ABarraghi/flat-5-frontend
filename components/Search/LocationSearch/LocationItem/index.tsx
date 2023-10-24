@@ -16,8 +16,8 @@ const SuffixRadius = () => {
 const LocationItem = ({ name, index, remove }: LocationItemProps) => {
   return (
     <>
-      <div className="my-2 flex w-full gap-2">
-        <div className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[#393978]">
+      <div className="my-2 flex w-full flex-wrap gap-2">
+        <div className="flex h-10 w-10 flex-none flex-wrap items-center justify-center rounded-full bg-[#393978]">
           <span className="text-[16px] font-normal text-white">A</span>
         </div>
         <div className="flex flex-1 gap-2">
@@ -36,11 +36,13 @@ const LocationItem = ({ name, index, remove }: LocationItemProps) => {
             required
             suffix={<SuffixRadius />}
             customClass="w-full max-w-[150px]"
+            isDebounce={true}
+            timeDebounce={500}
           ></Form.InputNumber>
         </div>
       </div>
-      <div className="my-2 flex w-full gap-2">
-        <div className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[#393978]">
+      <div className="my-2 flex w-full flex-wrap gap-2">
+        <div className="flex h-10 w-10 flex-none flex-wrap items-center justify-center rounded-full bg-[#393978]">
           <span className="text-[16px] font-normal text-white">B</span>
         </div>
         <div className="flex flex-1 gap-2">

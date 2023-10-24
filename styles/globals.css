@@ -149,3 +149,8 @@ body {
 .mapboxgl-control-container {
     display: none !important;
 }
+.mapboxgl-canvas{
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 12px;
+}

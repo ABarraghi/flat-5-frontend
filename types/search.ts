@@ -22,7 +22,7 @@ export interface LocationBase {
   coordinate?: Coordinate;
   startDate?: string;
   endDate?: string;
-  radius?: string;
+  radius?: number;
 }
 
 export interface TagBase {

@@ -32,7 +32,7 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
     config.accessToken = accessToken;
   }, []);
   return (
-    <div className="">
+    <div className="w-full">
       {/* @ts-expect-error Server Component */}
       <SearchBox
         accessToken={token}

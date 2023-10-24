@@ -77,7 +77,6 @@ const MainSearch = ({ setIsOpenDetail, setLocations, setDetailRoute }: MainSearc
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);
-      console.log('data:', data);
       const requestData = transformData(data);
       if (
         requestData.from.latitude === 0 ||
@@ -90,7 +89,6 @@ const MainSearch = ({ setIsOpenDetail, setLocations, setDetailRoute }: MainSearc
       }
       const { data: result } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/loads/available`, requestData);
 
-      console.log('result: ', result);
       const routesRs = [];
       const obj1 = {
         id: '1',

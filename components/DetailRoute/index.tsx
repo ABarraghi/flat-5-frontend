@@ -9,11 +9,11 @@ import { type LocationBase } from '@/types/search';
 interface DetailRouteProps {
   isBooked?: boolean;
   handleOpenDetail: (isOpen: boolean) => void;
-  item?: Route;
+  item: Route;
   locations: LocationBase[];
 }
 
-const DetailRoute = ({ isBooked, handleOpenDetail, item = {}, locations }: DetailRouteProps) => {
+const DetailRoute = ({ isBooked, handleOpenDetail, item, locations }: DetailRouteProps) => {
   const { totalAmount = 0, totalDistance = 0, loads } = item;
   const [isBookedRoute, setIsBookedRoute] = useState(isBooked);
   const onClickBookRoute = () => {

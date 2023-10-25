@@ -27,7 +27,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
 
   const [isOpenDetail, setIsOpenDetail] = useState(false);
   const [detailRoute, setDetailRoute] = useState<Route>();
-  const [selectedRoute, setSelectedRoute] = useState<Route>(null);
+  const [selectedRoute, setSelectedRoute] = useState<Route>();
   const handleOpenDetail = (isOpen: boolean) => {
     setIsOpenDetail(isOpen);
   };
@@ -194,7 +194,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
         </>
       )}
 
-      {isOpenDetail && detailRoute && (
+      {isOpenDetail && detailRoute && selectedRoute && (
         <DetailRoute isBooked={false} handleOpenDetail={handleOpenDetail} item={selectedRoute} locations={locations} />
       )}
       <ToastContainer />

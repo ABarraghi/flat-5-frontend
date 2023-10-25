@@ -3,22 +3,31 @@ import { Button } from 'antd';
 import { CheckOutlined, LeftOutlined } from '@ant-design/icons';
 import StepRoute from '@/components/DetailRoute/StepRoute';
 import { useState } from 'react';
+import { type Route } from '@/types/load';
+import { type LocationBase } from '@/types/search';
 
 interface DetailRouteProps {
   isBooked?: boolean;
+  handleOpenDetail: (isOpen: boolean) => void;
+  item?: Route;
+  locations: LocationBase[];
 }
 
-const DetailRoute = ({ isBooked }: DetailRouteProps) => {
+const DetailRoute = ({ isBooked, handleOpenDetail, item = {}, locations }: DetailRouteProps) => {
+  const { totalAmount = 0, totalDistance = 0, loads } = item;
   const [isBookedRoute, setIsBookedRoute] = useState(isBooked);
   const onClickBookRoute = () => {
     setIsBookedRoute((state) => !state);
+  };
+  const onBack = () => {
+    handleOpenDetail(false);
   };
   return (
     <>
       <div className="flex justify-between border-b px-5 py-2 text-[#393978]">
         <div className="flex gap-5">
-          <LeftOutlined className="stroke-[#393978] stroke-[50px]" />
-          <PriceAndDistance price={5124} distance={2242} customClass="text-2xl" />
+          <LeftOutlined className="stroke-[#393978] stroke-[50px]" onClick={onBack} />
+          <PriceAndDistance price={totalAmount} distance={totalDistance} customClass="text-2xl" />
         </div>
 
         {!isBookedRoute ? (
@@ -40,7 +49,7 @@ const DetailRoute = ({ isBooked }: DetailRouteProps) => {
         )}
       </div>
       <div>
-        <StepRoute />
+        <StepRoute locations={locations} loads={loads} />
       </div>
     </>
   );

@@ -7,8 +7,15 @@ interface RouteOverviewProps {
   handleViewDetailRoute: (id: string) => void;
   routes: Route[];
   setPoints: Dispatch<SetStateAction<any>>;
+  setSelectedRoute: Dispatch<SetStateAction<any>>;
 }
-const RouteOverview = ({ setIsOpenDetail, routes, handleViewDetailRoute, setPoints }: RouteOverviewProps) => {
+const RouteOverview = ({
+  setIsOpenDetail,
+  routes,
+  handleViewDetailRoute,
+  setPoints,
+  setSelectedRoute,
+}: RouteOverviewProps) => {
   const [items, setItems] = useState(routes);
 
   const onChangeSelected = (id: string) => {
@@ -18,8 +25,8 @@ const RouteOverview = ({ setIsOpenDetail, routes, handleViewDetailRoute, setPoin
           const pickupPoints = item.loads.map((load) => {
             return [load.pickupStop.coordinates.longitude, load.pickupStop.coordinates.latitude];
           });
-
           setPoints(pickupPoints);
+          setSelectedRoute({ ...item, isSelected: !item.isSelected });
         }
         return { ...item, isSelected: !item.isSelected };
       } else {

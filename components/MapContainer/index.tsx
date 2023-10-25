@@ -92,8 +92,7 @@ const initSource = (map: any, point: number[], id: string, title: string, radius
     source: `points-${id}`,
     paint: {
       'circle-radius': circleRadius,
-      // 'circle-color': '#F16521',
-      'circle-color': 'blue',
+      'circle-color': '#F16521',
       'circle-stroke-color': 'white',
       'circle-stroke-width': strokeWidth,
     },
@@ -133,6 +132,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
         method: 'GET',
       },
     );
+    setIsLoading(false);
     const json = await query.json();
     if (json.routes.length === 0) {
       // No route found
@@ -145,7 +145,6 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
         data = route;
       }
     }
-    setIsLoading(false);
 
     const zoomLevel = gettingZoomLevel(data.distance);
     setZoom(zoomLevel);
@@ -205,6 +204,9 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
         setZoom(map.current?.getZoom().toFixed(2) as unknown as number);
       });
     }
+    map.current?.on('render', function () {
+      map.current?.resize();
+    });
   }, [lat, lng, zoom]);
 
   useEffect(() => {
@@ -242,8 +244,8 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
   }, [points, locations]);
 
   return (
-    <div className="h-[calc(100vh_-_15rem)] h-full">
-      <div ref={mapContainer} className="h-full w-[100%] rounded-xl" />
+    <div className="fixed h-[calc(100vh_-_15rem)] pr-5">
+      <div ref={mapContainer} className="h-full w-full rounded-xl" />
     </div>
   );
 };

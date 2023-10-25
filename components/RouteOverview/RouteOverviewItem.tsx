@@ -26,7 +26,10 @@ const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleView
   return (
     <div
       data-id={id}
-      className={cn('m-5 rounded-xl bg-[#F2F2F7]', isSelected ? 'border border-solid border-[#F16521]' : '')}
+      className={cn(
+        'm-5 cursor-pointer rounded-xl bg-[#F2F2F7]',
+        isSelected ? 'border border-solid border-[#F16521]' : '',
+      )}
       onClick={() => handleClick(id)}
     >
       <div className="flex justify-between px-6 pt-6 text-[#393978]">

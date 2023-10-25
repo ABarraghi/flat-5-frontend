@@ -1,6 +1,6 @@
 import { Form } from '@/components/common/Form';
 import LocationSearch from '@/components/Search/LocationSearch';
-import { type SearchForm } from '@/types/search';
+import { type LocationBase, type SearchForm } from '@/types/search';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/common/Button';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -12,18 +12,26 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { type Route } from '@/types/load';
+import DetailRoute from '@/components/DetailRoute';
 
 interface MainSearchProps {
-  setIsOpenDetail: (isOpen: boolean) => void;
   setLocations: Dispatch<SetStateAction<any>>;
-  setDetailRoute: Dispatch<SetStateAction<any>>;
   setPoints: Dispatch<SetStateAction<any>>;
+  locations: LocationBase[];
 }
-const MainSearch = ({ setIsOpenDetail, setLocations, setDetailRoute, setPoints }: MainSearchProps) => {
+const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => {
   const [isOpenAdvanced, setIsOpenAdvanced] = useState(false);
   const [isEnableRouteOverview, setIsEnableRouteOverview] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [routes, setRoutes] = useState<Route[]>([]);
+
+  const [isOpenDetail, setIsOpenDetail] = useState(false);
+  const [detailRoute, setDetailRoute] = useState<Route>();
+  const [selectedRoute, setSelectedRoute] = useState<Route>(null);
+  const handleOpenDetail = (isOpen: boolean) => {
+    setIsOpenDetail(isOpen);
+  };
+
   const methods = useForm<SearchForm>({
     defaultValues: {
       locations: {
@@ -101,8 +109,8 @@ const MainSearch = ({ setIsOpenDetail, setLocations, setDetailRoute, setPoints }
       routesRs.push(obj1);
       const obj2: Route = {
         id: '2',
-        totalAmount: 5540,
-        totalDistance: 2232,
+        totalAmount: 4125,
+        totalDistance: 2057,
         // loads: result.data,
         loads: [],
         isSelected: false,
@@ -137,48 +145,57 @@ const MainSearch = ({ setIsOpenDetail, setLocations, setDetailRoute, setPoints }
   }, [sourceAddress, destinationAddress, methods, setLocations, sourceRadius, destinationRadius]);
   return (
     <>
-      <Form methods={methods as any} className={'p-5'}>
-        <Form.Radio
-          name="routeOption"
-          options={[
-            { value: 'route_my_truck', label: 'Route my truck' },
-            { value: 'en_route', label: 'En Route' },
-          ]}
-          customClass="py-10"
-        />
-        <LocationSearch />
-        <div className="flex items-center justify-between text-[16px] font-normal">
-          <Form.Checkbox name="returnToOrigin" label="Return to origin after delivery" />
-          <span className="flex items-center justify-between text-[#393978]" onClick={toggleCollapseAdvanceForm}>
-            {isOpenAdvanced ? 'Hide advanced options' : 'View advanced options'} &nbsp;
-            <ChevronDownIcon
-              className={cn('h-4 w-4 origin-center font-bold', { 'rotate-180 transform': isOpenAdvanced })}
+      {!isOpenDetail && (
+        <>
+          <Form methods={methods as any} className={'p-5'}>
+            <Form.Radio
+              name="routeOption"
+              options={[
+                { value: 'route_my_truck', label: 'Route my truck' },
+                { value: 'en_route', label: 'En Route' },
+              ]}
+              customClass="py-10"
             />
-          </span>
-        </div>
-        {isOpenAdvanced && <AdvancedForm />}
+            <LocationSearch />
+            <div className="flex items-center justify-between text-[16px] font-normal">
+              <Form.Checkbox name="returnToOrigin" label="Return to origin after delivery" />
+              <span className="flex items-center justify-between text-[#393978]" onClick={toggleCollapseAdvanceForm}>
+                {isOpenAdvanced ? 'Hide advanced options' : 'View advanced options'} &nbsp;
+                <ChevronDownIcon
+                  className={cn('h-4 w-4 origin-center font-bold', { 'rotate-180 transform': isOpenAdvanced })}
+                />
+              </span>
+            </div>
+            {isOpenAdvanced && <AdvancedForm />}
 
-        <div className="flex justify-end p-5">
-          <Button
-            name="Search"
-            wrapperClass="rounded-md bg-[#F16521] py-[5px] justify-ebd"
-            contentClass="text-white text-[16px] tracking-tight sm:tracking-normal normal-case"
-            internalHref={'/truck-routing'}
-            onClick={methods.handleSubmit(onSubmit)}
-            loading={isLoading}
-            disabled={isLoading}
-          >
-            &nbsp; <MagnifyingGlassIcon className="h-5 w-5 text-white" />
-          </Button>
-        </div>
-      </Form>
-      {isEnableRouteOverview && (
-        <RouteOverview
-          setIsOpenDetail={setIsOpenDetail}
-          routes={routes}
-          handleViewDetailRoute={handleViewDetailRoute}
-          setPoints={setPoints}
-        />
+            <div className="flex justify-end p-5">
+              <Button
+                name="Search"
+                wrapperClass="rounded-md bg-[#F16521] py-[5px] justify-ebd"
+                contentClass="text-white text-[16px] tracking-tight sm:tracking-normal normal-case"
+                internalHref={'/truck-routing'}
+                onClick={methods.handleSubmit(onSubmit)}
+                loading={isLoading}
+                disabled={isLoading}
+              >
+                &nbsp; <MagnifyingGlassIcon className="h-5 w-5 text-white" />
+              </Button>
+            </div>
+          </Form>
+          {isEnableRouteOverview && (
+            <RouteOverview
+              setIsOpenDetail={setIsOpenDetail}
+              routes={routes}
+              handleViewDetailRoute={handleViewDetailRoute}
+              setPoints={setPoints}
+              setSelectedRoute={setSelectedRoute}
+            />
+          )}
+        </>
+      )}
+
+      {isOpenDetail && detailRoute && (
+        <DetailRoute isBooked={false} handleOpenDetail={handleOpenDetail} item={selectedRoute} locations={locations} />
       )}
       <ToastContainer />
     </>

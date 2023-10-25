@@ -1,4 +1,3 @@
-import { Form } from '@/components/common/Form';
 import TagList from '@/components/TaskList';
 import {
   EQUIPMENT_TYPES,
@@ -27,13 +26,6 @@ const AdvancedForm = () => {
   };
   return (
     <div className="px-5 py-10 text-[16px] font-normal">
-      <Form.Radio
-        name="routeOption"
-        options={[
-          { value: 'en_route', label: 'En Route' },
-          { value: 'route_my_truck', label: 'Route my truck' },
-        ]}
-      ></Form.Radio>
       <TagList<EquipmentType>
         label="Equipment Type"
         selectedTags={equipmentTypes}

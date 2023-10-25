@@ -21,5 +21,5 @@ export interface Route {
   totalAmount: number;
   totalDistance: number;
   loads: LoadBase[];
-  isSelected: boolean;
+  isSelected?: boolean;
 }

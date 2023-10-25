@@ -1,11 +1,11 @@
 import { Form } from '@/components/common/Form';
 import LocationSearch from '@/components/Search/LocationSearch';
-import { type LocationBase, type SearchForm } from '@/types/search';
+import { type SearchForm } from '@/types/search';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/common/Button';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import cn from 'classnames';
-import { useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import AdvancedForm from '@/components/Search/MainSearch/AdvancedForm';
 import RouteOverview from '@/components/RouteOverview';
 import axios from 'axios';
@@ -15,10 +15,11 @@ import { type Route } from '@/types/load';
 
 interface MainSearchProps {
   setIsOpenDetail: (isOpen: boolean) => void;
-  setLocations: (location: LocationBase[]) => void;
-  setDetailRoute: (route: Route) => void;
+  setLocations: Dispatch<SetStateAction<any>>;
+  setDetailRoute: Dispatch<SetStateAction<any>>;
+  setPoints: Dispatch<SetStateAction<any>>;
 }
-const MainSearch = ({ setIsOpenDetail, setLocations, setDetailRoute }: MainSearchProps) => {
+const MainSearch = ({ setIsOpenDetail, setLocations, setDetailRoute, setPoints }: MainSearchProps) => {
   const [isOpenAdvanced, setIsOpenAdvanced] = useState(false);
   const [isEnableRouteOverview, setIsEnableRouteOverview] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -90,19 +91,21 @@ const MainSearch = ({ setIsOpenDetail, setLocations, setDetailRoute }: MainSearc
       const { data: result } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/loads/available`, requestData);
 
       const routesRs = [];
-      const obj1 = {
+      const obj1: Route = {
         id: '1',
         totalAmount: 5540,
         totalDistance: 2232,
         loads: result.data,
+        isSelected: false,
       };
       routesRs.push(obj1);
-      const obj2 = {
+      const obj2: Route = {
         id: '2',
         totalAmount: 5540,
         totalDistance: 2232,
-        loads: result.data,
-        // points: []
+        // loads: result.data,
+        loads: [],
+        isSelected: false,
       };
       routesRs.push(obj2);
       setRoutes(routesRs);
@@ -134,9 +137,17 @@ const MainSearch = ({ setIsOpenDetail, setLocations, setDetailRoute }: MainSearc
   }, [sourceAddress, destinationAddress, methods, setLocations, sourceRadius, destinationRadius]);
   return (
     <>
-      <Form methods={methods as any}>
+      <Form methods={methods as any} className={'p-5'}>
+        <Form.Radio
+          name="routeOption"
+          options={[
+            { value: 'route_my_truck', label: 'Route my truck' },
+            { value: 'en_route', label: 'En Route' },
+          ]}
+          customClass="py-10"
+        />
         <LocationSearch />
-        <div className="flex items-center justify-between p-5 text-[16px] font-normal">
+        <div className="flex items-center justify-between text-[16px] font-normal">
           <Form.Checkbox name="returnToOrigin" label="Return to origin after delivery" />
           <span className="flex items-center justify-between text-[#393978]" onClick={toggleCollapseAdvanceForm}>
             {isOpenAdvanced ? 'Hide advanced options' : 'View advanced options'} &nbsp;
@@ -166,6 +177,7 @@ const MainSearch = ({ setIsOpenDetail, setLocations, setDetailRoute }: MainSearc
           setIsOpenDetail={setIsOpenDetail}
           routes={routes}
           handleViewDetailRoute={handleViewDetailRoute}
+          setPoints={setPoints}
         />
       )}
       <ToastContainer />

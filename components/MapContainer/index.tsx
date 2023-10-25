@@ -1,17 +1,19 @@
-import mapboxgl, { accessToken, type Map } from 'mapbox-gl';
-import React, { useEffect, useRef, useState } from 'react';
-import * as turf from '@turf/turf';
+import mapboxgl, { type Map } from 'mapbox-gl';
+import React, { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
 import { type LocationBase } from '@/types/search';
 import { gettingZoomLevel } from '@/utils/common';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const turf = require('@turf/turf');
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
 
 interface MapContainerProps {
   points: number[][];
   locations: LocationBase[];
+  setIsLoading: Dispatch<SetStateAction<any>>;
 }
 
-function makeRadius(lngLatArray, radiusInMeters) {
-  const point = turf.point(lngLatArray);
+function makeRadius(coordinate: number[], radiusInMeters: number) {
+  const point = turf.point(coordinate);
   const buffered = turf.buffer(point, radiusInMeters, { units: 'miles' });
   return buffered;
 }
@@ -90,7 +92,8 @@ const initSource = (map: any, point: number[], id: string, title: string, radius
     source: `points-${id}`,
     paint: {
       'circle-radius': circleRadius,
-      'circle-color': '#F16521',
+      // 'circle-color': '#F16521',
+      'circle-color': 'blue',
       'circle-stroke-color': 'white',
       'circle-stroke-width': strokeWidth,
     },
@@ -111,13 +114,14 @@ const initSource = (map: any, point: number[], id: string, title: string, radius
   });
 };
 
-const MapContainer = ({ points, locations }: MapContainerProps) => {
+const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) => {
   const mapContainer = useRef() as React.MutableRefObject<HTMLInputElement>;
   const map = useRef<Map | null>(null);
   const [lng, setLng] = useState(locations[0]?.coordinate?.longitude || -87.9014469);
   const [lat, setLat] = useState(locations[0]?.coordinate?.latitude || 42.1175031);
   const [zoom, setZoom] = useState(5);
   async function getRoute(map: any, start: number[], end: number[], points: number[][]) {
+    setIsLoading(true);
     let url = `https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${start[0]},${start[1]}`;
     points.forEach((point) => {
       url += `;${point[0]},${point[1]}`;
@@ -141,6 +145,7 @@ const MapContainer = ({ points, locations }: MapContainerProps) => {
         data = route;
       }
     }
+    setIsLoading(false);
 
     const zoomLevel = gettingZoomLevel(data.distance);
     setZoom(zoomLevel);
@@ -207,6 +212,9 @@ const MapContainer = ({ points, locations }: MapContainerProps) => {
     const start = [startLocation?.coordinate?.longitude || 0, startLocation?.coordinate?.latitude || 0];
     const end = [endLocation?.coordinate?.longitude || 0, endLocation?.coordinate?.latitude || 0];
 
+    if (points.length > 23) {
+      points = points.slice(0, 23);
+    }
     if (startLocation?.coordinate) {
       initSource(map.current, start, 'start', 'A', startLocation.radius);
       map.current?.flyTo({

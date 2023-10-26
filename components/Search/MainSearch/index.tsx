@@ -101,7 +101,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
       }
       const { data: result } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/loads/available`, requestData);
 
-      const routesRs = [];
+      const routesRs: Route[] = [];
       const obj1: Route = {
         id: '1',
         totalAmount: 5540,

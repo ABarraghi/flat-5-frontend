@@ -6,9 +6,9 @@ interface MapboxSuggestionProps {
   name: string;
 }
 const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
-  const { setValue, getValue } = useFormContext();
+  const { setValue } = useFormContext();
   const [token, setToken] = useState('');
-  const [fullAddress, setFullAddress] = useState(getValue ? getValue(`${name}.address`) : '');
+  const [fullAddress, setFullAddress] = useState('');
   const handleRetrieve = useCallback(
     (res: any) => {
       const feature = res.features[0];

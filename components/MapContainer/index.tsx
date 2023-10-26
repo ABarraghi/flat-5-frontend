@@ -122,9 +122,9 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
     }
   }
   const initSource = (map: any, initPoints: number[][], id: string, title: string, radius: number = 0) => {
-    const newLayers = [];
-    const newSources = [];
-    const features = [];
+    const newLayers: string[] = [];
+    const newSources: string[] = [];
+    const features: any[] = [];
     initPoints.forEach((point) => {
       const obj = {
         type: 'Feature',
@@ -246,8 +246,8 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
     if (locations[locations.length - 1]?.coordinate?.longitude) {
       map.current?.flyTo({
         center: [
-          locations[locations.length - 1].coordinate.longitude,
-          locations[locations.length - 1].coordinate.latitude,
+          locations[locations.length - 1]?.coordinate?.longitude || 0,
+          locations[locations.length - 1]?.coordinate?.latitude || 0,
         ],
         essential: true,
       });
@@ -259,7 +259,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
     if (startLocation?.coordinate && endLocation?.coordinate) {
       const start = [startLocation?.coordinate?.longitude || 0, startLocation?.coordinate?.latitude || 0];
       const end = [endLocation?.coordinate?.longitude || 0, endLocation?.coordinate?.latitude || 0];
-      const initPoints = [];
+      const initPoints: number[][] = [];
       points.forEach((point, index) => {
         if (point.length > 0) {
           initPoints.push(point);

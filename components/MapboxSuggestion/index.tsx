@@ -6,13 +6,13 @@ interface MapboxSuggestionProps {
   name: string;
 }
 const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
+  const { setValue, getValue } = useFormContext();
   const [token, setToken] = useState('');
-  const [fullAddress, setFullAddress] = useState('');
-  const { setValue } = useFormContext();
+  const [fullAddress, setFullAddress] = useState(getValue ? getValue(`${name}.address`) : '');
   const handleRetrieve = useCallback(
     (res: any) => {
       const feature = res.features[0];
-      const address = feature.properties?.full_address || feature.properties.place_formatted;
+      const address = feature.properties?.full_address || feature.properties?.place_formatted;
       setFullAddress(address);
       setValue(`${name}.address`, address);
       setValue(`${name}.coordinate.latitude`, feature.properties?.coordinates.latitude);

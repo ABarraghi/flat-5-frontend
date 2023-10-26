@@ -6,7 +6,7 @@ import PriceAndDistance from '@/components/RouteOverview/PriceAndDistance';
 import React from 'react';
 import { type Route } from '@/types/load';
 
-const Carriers = ['land-star', 'coyote'];
+const Carriers = ['coyote'];
 interface RouteOverviewProps {
   data: Route;
   onChangeSelected: (id: string) => void;

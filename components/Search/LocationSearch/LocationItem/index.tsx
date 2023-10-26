@@ -37,7 +37,7 @@ const LocationItem = ({ name, index, remove }: LocationItemProps) => {
             suffix={<SuffixRadius />}
             customClass="w-full max-w-[150px]"
             isDebounce={true}
-            timeDebounce={500}
+            timeDebounce={2000}
           ></Form.InputNumber>
         </div>
       </div>
@@ -61,6 +61,8 @@ const LocationItem = ({ name, index, remove }: LocationItemProps) => {
             required
             suffix={<SuffixRadius />}
             customClass="w-full max-w-[150px]"
+            isDebounce={true}
+            timeDebounce={2000}
           ></Form.InputNumber>
         </div>
       </div>

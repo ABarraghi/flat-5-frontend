@@ -8,6 +8,7 @@ interface RouteOverviewProps {
   routes: Route[];
   setPoints: Dispatch<SetStateAction<any>>;
   setSelectedRoute: Dispatch<SetStateAction<any>>;
+  setRoutes: Dispatch<SetStateAction<any>>;
 }
 const RouteOverview = ({
   setIsOpenDetail,
@@ -15,11 +16,10 @@ const RouteOverview = ({
   handleViewDetailRoute,
   setPoints,
   setSelectedRoute,
+  setRoutes,
 }: RouteOverviewProps) => {
-  const [items, setItems] = useState(routes);
-
   const onChangeSelected = (id: string) => {
-    const newItems = items.map((item) => {
+    const newItems = routes.map((item) => {
       if (item.id === id) {
         if (!item.isSelected) {
           const pickupPoints = item.loads.map((load) => {
@@ -33,12 +33,12 @@ const RouteOverview = ({
         return { ...item, isSelected: false };
       }
     });
-    setItems(newItems);
+    setRoutes(newItems);
   };
 
   return (
     <>
-      {items?.map((route) => (
+      {routes?.map((route) => (
         <RouteOverviewItem
           key={route.id}
           data={route}

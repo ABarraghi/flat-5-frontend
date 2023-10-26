@@ -15,6 +15,7 @@ export interface Locations {
 }
 
 export interface LocationBase {
+  title: string;
   address?: string;
   coordinate?: Coordinate;
   startDate?: string;

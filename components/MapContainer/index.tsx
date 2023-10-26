@@ -18,110 +18,17 @@ function makeRadius(coordinate: number[], radiusInMeters: number) {
   return buffered;
 }
 
-const removeSource = (map: any, point: number[], id: string) => {
-  if (map.getSource(`points-${id}`)) {
-    map.removeLayer(`point-layer-${id}`);
-    map.removeLayer(`text-layer-${id}`);
-    map.removeSource(`points-${id}`);
-  }
-  if (map.getSource(`search-radius-${id}`)) {
-    map.removeLayer(`search-radius-${id}`);
-    map.removeSource(`search-radius-${id}`);
-  }
-  if (map.getSource(`route`)) {
-    map.removeLayer(`route`);
-    map.removeSource(`route`);
-  }
-};
-
-const initSource = (map: any, point: number[], id: string, title: string, radius: number = 0) => {
-  const sourceData = {
-    type: 'geojson',
-    data: {
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          properties: {
-            title,
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: point,
-          },
-        },
-      ],
-    },
-  };
-  if (map.getSource(`points-${id}`)) {
-    map.removeLayer(`point-layer-${id}`);
-    map.removeLayer(`text-layer-${id}`);
-    map.removeSource(`points-${id}`);
-  }
-  if (map.getSource(`search-radius-${id}`)) {
-    map.removeLayer(`search-radius-${id}`);
-    map.removeSource(`search-radius-${id}`);
-  }
-  map.addSource(`points-${id}`, sourceData);
-
-  let circleRadius = 5;
-  const strokeWidth = 1;
-  if (title) {
-    map.addLayer({
-      id: `search-radius-${id}`,
-      source: {
-        type: 'geojson',
-        data: { type: 'FeatureCollection', features: [] },
-      },
-      type: 'fill',
-      paint: {
-        'fill-color': '#F16521',
-        'fill-opacity': 0.2,
-        'fill-outline-color': '#F16521',
-      },
-    });
-    if (radius) {
-      const searchRadius = makeRadius(point, radius);
-      map.getSource(`search-radius-${id}`).setData(searchRadius);
-    }
-    circleRadius = 14;
-  }
-  map.addLayer({
-    id: `point-layer-${id}`,
-    type: 'circle',
-    source: `points-${id}`,
-    paint: {
-      'circle-radius': circleRadius,
-      'circle-color': '#F16521',
-      'circle-stroke-color': 'white',
-      'circle-stroke-width': strokeWidth,
-    },
-  });
-  map.addLayer({
-    id: `text-layer-${id}`,
-    type: 'symbol',
-    source: `points-${id}`,
-    layout: {
-      'text-field': ['get', 'title'],
-      'text-size': 16,
-      'text-max-width': 20,
-    },
-    paint: {
-      'text-halo-width': 1,
-      'text-color': 'white',
-    },
-  });
-};
-
 const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) => {
   const mapContainer = useRef() as React.MutableRefObject<HTMLInputElement>;
   const map = useRef<Map | null>(null);
   const [lng, setLng] = useState(locations[0]?.coordinate?.longitude || -87.9014469);
   const [lat, setLat] = useState(locations[0]?.coordinate?.latitude || 42.1175031);
   const [zoom, setZoom] = useState(5);
-  async function getRoute(map: any, start: number[], end: number[], points: number[][]) {
-    setIsLoading(true);
-    let url = `https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${start[0]},${start[1]}`;
+  const [layers, setLayers] = useState<string[]>([]);
+  const [sources, setSources] = useState<string[]>([]);
+
+  async function getGeoJson(start: number[], end: number[], points: number[][]) {
+    let url = `https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]}`;
     points.forEach((point) => {
       url += `;${point[0]},${point[1]}`;
     });
@@ -134,9 +41,9 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
     );
     setIsLoading(false);
     const json = await query.json();
-    if (json.routes.length === 0) {
-      // No route found
-      return;
+    console.log('json.routes.length: ', json.routes.length);
+    if (!json?.routes || json.routes.length === 0) {
+      return null;
     }
 
     let data = json.routes[0];
@@ -144,6 +51,30 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       if (route.distance < data.distance) {
         data = route;
       }
+    }
+    return data;
+  }
+
+  const removeSource = (map: any) => {
+    layers.forEach((layer) => {
+      if (map.getLayer(layer)) {
+        map.removeLayer(layer);
+      }
+    });
+    sources.forEach((source) => {
+      if (map.getSource(source)) {
+        map.removeSource(source);
+      }
+    });
+  };
+
+  async function getRoute(map: any, start: number[], end: number[], points: number[][]) {
+    setIsLoading(true);
+
+    const data = await getGeoJson(start, end, points);
+    if (!data) {
+      // No route found
+      return null;
     }
 
     const zoomLevel = gettingZoomLevel(data.distance);
@@ -186,8 +117,102 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
           'line-opacity': 0.75,
         },
       });
+      setSources((prev) => [...prev, 'route']);
+      setLayers((prev) => [...prev, 'route']);
     }
   }
+  const initSource = (map: any, initPoints: number[][], id: string, title: string, radius: number = 0) => {
+    const newLayers = [];
+    const newSources = [];
+    const features = [];
+    initPoints.forEach((point) => {
+      const obj = {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: point,
+        },
+        properties: title ? { title } : {},
+      };
+
+      features.push(obj);
+    });
+    const sourceData = {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features,
+      },
+    };
+    if (map.getSource(`points-${id}`)) {
+      map.removeLayer(`point-layer-${id}`);
+      map.removeLayer(`text-layer-${id}`);
+      map.removeSource(`points-${id}`);
+    }
+    if (map.getSource(`search-radius-${id}`)) {
+      map.removeLayer(`search-radius-${id}`);
+      map.removeSource(`search-radius-${id}`);
+    }
+    map.addSource(`points-${id}`, sourceData);
+    newSources.push(`points-${id}`);
+    let circleRadius = 5;
+    const strokeWidth = 1;
+    if (title) {
+      map.addLayer({
+        id: `search-radius-${id}`,
+        source: {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: [] },
+        },
+        type: 'fill',
+        paint: {
+          'fill-color': '#F16521',
+          'fill-opacity': 0.2,
+          'fill-outline-color': '#F16521',
+        },
+      });
+      if (radius) {
+        const searchRadius = makeRadius(initPoints[0], radius);
+        map.getSource(`search-radius-${id}`).setData(searchRadius);
+      }
+      circleRadius = 14;
+      newSources.push(`search-radius-${id}`);
+      newLayers.push(`search-radius-${id}`);
+    }
+    map.addLayer({
+      id: `point-layer-${id}`,
+      type: 'circle',
+      source: `points-${id}`,
+      paint: {
+        'circle-radius': circleRadius,
+        'circle-color': '#F16521',
+        'circle-stroke-color': 'white',
+        'circle-stroke-width': strokeWidth,
+      },
+      filter: ['==', '$type', 'Point'],
+    });
+    newLayers.push(`point-layer-${id}`);
+
+    map.addLayer({
+      id: `text-layer-${id}`,
+      type: 'symbol',
+      source: `points-${id}`,
+      layout: {
+        'text-field': ['get', 'title'],
+        'text-size': 16,
+        'text-max-width': 20,
+      },
+      paint: {
+        'text-halo-width': 1,
+        'text-color': 'white',
+      },
+      filter: ['==', '$type', 'Point'],
+    });
+    newLayers.push(`text-layer-${id}`);
+    setLayers((layers) => [...layers, ...newLayers]);
+    setSources((sources) => [...sources, ...newSources]);
+  };
+
   useEffect(() => {
     if (map.current) return;
     map.current = new mapboxgl.Map({
@@ -211,40 +236,42 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
 
   useEffect(() => {
     const [startLocation, endLocation] = locations;
-    const start = [startLocation?.coordinate?.longitude || 0, startLocation?.coordinate?.latitude || 0];
-    const end = [endLocation?.coordinate?.longitude || 0, endLocation?.coordinate?.latitude || 0];
-
-    if (points.length > 23) {
-      points = points.slice(0, 23);
-    }
-    if (startLocation?.coordinate) {
-      initSource(map.current, start, 'start', 'A', startLocation.radius);
+    removeSource(map.current);
+    locations.forEach((location, index) => {
+      if (location.coordinate) {
+        const point = [[location.coordinate.longitude, location.coordinate.latitude]];
+        initSource(map.current, point, `${index}`, location.title, location.radius);
+      }
+    });
+    if (locations[locations.length - 1]?.coordinate?.longitude) {
       map.current?.flyTo({
-        center: [start[0], start[1]],
-        essential: true, // this animation is considered essential with respect to prefers-reduced-motion
-      });
-    } else {
-      removeSource(map.current, start, 'start');
-    }
-    if (endLocation?.coordinate) {
-      map.current?.flyTo({
-        center: [end[0], end[1]],
+        center: [
+          locations[locations.length - 1].coordinate.longitude,
+          locations[locations.length - 1].coordinate.latitude,
+        ],
         essential: true,
       });
-      initSource(map.current, end, 'end', 'B', endLocation.radius);
     }
+    if (points?.length > 23) {
+      points = points?.slice(0, 5);
+    }
+
     if (startLocation?.coordinate && endLocation?.coordinate) {
+      const start = [startLocation?.coordinate?.longitude || 0, startLocation?.coordinate?.latitude || 0];
+      const end = [endLocation?.coordinate?.longitude || 0, endLocation?.coordinate?.latitude || 0];
+      const initPoints = [];
       points.forEach((point, index) => {
         if (point.length > 0) {
-          initSource(map.current, point, `${index}`, '', 0);
+          initPoints.push(point);
         }
       });
+      initSource(map.current, initPoints, ``, '', 0);
       getRoute(map.current, start, end, points).then(() => {});
     }
   }, [points, locations]);
 
   return (
-    <div className="fixed h-[calc(100vh_-_15rem)] pr-5">
+    <div className="fixed h-[calc(100vh_-_15rem)] pr-2">
       <div ref={mapContainer} className="h-full w-full rounded-xl" />
     </div>
   );

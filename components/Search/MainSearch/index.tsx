@@ -36,6 +36,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
     defaultValues: {
       locations: {
         source: {
+          title: 'A',
           address: '',
           startDate: '',
           endDate: '',
@@ -46,6 +47,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
           },
         },
         destination: {
+          title: 'B',
           address: '',
           startDate: '',
           endDate: '',
@@ -86,10 +88,11 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);
+      setRoutes((prevState) => []);
       const requestData = transformData(data);
       if (
         requestData.from.latitude === 0 ||
-        requestData.from.latitude === 0 ||
+        requestData.from.longitude === 0 ||
         requestData.to.latitude === 0 ||
         requestData.to.longitude === 0
       ) {
@@ -116,7 +119,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
         isSelected: false,
       };
       routesRs.push(obj2);
-      setRoutes(routesRs);
+      setRoutes((prevState) => routesRs);
       toast('Search data successfully', { type: 'success' });
       setIsEnableRouteOverview(true);
       setIsOpenAdvanced(false);
@@ -131,6 +134,10 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
   const destinationAddress = methods.watch('locations.destination.address');
   const sourceRadius = methods.watch('locations.source.radius');
   const destinationRadius = methods.watch('locations.destination.radius');
+  useEffect(() => {
+    setRoutes([]);
+    setPoints([]);
+  }, [sourceAddress, destinationAddress]);
   useEffect(() => {
     const tempLocations = [];
     if (sourceAddress) {
@@ -189,6 +196,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
               handleViewDetailRoute={handleViewDetailRoute}
               setPoints={setPoints}
               setSelectedRoute={setSelectedRoute}
+              setRoutes={setRoutes}
             />
           )}
         </>

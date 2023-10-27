@@ -23,7 +23,7 @@ export default function TruckRouting() {
 
   return (
     <Layout>
-      <div className="grid h-[calc(100vh_-_15rem)] w-full grid-cols-7 gap-x-3 bg-transparent lg:items-start">
+      <div className="grid h-[100vh] w-full grid-cols-7 gap-x-3 bg-transparent lg:items-start">
         {isLoading && <WrapperLoadingIcon title="" />}
 
         <div className="col-span-3 h-full rounded-xl bg-white font-normal text-[#393978]">

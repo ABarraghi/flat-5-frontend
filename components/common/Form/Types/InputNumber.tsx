@@ -68,7 +68,7 @@ export const FormInputNumber = ({
               required={required}
               placeholder={placeholder}
               disabled={disabled}
-              className="h-[40px] rounded-lg font-normal"
+              className="h-[52px] rounded-lg font-normal"
               allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
               suffix={suffix}
             />

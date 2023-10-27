@@ -26,7 +26,7 @@ export const FormDateRangePicker = ({ name, rules, required, placeholder, disabl
             <RangePicker
               {...field}
               disabled={disabled}
-              className="h-[40px] w-full rounded-lg text-[12px] font-normal"
+              className="h-[52px] w-full rounded-lg text-[12px] font-normal"
               allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
             />
           </div>

@@ -21,13 +21,13 @@ export const FormText = ({ name, rules, required, placeholder, disabled, showMap
         control={control as any}
         rules={rules}
         render={({ field }) => (
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', height: '52px' }}>
             <Input
               {...field}
               required={required}
               placeholder={placeholder}
               disabled={disabled}
-              className="h-[40px] rounded-lg font-normal "
+              className="h-[52px] rounded-lg font-normal "
               allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
             />
             {!value && showMapIcon && (

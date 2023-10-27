@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { config, SearchBox } from '@mapbox/search-js-react';
 import { useFormContext } from 'react-hook-form';
+import { MapPinIcon } from '@heroicons/react/24/outline';
+import { EnvironmentFilled } from '@ant-design/icons';
 
 interface MapboxSuggestionProps {
   name: string;
@@ -32,7 +34,7 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
     config.accessToken = accessToken;
   }, []);
   return (
-    <div className="w-full">
+    <div className="relative w-full">
       {/* @ts-expect-error Server Component */}
       <SearchBox
         accessToken={token}
@@ -53,6 +55,7 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
         .Input {
             background-color: none;
             padding-left: 10px;
+            height: 50px;
           }
         .Input::placeholder {
           opacity: 0.5;
@@ -66,6 +69,7 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
         `,
         }}
       />
+      <EnvironmentFilled className="absolute bottom-0 right-1 top-0 z-10 mx-0 my-auto h-5 w-5 text-[#2E2F44] opacity-50" />
     </div>
   );
 };

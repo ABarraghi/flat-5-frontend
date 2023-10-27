@@ -1,3 +1,4 @@
+import { Form } from '@/components/common/Form';
 import TagList from '@/components/TaskList';
 import {
   EQUIPMENT_TYPES,
@@ -16,13 +17,13 @@ const AdvancedForm = () => {
   const specialNotes = watch('specialNotes');
   const shipmentFormats = watch('shipmentFormats');
   const handleChangeEquipmentTypes = (value: string) => {
-    setValue('equipmentTypes', toggleSelectingItem(equipmentTypes, value));
+    setValue('equipmentTypes', toggleSelectingItem(equipmentTypes, value, false));
   };
   const handleChangeSpecialNotes = (value: string) => {
-    setValue('specialNotes', toggleSelectingItem(specialNotes, value));
+    setValue('specialNotes', toggleSelectingItem(specialNotes, value, true));
   };
   const handleChangeShipmentFormats = (value: string) => {
-    setValue('shipmentFormats', toggleSelectingItem(shipmentFormats, value));
+    setValue('shipmentFormats', toggleSelectingItem(shipmentFormats, value, false));
   };
   return (
     <div className="px-5 py-10 text-[16px] font-normal">

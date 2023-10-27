@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { type Route } from '@/types/load';
 import DetailRoute from '@/components/DetailRoute';
+import FreightSearch from '@/components/Search/LocationSearch/FreightSearch';
 
 interface MainSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
@@ -58,6 +59,30 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
           },
         },
       },
+      freights: [
+        {
+          title: 'A',
+          address: '',
+          startDate: '',
+          endDate: '',
+          radius: 0,
+          coordinate: {
+            latitude: 0,
+            longitude: 0,
+          },
+        },
+        {
+          title: 'B',
+          address: '',
+          startDate: '',
+          endDate: '',
+          radius: 0,
+          coordinate: {
+            latitude: 0,
+            longitude: 0,
+          },
+        },
+      ],
       returnToOrigin: true,
       routeOption: 'route_my_truck',
       equipmentTypes: [],
@@ -163,9 +188,10 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
               ]}
               customClass="py-10"
             />
+            {/* <FreightSearch /> */}
             <LocationSearch />
             <div className="flex items-center justify-between text-[16px] font-normal">
-              <Form.Checkbox name="returnToOrigin" label="Return to origin after delivery" />
+              {/* <Form.Checkbox name="returnToOrigin" label="Return to origin after delivery" /> */}
               <span className="flex items-center justify-between text-[#393978]" onClick={toggleCollapseAdvanceForm}>
                 {isOpenAdvanced ? 'Hide advanced options' : 'View advanced options'} &nbsp;
                 <ChevronDownIcon

@@ -2,10 +2,11 @@ import { type Coordinate } from '@/types/common';
 
 export interface SearchForm {
   locations: Locations;
+  freights: LocationBase[];
   returnToOrigin: boolean;
   routeOption: string;
-  equipmentTypes: EquipmentType[];
-  specialNotes: SpecialNote[];
+  equipmentTypes?: EquipmentType[];
+  specialNotes?: SpecialNote[];
   shipmentFormats?: ShipmentFormat[];
 }
 

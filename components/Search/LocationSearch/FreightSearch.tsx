@@ -1,11 +1,11 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import LocationItemNew from '@/components/Search/LocationSearch/LocationItem/LocationItemNew';
-import { PlusCircleFilled, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { useCallback } from 'react';
 
 const FreightSearch = () => {
   const { control } = useFormContext();
-  const { fields, append, prepend, remove, swap, move, insert, replace } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'freights',
     rules: {
@@ -14,17 +14,19 @@ const FreightSearch = () => {
   });
   const appendFreight = useCallback(() => {
     append(
-      {
-        title: '',
-        address: '',
-        startDate: '',
-        endDate: '',
-        radius: 0,
-        coordinate: { latitude: 0, longitude: 0 },
-      },
+      [
+        {
+          title: '',
+          address: '',
+          startDate: '',
+          endDate: '',
+          radius: 0,
+          coordinate: { latitude: 0, longitude: 0 },
+        },
+      ],
       { shouldFocus: false },
     );
-  }, []);
+  }, [append]);
   return (
     <>
       <ul>

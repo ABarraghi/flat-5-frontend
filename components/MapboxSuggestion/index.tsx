@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { config, SearchBox } from '@mapbox/search-js-react';
 import { useFormContext } from 'react-hook-form';
-import { MapPinIcon } from '@heroicons/react/24/outline';
 import { EnvironmentFilled } from '@ant-design/icons';
 
 interface MapboxSuggestionProps {

@@ -13,7 +13,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { type Route } from '@/types/load';
 import DetailRoute from '@/components/DetailRoute';
-import FreightSearch from '@/components/Search/LocationSearch/FreightSearch';
 
 interface MainSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;

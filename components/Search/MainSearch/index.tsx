@@ -199,7 +199,6 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
               </span>
             </div>
             {isOpenAdvanced && <AdvancedForm />}
-
             <div className="flex justify-end p-5">
               <Button
                 name="Search"

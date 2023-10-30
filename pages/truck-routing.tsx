@@ -23,13 +23,12 @@ export default function TruckRouting() {
 
   return (
     <Layout>
-      <div className="grid h-[100vh] w-full grid-cols-7 gap-x-3 bg-transparent lg:items-start">
+      <div className="flex w-full gap-x-3 bg-transparent lg:items-start">
         {isLoading && <WrapperLoadingIcon title="" />}
-
-        <div className="col-span-3 h-full rounded-xl bg-white font-normal text-[#393978]">
+        <div className="h-full min-h-[calc(100vh_-_10rem)] w-5/12 rounded-xl bg-white font-normal text-[#393978]">
           <MainSearch setLocations={setLocations} setPoints={setPoints} locations={locations} />
         </div>
-        <div className="col-span-4 rounded-xl bg-white text-2xl text-[#393978]">
+        <div className="col-span-4 w-7/12 rounded-xl bg-white text-2xl text-[#393978]">
           <MapContainer locations={locations} points={points} setIsLoading={setIsLoading} />
         </div>
       </div>

@@ -19,6 +19,9 @@ export interface LocationBase {
   title: string;
   address?: string;
   coordinate?: Coordinate;
+  postCode: string;
+  countryCode: string;
+  regionCode: string;
   startDate?: string;
   endDate?: string;
   radius?: number;

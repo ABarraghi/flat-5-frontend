@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { type Route } from '@/types/load';
 import DetailRoute from '@/components/DetailRoute';
+import FreightSearch from '@/components/Search/LocationSearch/FreightSearch';
 
 interface MainSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
@@ -45,6 +46,9 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
             latitude: 0,
             longitude: 0,
           },
+          postCode: '',
+          countryCode: '',
+          regionCode: '',
         },
         destination: {
           title: 'B',
@@ -56,6 +60,9 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
             latitude: 0,
             longitude: 0,
           },
+          postCode: '',
+          countryCode: '',
+          regionCode: '',
         },
       },
       freights: [
@@ -69,6 +76,9 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
             latitude: 0,
             longitude: 0,
           },
+          postCode: '',
+          countryCode: '',
+          regionCode: '',
         },
         {
           title: 'B',
@@ -80,6 +90,9 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
             latitude: 0,
             longitude: 0,
           },
+          postCode: '',
+          countryCode: '',
+          regionCode: '',
         },
       ],
       returnToOrigin: true,
@@ -98,10 +111,16 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
       from: {
         latitude: source.coordinate.latitude,
         longitude: source.coordinate.longitude,
+        state: source.regionCode,
+        country: source.countryCode,
+        range: source.radius,
       },
       to: {
         latitude: destination.coordinate.latitude,
         longitude: destination.coordinate.longitude,
+        state: destination.regionCode,
+        country: destination.countryCode,
+        range: destination.radius,
       },
     };
   };

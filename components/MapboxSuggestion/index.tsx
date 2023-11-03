@@ -14,8 +14,14 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
     (res: any) => {
       const feature = res.features[0];
       const address = feature.properties?.full_address || feature.properties?.place_formatted;
+      const postCode = feature.properties?.context?.postCode?.name;
+      const countryCode = feature.properties?.context?.country?.country_code;
+      const regionCode = feature.properties?.context?.region?.region_code;
       setFullAddress(address);
       setValue(`${name}.address`, address);
+      setValue(`${name}.postCode`, postCode);
+      setValue(`${name}.countryCode`, countryCode);
+      setValue(`${name}.regionCode`, regionCode);
       setValue(`${name}.coordinate.latitude`, feature.properties?.coordinates.latitude);
       setValue(`${name}.coordinate.longitude`, feature.properties?.coordinates.longitude);
     },

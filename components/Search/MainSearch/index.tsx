@@ -95,6 +95,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
         );
       })
       .map((item) => {
+        console.log('item: ', item);
         return {
           location: {
             coordinate: {
@@ -107,8 +108,8 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
           },
           radius: item.radius,
           stopDate: {
-            from: item.from !== '' ? item.from : undefined,
-            to: item.to !== '' ? item.to : undefined,
+            from: item.stopDate[0] ? item.stopDate[0] : undefined,
+            to: item.stopDate[1] ? item.stopDate[1] : undefined,
           },
         };
       });

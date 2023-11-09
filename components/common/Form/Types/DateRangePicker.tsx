@@ -3,6 +3,8 @@ import { DatePicker } from 'antd';
 import { type BaseField } from '@/components/common/Form/Types/type';
 import { CloseOutlined } from '@ant-design/icons';
 import cn from 'classnames';
+import { type RangePickerProps } from 'antd/lib/date-picker';
+import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker;
 
@@ -16,6 +18,10 @@ const dateFormat = 'MM/DD/YYYY';
 
 export const FormDateRangePicker = ({ name, rules, required, placeholder, disabled, customClass }: Props) => {
   const { control } = useFormContext();
+  const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+    return current && current <= dayjs().startOf('day');
+  };
+
   return (
     <>
       <Controller
@@ -27,7 +33,7 @@ export const FormDateRangePicker = ({ name, rules, required, placeholder, disabl
             <RangePicker
               {...field}
               format={dateFormat}
-              disabled={disabled}
+              disabledDate={disabledDate}
               className="h-[52px] w-full rounded-lg text-[12px] font-normal"
               allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
             />

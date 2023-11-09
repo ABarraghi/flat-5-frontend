@@ -12,6 +12,7 @@ type Props = {
   rowsMax?: number;
   customClass?: string;
 } & BaseField;
+const dateFormat = 'MM/DD/YYYY';
 
 export const FormDateRangePicker = ({ name, rules, required, placeholder, disabled, customClass }: Props) => {
   const { control } = useFormContext();
@@ -25,6 +26,7 @@ export const FormDateRangePicker = ({ name, rules, required, placeholder, disabl
           <div className={cn('relative max-w-[250px]', customClass)}>
             <RangePicker
               {...field}
+              format={dateFormat}
               disabled={disabled}
               className="h-[52px] w-full rounded-lg text-[12px] font-normal"
               allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}

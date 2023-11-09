@@ -1,7 +1,8 @@
 import { Form } from '@/components/common/Form';
 import dynamic from 'next/dynamic';
 import { DeleteFilled } from '@ant-design/icons';
-import { useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 const MapboxSuggestion = dynamic(() => import('@/components/MapboxSuggestion'), {
   ssr: false,
 });
@@ -10,6 +11,7 @@ interface LocationItemNewProps {
   name?: string;
   index: number;
   remove: (value: number) => void;
+  setLocations: Dispatch<SetStateAction<any>>;
 }
 
 const SuffixRadius = () => {
@@ -44,8 +46,44 @@ const UpperCaseAlphabet: string[] = [
   'Z',
 ];
 
-const LocationItem = ({ name, index, remove }: LocationItemNewProps) => {
+const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProps) => {
+  const { watch, control, getValues, setValue } = useFormContext();
   const [isShowDeleteIcon, setIsShowDeleteIcon] = useState(false);
+  const title = UpperCaseAlphabet[index];
+
+  const latitude = watch(`${name}.${index}.location.coordinate.latitude`);
+  const radius = watch(`${name}.${index}.radius`);
+  const updateLocations = (newLocations) => {
+    setLocations(newLocations);
+  };
+  useEffect(() => {
+    if (title) {
+      setValue(`${name}.${index}.title`, title);
+    }
+  }, [index, name, setValue, title]);
+  useEffect(() => {
+    // setRoutes([]);
+    // setPoints([]);
+    // console.log('3333');
+  }, [latitude]);
+  useEffect(() => {
+    const freights = getValues('freights');
+    const locations = [];
+    freights.forEach((freight) => {
+      if (freight.latitude !== 0 && freight.location.coordinate.longitude !== 0) {
+        const location = {
+          coordinate: {
+            longitude: freight.location.coordinate.longitude,
+            latitude: freight.location.coordinate.latitude,
+          },
+          title: freight.title,
+          radius: freight.radius,
+        };
+        locations.push(location);
+      }
+    });
+    updateLocations(locations);
+  }, [latitude, getValues, radius]);
   return (
     <>
       <div className="my-2 flex w-full flex-wrap items-center gap-3">
@@ -58,20 +96,20 @@ const LocationItem = ({ name, index, remove }: LocationItemNewProps) => {
           {isShowDeleteIcon ? (
             <DeleteFilled className="text-white" />
           ) : (
-            <span className="text-[16px] font-semibold text-white">{UpperCaseAlphabet[index]}</span>
+            <span className="text-[16px] font-semibold text-white">{title}</span>
           )}
         </div>
         <div className="flex flex-1 gap-2">
-          <MapboxSuggestion name={`freights.${index}`} />
+          <MapboxSuggestion name={`${name}.${index}.location`} />
           <Form.DateRangePicker
-            name={`freights.${index}.startDate`}
+            name={`${name}.${index}.stopDate`}
             label="Name"
             placeholder="Name"
             required
             customClass="w-full"
           ></Form.DateRangePicker>
           <Form.InputNumber
-            name={`freights.${index}.radius`}
+            name={`${name}.${index}.radius`}
             label="Radius"
             placeholder="Radius"
             required

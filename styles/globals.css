@@ -154,3 +154,7 @@ body {
     height: 100% !important;
     border-radius: 12px;
 }
+
+.mock-data {
+    background-color: hsla(120, 60%, 70%, 0.2)
+}

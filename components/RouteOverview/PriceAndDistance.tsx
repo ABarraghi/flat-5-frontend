@@ -11,11 +11,11 @@ interface PriceAndDistanceProps {
 const PriceAndDistance = ({ price, distance, customClass }: PriceAndDistanceProps) => {
   return (
     <div className={cn('flex items-center justify-center', customClass || 'text-20')}>
-      <div className="price font-bold">
+      <div className="price mock-data font-bold">
         <DollarCircleFilled />
         <span className="ml-2">${formatUsPrice(price)}</span>
       </div>
-      <div className="distance ml-10 flex items-center ">
+      <div className="distance mock-data ml-10 flex items-center ">
         <DistanceIcon />
         <span className="ml-2 font-light">{distance} mi</span>
       </div>

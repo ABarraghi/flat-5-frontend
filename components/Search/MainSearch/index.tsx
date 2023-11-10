@@ -84,7 +84,6 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
     setIsOpenAdvanced((state) => !state);
   };
   const transformData = (data: any) => {
-    const { source, destination } = data.freights;
     const stopPoints = data.freights
       .filter((item) => {
         return (

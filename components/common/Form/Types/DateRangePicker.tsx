@@ -19,7 +19,7 @@ const dateFormat = 'MM/DD/YYYY';
 export const FormDateRangePicker = ({ name, rules, required, placeholder, disabled, customClass }: Props) => {
   const { control } = useFormContext();
   const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-    return current && current <= dayjs().startOf('day');
+    return current && current <= dayjs();
   };
 
   return (

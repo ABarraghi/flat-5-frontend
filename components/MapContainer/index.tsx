@@ -1,6 +1,6 @@
 import mapboxgl, { type Map } from 'mapbox-gl';
 import React, { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
-import { type LocationBase } from '@/types/search';
+import { type FreightBase, type LocationBase } from '@/types/search';
 import { gettingZoomLevel } from '@/utils/common';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const turf = require('@turf/turf');
@@ -10,6 +10,7 @@ interface MapContainerProps {
   points: number[][];
   locations: LocationBase[];
   setIsLoading: Dispatch<SetStateAction<any>>;
+  Freight: FreightBase[];
 }
 
 function makeRadius(coordinate: number[], radiusInMeters: number) {
@@ -235,6 +236,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
   }, [lat, lng, zoom]);
 
   useEffect(() => {
+    setIsLoading(true);
     const [startLocation, endLocation] = locations;
     removeSource(map.current);
     locations.forEach((location, index) => {
@@ -244,13 +246,17 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       }
     });
     if (locations[locations.length - 1]?.coordinate?.longitude) {
-      map.current?.flyTo({
-        center: [
-          locations[locations.length - 1]?.coordinate?.longitude || 0,
-          locations[locations.length - 1]?.coordinate?.latitude || 0,
-        ],
-        essential: true,
-      });
+      map.current?.setCenter([
+        locations[locations.length - 1]?.coordinate?.longitude || 0,
+        locations[locations.length - 1]?.coordinate?.latitude || 0,
+      ]);
+      // map.current?.flyTo({
+      //   center: [
+      //     locations[locations.length - 1]?.coordinate?.longitude || 0,
+      //     locations[locations.length - 1]?.coordinate?.latitude || 0,
+      //   ],
+      //   essential: true,
+      // });
     }
     if (points?.length > 23) {
       points = points?.slice(0, 5);
@@ -268,6 +274,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       initSource(map.current, initPoints, ``, '', 0);
       getRoute(map.current, start, end, points).then(() => {});
     }
+    setIsLoading(false);
   }, [points, locations]);
 
   return (

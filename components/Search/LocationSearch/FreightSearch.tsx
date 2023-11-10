@@ -1,15 +1,19 @@
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import LocationItemNew from '@/components/Search/LocationSearch/LocationItem/LocationItemNew';
 import { PlusOutlined } from '@ant-design/icons';
-import { useCallback } from 'react';
+import { type Dispatch, type SetStateAction, useCallback, useEffect } from 'react';
 
-const FreightSearch = () => {
-  const { control } = useFormContext();
+interface FreightSearchProps {
+  setLocations: Dispatch<SetStateAction<any>>;
+  setFreights: Dispatch<SetStateAction<any>>;
+}
+const FreightSearch = ({ setLocations, setFreights }: FreightSearchProps) => {
+  const { control, getValues, watch, formState } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'freights',
     rules: {
-      minLength: 4,
+      minLength: 2,
     },
   });
   const appendFreight = useCallback(() => {
@@ -17,22 +21,35 @@ const FreightSearch = () => {
       [
         {
           title: '',
-          address: '',
-          startDate: '',
-          endDate: '',
+          location: {
+            coordinate: { latitude: 0, longitude: 0 },
+            city: '',
+            state: '',
+            country: '',
+            postCode: '',
+            address: '',
+          },
           radius: 0,
-          coordinate: { latitude: 0, longitude: 0 },
+          stopDate: {
+            form: '',
+            to: '',
+          },
         },
       ],
       { shouldFocus: false },
     );
   }, [append]);
+  const handleRemove = (index) => {
+    if (fields.length > 2) {
+      remove(index);
+    }
+  };
   return (
     <>
       <ul>
         {fields.map((item, index) => (
           <li key={index}>
-            <LocationItemNew index={index} remove={remove} />
+            <LocationItemNew index={index} remove={handleRemove} name="freights" setLocations={setLocations} />
           </li>
         ))}
       </ul>

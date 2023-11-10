@@ -1,6 +1,6 @@
 import { Form } from '@/components/common/Form';
 import LocationSearch from '@/components/Search/LocationSearch';
-import { type LocationBase, type SearchForm } from '@/types/search';
+import { type FreightBase, type LocationBase, type SearchForm } from '@/types/search';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/common/Button';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -35,64 +35,42 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
 
   const methods = useForm<SearchForm>({
     defaultValues: {
-      locations: {
-        source: {
-          title: 'A',
-          address: '',
-          startDate: '',
-          endDate: '',
-          radius: 0,
-          coordinate: {
-            latitude: 0,
-            longitude: 0,
-          },
-          postCode: '',
-          countryCode: '',
-          regionCode: '',
-        },
-        destination: {
-          title: 'B',
-          address: '',
-          startDate: '',
-          endDate: '',
-          radius: 0,
-          coordinate: {
-            latitude: 0,
-            longitude: 0,
-          },
-          postCode: '',
-          countryCode: '',
-          regionCode: '',
-        },
-      },
       freights: [
         {
-          title: 'A',
-          address: '',
-          startDate: '',
-          endDate: '',
-          radius: 0,
-          coordinate: {
-            latitude: 0,
-            longitude: 0,
+          title: '',
+          location: {
+            coordinate: {
+              latitude: 0,
+              longitude: 0,
+            },
+            city: '',
+            state: '',
+            country: '',
+            postCode: '',
           },
-          postCode: '',
-          countryCode: '',
-          regionCode: '',
+          radius: 0,
+          stopDate: {
+            from: '',
+            to: '',
+          },
         },
         {
-          title: 'B',
-          address: '',
-          startDate: '',
-          endDate: '',
-          radius: 0,
-          coordinate: {
-            latitude: 0,
-            longitude: 0,
+          title: '',
+          location: {
+            coordinate: {
+              latitude: 0,
+              longitude: 0,
+            },
+            city: '',
+            state: '',
+            country: '',
+            postCode: '',
           },
-          postCode: '',
-          countryCode: '',
-          regionCode: '',
+          radius: 0,
+          stopDate: {
+            from: '',
+            to: '',
+          },
         },
       ],
       returnToOrigin: true,
@@ -106,23 +84,55 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
     setIsOpenAdvanced((state) => !state);
   };
   const transformData = (data: any) => {
-    const { source, destination } = data.locations;
+    const { source, destination } = data.freights;
+    const stopPoints = data.freights
+      .filter((item) => {
+        return (
+          (item.location.coordinate.latitude && item.location.coordinate.longitude) ||
+          item.location.city ||
+          item.location.state ||
+          item.location.country
+        );
+      })
+      .map((item) => {
+        console.log('item: ', item);
+        return {
+          location: {
+            coordinate: {
+              latitude: item.location.coordinate.latitude,
+              longitude: item.location.coordinate.longitude,
+            },
+            city: item.location.city !== '' ? item.location.city : undefined,
+            state: item.location.state !== '' ? item.location.state : undefined,
+            country: item.location.country !== '' ? item.location.country : undefined,
+          },
+          radius: item.radius,
+          stopDate: {
+            from: item.stopDate[0] ? item.stopDate[0] : undefined,
+            to: item.stopDate[1] ? item.stopDate[1] : undefined,
+          },
+        };
+      });
     return {
-      from: {
-        latitude: source.coordinate.latitude,
-        longitude: source.coordinate.longitude,
-        state: source.regionCode,
-        country: source.countryCode,
-        range: source.radius,
-      },
-      to: {
-        latitude: destination.coordinate.latitude,
-        longitude: destination.coordinate.longitude,
-        state: destination.regionCode,
-        country: destination.countryCode,
-        range: destination.radius,
-      },
+      stopPoints,
+      equipmentType: 'VR',
     };
+    // return {
+    //   from: {
+    //     latitude: source.coordinate.latitude,
+    //     longitude: source.coordinate.longitude,
+    //     state: source.regionCode,
+    //     country: source.countryCode,
+    //     range: source.radius,
+    //   },
+    //   to: {
+    //     latitude: destination.coordinate.latitude,
+    //     longitude: destination.coordinate.longitude,
+    //     state: destination.regionCode,
+    //     country: destination.countryCode,
+    //     range: destination.radius,
+    //   },
+    // };
   };
   const handleViewDetailRoute = (id: string) => {
     setDetailRoute(routes.find((route) => route.id === id));
@@ -130,15 +140,13 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
 
   const onSubmit = async (data: any) => {
     try {
+      console.log('data: ', data);
       setIsLoading(true);
       setRoutes((prevState) => []);
       const requestData = transformData(data);
-      if (
-        requestData.from.latitude === 0 ||
-        requestData.from.longitude === 0 ||
-        requestData.to.latitude === 0 ||
-        requestData.to.longitude === 0
-      ) {
+      console.log('==========');
+      console.log('requestData: ', requestData);
+      if (requestData.stopPoints.length < 2) {
         toast('The position is not accurate; we need at least a starting point and an endpoint. ', { type: 'error' });
         return;
       }
@@ -162,6 +170,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
         isSelected: false,
       };
       routesRs.push(obj2);
+      console.log('routesRs: ', routesRs);
       setRoutes((prevState) => routesRs);
       toast('Search data successfully', { type: 'success' });
       setIsEnableRouteOverview(true);
@@ -173,26 +182,6 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
       setIsLoading(false);
     }
   };
-  const sourceAddress = methods.watch('locations.source.address');
-  const destinationAddress = methods.watch('locations.destination.address');
-  const sourceRadius = methods.watch('locations.source.radius');
-  const destinationRadius = methods.watch('locations.destination.radius');
-  useEffect(() => {
-    setRoutes([]);
-    setPoints([]);
-  }, [sourceAddress, destinationAddress]);
-  useEffect(() => {
-    const tempLocations = [];
-    if (sourceAddress) {
-      const source = methods.getValues('locations.source');
-      tempLocations.push(source);
-    }
-    if (destinationAddress) {
-      const destination = methods.getValues('locations.destination');
-      tempLocations.push(destination);
-    }
-    setLocations(tempLocations);
-  }, [sourceAddress, destinationAddress, methods, setLocations, sourceRadius, destinationRadius]);
   return (
     <>
       {!isOpenDetail && (
@@ -206,8 +195,8 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
               ]}
               customClass="py-10"
             />
-            {/* <FreightSearch /> */}
-            <LocationSearch />
+            <FreightSearch setLocations={setLocations} />
+            {/* <LocationSearch /> */}
             <div className="flex items-center justify-between text-[16px] font-normal">
               {/* <Form.Checkbox name="returnToOrigin" label="Return to origin after delivery" /> */}
               <span className="flex items-center justify-between text-[#393978]" onClick={toggleCollapseAdvanceForm}>
@@ -223,7 +212,6 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
                 name="Search"
                 wrapperClass="rounded-md bg-[#F16521] py-[5px] justify-ebd"
                 contentClass="text-white text-[16px] tracking-tight sm:tracking-normal normal-case"
-                internalHref={'/truck-routing'}
                 onClick={methods.handleSubmit(onSubmit)}
                 loading={isLoading}
                 disabled={isLoading}

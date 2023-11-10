@@ -1,8 +1,7 @@
 import { type Coordinate } from '@/types/common';
 
 export interface SearchForm {
-  locations: Locations;
-  freights: LocationBase[];
+  freights: FreightBase[];
   returnToOrigin: boolean;
   routeOption: string;
   equipmentTypes?: EquipmentType[];
@@ -15,16 +14,26 @@ export interface Locations {
   destination?: LocationBase;
 }
 
+export interface RangeDate {
+  from: string;
+  to: string;
+}
+
+export interface FreightBase {
+  location: LocationBase;
+  radius: number;
+  stopDate: RangeDate;
+}
+
 export interface LocationBase {
   title: string;
   address?: string;
   coordinate?: Coordinate;
   postCode: string;
-  countryCode: string;
-  regionCode: string;
-  startDate?: string;
-  endDate?: string;
-  radius?: number;
+  country: string;
+  state: string;
+  city: string;
+  radius: number;
 }
 
 export interface TagBase {

@@ -41,7 +41,10 @@ export const FormInputNumber = ({
   }, timeDebounce || 500);
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputValue } = e.target;
-    setInputValue(inputValue);
+    const reg = /^-?\d*(\.\d*)?$/;
+    if (reg.test(inputValue)) {
+      setInputValue(inputValue);
+    }
     isDebounce ? debounceChangeValue(inputValue) : handleChange(inputValue);
   };
 

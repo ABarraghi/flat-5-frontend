@@ -26,11 +26,9 @@ const StepRoute = ({ locations, loads }: StepRouteProps) => {
     });
     loads.forEach((load) => {
       steps.push({
-        title: (
-          <span className="text-xl font-medium text-[#393978]">{`${load.pickupStop.address.line1}, ${load.pickupStop.address.cityName}`}</span>
-        ),
+        title: <span className="text-md mt-[-10px] block font-medium text-[#393978]">{load.pickupStop.address}</span>,
         subTitle: '',
-        description: <StepRouteItem carrierName={load.broker} />,
+        description: <StepRouteItem carrierName={load.broker} metadata={load.metadata} />,
         icon: (
           <div className="chain-icon m-auto flex h-4 w-4 flex-none items-center justify-center rounded-full bg-[#393978]"></div>
         ),
@@ -41,7 +39,7 @@ const StepRoute = ({ locations, loads }: StepRouteProps) => {
       subTitle: '',
       // description: <StepRouteItem carrierName={'coyote'} />,
       icon: (
-        <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[#393978]">
+        <div className=" flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[#393978]">
           <span className="text-[16px] font-normal text-white">B</span>
         </div>
       ),

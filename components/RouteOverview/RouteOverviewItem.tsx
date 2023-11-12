@@ -42,8 +42,8 @@ const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleView
         </div>
       </div>
       <div className="flex justify-between p-6 text-[16px]">
-        <span className="font-normal">Via Detroit, Louisville, and Cincinnati</span>
-        <span className="font-light">Return on 11/12/2023</span>
+        <span className="mock-data font-normal">Via Detroit, Louisville, and Cincinnati</span>
+        <span className="mock-data font-light">Return on 11/12/2023</span>
       </div>
       {isSelected && (
         <>

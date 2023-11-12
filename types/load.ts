@@ -14,6 +14,17 @@ export interface LoadBase {
   loadId: string;
   pickupStop: Stop;
   deliveryStop: Stop;
+  metadata: Metadata;
+}
+
+export interface Metadata {
+  estimationDistance: number;
+  estimationDurations: number;
+  estimationAmount: number;
+  name: string;
+  email: string;
+  fax: string;
+  phone: string;
 }
 
 export interface Route {

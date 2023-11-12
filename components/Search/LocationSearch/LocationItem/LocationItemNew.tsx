@@ -72,6 +72,7 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
     freights.forEach((freight) => {
       if (freight.latitude !== 0 && freight.location.coordinate.longitude !== 0) {
         const location = {
+          address: freight.location.address,
           coordinate: {
             longitude: freight.location.coordinate.longitude,
             latitude: freight.location.coordinate.latitude,
@@ -116,7 +117,7 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
             suffix={<SuffixRadius />}
             customClass="w-full max-w-[150px]"
             isDebounce={true}
-            timeDebounce={2000}
+            timeDebounce={1000}
           ></Form.InputNumber>
         </div>
       </div>

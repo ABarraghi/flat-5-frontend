@@ -7,15 +7,16 @@ interface PriceAndDistanceProps {
   price: number;
   distance: number;
   customClass?: string;
+  isMock?: boolean;
 }
-const PriceAndDistance = ({ price, distance, customClass }: PriceAndDistanceProps) => {
+const PriceAndDistance = ({ price, distance, customClass, isMock = true }: PriceAndDistanceProps) => {
   return (
     <div className={cn('flex items-center justify-center', customClass || 'text-20')}>
-      <div className="price mock-data font-bold">
+      <div className={cn('price font-bold', isMock ? 'mock-data' : '')}>
         <DollarCircleFilled />
         <span className="ml-2">${formatUsPrice(price)}</span>
       </div>
-      <div className="distance mock-data ml-10 flex items-center ">
+      <div className={cn('distance ml-10 flex items-center', isMock ? 'mock-data' : '')}>
         <DistanceIcon />
         <span className="ml-2 font-light">{distance} mi</span>
       </div>

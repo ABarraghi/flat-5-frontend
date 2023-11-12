@@ -27,7 +27,7 @@ const Layout = ({
         >
           <div className="m-auto grid w-full grid-cols-2 px-5">
             <Link href="/" className="w-fit">
-              <Image src={isHome ? LogoHome : LogoImage} alt="" />
+              <Image src={isHome ? LogoHome : LogoImage} alt="logo" />
             </Link>
             <div className="flex items-center justify-end gap-4">
               <Link href="/about" className="h-fit">

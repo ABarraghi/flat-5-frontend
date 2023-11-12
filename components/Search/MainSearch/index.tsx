@@ -105,7 +105,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
             state: item.location.state !== '' ? item.location.state : undefined,
             country: item.location.country !== '' ? item.location.country : undefined,
           },
-          radius: item.radius,
+          radius: item.radius ? parseInt(item.radius) : 0,
           stopDate: {
             from: item.stopDate[0] ? item.stopDate[0] : undefined,
             to: item.stopDate[1] ? item.stopDate[1] : undefined,

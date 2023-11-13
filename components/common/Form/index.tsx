@@ -4,6 +4,7 @@ import { FormDateRangePicker } from '@/components/common/Form/Types/DateRangePic
 import { FormInputNumber } from '@/components/common/Form/Types/InputNumber';
 import { FormCheckbox } from '@/components/common/Form/Types/Checkbox';
 import { FormRadio } from '@/components/common/Form/Types/RadioGroup';
+import CustomDate from '@/components/common/Form/Types/CustomDate';
 export type FormProps = HeadlessFromProps<any>;
 export const Form = (props: FormProps) => <HeadlessForm {...props} />;
 Form.Text = FormText;
@@ -11,3 +12,4 @@ Form.DateRangePicker = FormDateRangePicker;
 Form.InputNumber = FormInputNumber;
 Form.Checkbox = FormCheckbox;
 Form.Radio = FormRadio;
+Form.CustomDate = CustomDate;

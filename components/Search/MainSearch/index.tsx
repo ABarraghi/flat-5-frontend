@@ -152,24 +152,25 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
       const { data: result } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/loads/available`, requestData);
 
       const routesRs: Route[] = [];
-      const obj1: Route = {
-        id: '1',
-        totalAmount: 5540,
-        totalDistance: 2232,
-        loads: result.data,
-        isSelected: false,
-      };
-      routesRs.push(obj1);
-      const obj2: Route = {
-        id: '2',
-        totalAmount: 4125,
-        totalDistance: 2057,
-        // loads: result.data,
-        loads: [],
-        isSelected: false,
-      };
-      routesRs.push(obj2);
-      console.log('routesRs: ', routesRs);
+      if (result.data.length > 0) {
+        const obj1: Route = {
+          id: '1',
+          totalAmount: 5540,
+          totalDistance: 2232,
+          loads: result.data,
+          isSelected: false,
+        };
+        routesRs.push(obj1);
+        const obj2: Route = {
+          id: '2',
+          totalAmount: 4125,
+          totalDistance: 2057,
+          // loads: result.data,
+          loads: [],
+          isSelected: false,
+        };
+        routesRs.push(obj2);
+      }
       setRoutes((prevState) => routesRs);
       toast('Search data successfully', { type: 'success' });
       setIsEnableRouteOverview(true);
@@ -219,7 +220,8 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
               </Button>
             </div>
           </Form>
-          {isEnableRouteOverview && (
+          {isEnableRouteOverview && routes.length === 0 && <div>Can not found suitable route </div>}
+          {isEnableRouteOverview && routes.length > 0 && (
             <RouteOverview
               setIsOpenDetail={setIsOpenDetail}
               routes={routes}

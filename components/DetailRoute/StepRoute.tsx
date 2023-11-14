@@ -30,7 +30,7 @@ const StepRoute = ({ locations, loads }: StepRouteProps) => {
         subTitle: '',
         description: <StepRouteItem carrierName={load.broker} metadata={load.metadata} />,
         icon: (
-          <div className="chain-icon m-auto flex h-4 w-4 flex-none items-center justify-center rounded-full bg-[#393978]"></div>
+          <div className="chain-icon m-auto flex h-3 w-3 flex-none items-center justify-center rounded-full bg-[#393978]"></div>
         ),
       });
     });
@@ -49,42 +49,10 @@ const StepRoute = ({ locations, loads }: StepRouteProps) => {
   return (
     <>
       <Steps
-        className="w-full px-5 py-2 text-[#393978]"
+        className="detail-container w-full px-5 py-2 text-[#393978] "
         current={current}
         direction="vertical"
         items={steps}
-        // items={[
-        //   {
-        //     title: <span className="text-xl font-medium text-[#393978]">Philadelphia, PA</span>,
-        //     subTitle: '',
-        //     description: <StepRouteItem carrierName={'coyote'} />,
-        //     icon: (
-        //       <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[#393978]">
-        //         <span className="text-[16px] font-normal text-white">A</span>
-        //       </div>
-        //     ),
-        //   },
-        //   {
-        //     title: <span className="text-xl font-medium text-[#393978]">Philadelphia, PA</span>,
-        //     subTitle: '',
-        //     description: <StepRouteItem carrierName={'coyote'} />,
-        //     icon: (
-        //       <div className="chain-icon m-auto flex h-4 w-4 flex-none items-center justify-center rounded-full bg-[#393978]">
-        //         {/* <span className="text-[16px] font-normal text-white"></span> */}
-        //       </div>
-        //     ),
-        //   },
-        //   {
-        //     title: <span className="text-xl font-medium text-[#393978]">Chicago</span>,
-        //     subTitle: '',
-        //     // description: <StepRouteItem />,
-        //     icon: (
-        //       <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[#393978]">
-        //         <span className="text-[16px] font-normal text-white">B</span>
-        //       </div>
-        //     ),
-        //   },
-        // ]}
       />
     </>
   );

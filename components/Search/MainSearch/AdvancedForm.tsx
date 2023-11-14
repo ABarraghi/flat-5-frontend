@@ -25,7 +25,7 @@ const AdvancedForm = () => {
     setValue('shipmentFormats', toggleSelectingItem(shipmentFormats, value, false));
   };
   return (
-    <div className="px-5 py-10 text-[16px] font-normal">
+    <div className="py-10 text-[16px] font-normal">
       <TagList<EquipmentType>
         label="Equipment Type"
         selectedTags={equipmentTypes}

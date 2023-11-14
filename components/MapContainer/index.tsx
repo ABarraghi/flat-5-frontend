@@ -42,18 +42,23 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
     );
     setIsLoading(false);
     const json = await query.json();
-    console.log('json.routes.length: ', json.routes.length);
     if (!json?.routes || json.routes.length === 0) {
       return null;
     }
 
     let data = json.routes[0];
+    const otherRoutes = [];
     for (const route of json.routes) {
       if (route.distance < data.distance) {
         data = route;
       }
     }
-    return data;
+    for (const route of json.routes) {
+      if (JSON.stringify(data) !== JSON.stringify(route)) {
+        otherRoutes.push(route);
+      }
+    }
+    return { primaryRoute: data, otherRoutes };
   }
 
   const removeSource = (map: any) => {
@@ -72,7 +77,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
   async function getRoute(map: any, start: number[], end: number[], points: number[][]) {
     setIsLoading(true);
 
-    const data = await getGeoJson(start, end, points);
+    const { primaryRoute: data, otherRoutes } = await getGeoJson(start, end, points);
     if (!data) {
       // No route found
       return null;
@@ -84,9 +89,15 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       zoom: zoomLevel - 3,
       essential: true,
     });
-
+    otherRoutes.forEach((tempRoute, index: number) => {
+      const dataRoute = tempRoute.geometry.coordinates;
+      drawRoute(map, dataRoute, false, index + 1);
+    });
     const route = data.geometry.coordinates;
+    drawRoute(map, route, true);
+  }
 
+  const drawRoute = (map: any, route: any, isPrimary: boolean = false, indexRoute: number = 0) => {
     const geojson = {
       type: 'Feature',
       properties: {},
@@ -96,13 +107,13 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       },
     };
     // if the route already exists on the map, we'll reset it using setData
-    if (map.getSource('route')) {
-      map.getSource('route').setData(geojson);
+    if (map.getSource(`route${indexRoute}`)) {
+      map.getSource(`route${indexRoute}`).setData(geojson);
     }
     // otherwise, we'll make a new request
     else {
       map.addLayer({
-        id: 'route',
+        id: `route${indexRoute}`,
         type: 'line',
         source: {
           type: 'geojson',
@@ -113,15 +124,15 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
           'line-cap': 'round',
         },
         paint: {
-          'line-color': '#F16521',
+          'line-color': isPrimary ? '#F16521' : '#2E2F44',
           'line-width': 5,
-          'line-opacity': 0.75,
+          'line-opacity': isPrimary ? 0.75 : 0.5,
         },
       });
-      setSources((prev) => [...prev, 'route']);
-      setLayers((prev) => [...prev, 'route']);
+      setSources((prev) => [...prev, `route${indexRoute}`]);
+      setLayers((prev) => [...prev, `route${indexRoute}`]);
     }
-  }
+  };
   const initSource = (map: any, initPoints: number[][], id: string, title: string, radius: number = 0) => {
     const newLayers: string[] = [];
     const newSources: string[] = [];

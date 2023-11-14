@@ -30,10 +30,7 @@ const FreightSearch = ({ setLocations, setFreights }: FreightSearchProps) => {
             address: '',
           },
           radius: 0,
-          stopDate: {
-            form: '',
-            to: '',
-          },
+          stopDate: null,
         },
       ],
       { shouldFocus: false },
@@ -53,11 +50,8 @@ const FreightSearch = ({ setLocations, setFreights }: FreightSearchProps) => {
           </li>
         ))}
       </ul>
-      <div className="flex items-center gap-3 py-5">
-        <div
-          className="flex h-10 w-10 flex-none cursor-pointer flex-wrap items-center justify-center rounded-full bg-[#F2F2F7]"
-          onClick={appendFreight}
-        >
+      <div className="flex cursor-pointer items-center gap-3 py-5" onClick={appendFreight}>
+        <div className="flex h-10 w-10 flex-none flex-wrap items-center justify-center rounded-full bg-[#F2F2F7]">
           <PlusOutlined className="text-[#393978]" />
         </div>
         <span className="text-md font-semibold text-[#393978]">Add My Freight</span>

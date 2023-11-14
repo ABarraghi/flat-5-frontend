@@ -1,13 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { config, SearchBox } from '@mapbox/search-js-react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 import { EnvironmentFilled } from '@ant-design/icons';
+import { type BaseField } from '@/components/common/Form/Types/type';
+import CustomErrorMessage from '@/components/common/CustomErrorMessage';
 
-interface MapboxSuggestionProps {
+type MapboxSuggestionProps = {
   name: string;
-}
-const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
-  const { setValue } = useFormContext();
+} & BaseField;
+const MapboxSuggestion = ({ name, rules, error }: MapboxSuggestionProps) => {
+  const { setValue, getValues, control } = useFormContext();
   const [token, setToken] = useState('');
   const [fullAddress, setFullAddress] = useState('');
   const handleRetrieve = useCallback(
@@ -43,27 +45,37 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
     const accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
     setToken(accessToken);
     config.accessToken = accessToken;
-  }, []);
+    const address = getValues(`${name}.address`);
+    if (address) {
+      setFullAddress(address);
+    }
+  }, [getValues, name]);
   return (
     <>
-      <div className="relative w-full">
-        {/* @ts-expect-error Server Component */}
-        <SearchBox
-          accessToken={token}
-          onRetrieve={handleRetrieve}
-          placeholder="Enter Location"
-          value={fullAddress}
-          onChange={handleChange}
-          theme={{
-            variables: {
-              colorPrimary: '#212529',
-              colorSecondary: '#424242',
-              boxShadow: '0 0 0 0px silver',
-              borderRadius: '0.5rem',
-              border: '1px solid #d9d9d9',
-            },
-            icons: { search: '' },
-            cssText: `
+      <Controller
+        name={`${name}.address`}
+        control={control as any}
+        rules={rules}
+        render={({ field }) => {
+          return (
+            <div>
+              <div className="relative w-full">
+                <SearchBox
+                  accessToken={token}
+                  onRetrieve={handleRetrieve}
+                  placeholder="Enter Location"
+                  value={fullAddress}
+                  onChange={handleChange}
+                  theme={{
+                    variables: {
+                      colorPrimary: '#212529',
+                      colorSecondary: '#424242',
+                      boxShadow: '0 0 0 0px silver',
+                      borderRadius: '0.5rem',
+                      border: '1px solid #d9d9d9',
+                    },
+                    icons: { search: '' },
+                    cssText: `
         .Input {
             background-color: none;
             padding-left: 10px;
@@ -79,10 +91,15 @@ const MapboxSuggestion = ({ name }: MapboxSuggestionProps) => {
           outline: 0;
         }
         `,
-          }}
-        />
-        <EnvironmentFilled className="absolute bottom-0 right-1 top-0 z-10 mx-0 my-auto h-5 w-5 text-[#2E2F44] opacity-50" />
-      </div>
+                  }}
+                />
+                <EnvironmentFilled className="absolute bottom-0 right-1 top-0 z-10 mx-0 my-auto h-5 w-5 text-[#2E2F44] opacity-50" />
+              </div>
+              {error && <CustomErrorMessage message={error} />}
+            </div>
+          );
+        }}
+      />
     </>
   );
 };

@@ -5,6 +5,8 @@ import { CloseOutlined } from '@ant-design/icons';
 import cn from 'classnames';
 import { type RangePickerProps } from 'antd/lib/date-picker';
 import dayjs from 'dayjs';
+import CustomErrorMessage from '@/components/common/CustomErrorMessage';
+import React from 'react';
 
 const { RangePicker } = DatePicker;
 
@@ -16,7 +18,7 @@ type Props = {
 } & BaseField;
 const dateFormat = 'MM/DD/YYYY';
 
-export const FormDateRangePicker = ({ name, rules, required, placeholder, disabled, customClass }: Props) => {
+export const FormDateRangePicker = ({ name, rules, required, placeholder, disabled, customClass, error }: Props) => {
   const { control } = useFormContext();
   const disabledDate: RangePickerProps['disabledDate'] = (current) => {
     return current && current <= dayjs();
@@ -32,11 +34,13 @@ export const FormDateRangePicker = ({ name, rules, required, placeholder, disabl
           <div className={cn('relative max-w-[250px]', customClass)}>
             <RangePicker
               {...field}
+              required
               format={dateFormat}
               disabledDate={disabledDate}
               className="h-[52px] w-full rounded-lg text-[12px] font-normal"
               allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
             />
+            {error && <CustomErrorMessage message={error} />}
           </div>
         )}
       />

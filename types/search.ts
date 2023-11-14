@@ -59,12 +59,12 @@ export const EQUIPMENT_TYPES = [
     title: 'Flatbed',
   },
   {
-    id: 'intermodal',
-    title: 'Intermodal',
+    id: 'dry_van_or_reefer',
+    title: 'Van or Reefer',
   },
   {
-    id: 'tanker',
-    title: 'Tanker',
+    id: 'flat_or_van',
+    title: 'Flatted or Van',
   },
 ];
 

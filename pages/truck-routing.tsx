@@ -24,9 +24,9 @@ export default function TruckRouting() {
 
   return (
     <Layout>
-      <div className="flex w-full gap-x-3 bg-transparent lg:items-start">
+      <div className="flex w-full gap-x-3  bg-transparent lg:items-start">
         {isLoading && <WrapperLoadingIcon title="" />}
-        <div className="h-full min-h-[calc(100vh_-_10rem)] w-5/12 rounded-xl bg-white font-normal text-[#393978]">
+        <div className="h-full max-h-[calc(100vh_-_10rem)] min-h-[calc(100vh_-_10rem)] w-5/12 overflow-scroll rounded-xl bg-white font-normal text-[#393978] ">
           <MainSearch
             setLocations={setLocations}
             setPoints={setPoints}

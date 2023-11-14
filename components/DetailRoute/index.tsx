@@ -24,7 +24,7 @@ const DetailRoute = ({ isBooked, handleOpenDetail, item, locations }: DetailRout
   };
   return (
     <>
-      <div className="flex justify-between border-b px-5 py-2 text-[#393978]">
+      <div className="flex items-center justify-between gap-5 border-b px-5 py-2 text-[#393978]">
         <div className="flex gap-5">
           <LeftOutlined className="stroke-[#393978] stroke-[50px]" onClick={onBack} />
           <PriceAndDistance price={totalAmount} distance={totalDistance} customClass="text-2xl" />

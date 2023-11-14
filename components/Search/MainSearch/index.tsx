@@ -49,10 +49,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
             postCode: '',
           },
           radius: 0,
-          stopDate: {
-            from: '',
-            to: '',
-          },
+          stopDate: null,
         },
         {
           title: '',
@@ -67,10 +64,7 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
             postCode: '',
           },
           radius: 0,
-          stopDate: {
-            from: '',
-            to: '',
-          },
+          stopDate: null,
         },
       ],
       returnToOrigin: true,
@@ -114,24 +108,8 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
       });
     return {
       stopPoints,
-      equipmentType: 'VR',
+      equipmentType: data.equipmentTypes?.length > 0 ? data.equipmentTypes[0] : '',
     };
-    // return {
-    //   from: {
-    //     latitude: source.coordinate.latitude,
-    //     longitude: source.coordinate.longitude,
-    //     state: source.regionCode,
-    //     country: source.countryCode,
-    //     range: source.radius,
-    //   },
-    //   to: {
-    //     latitude: destination.coordinate.latitude,
-    //     longitude: destination.coordinate.longitude,
-    //     state: destination.regionCode,
-    //     country: destination.countryCode,
-    //     range: destination.radius,
-    //   },
-    // };
   };
   const handleViewDetailRoute = (id: string) => {
     setDetailRoute(routes.find((route) => route.id === id));
@@ -161,15 +139,15 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
           isSelected: false,
         };
         routesRs.push(obj1);
-        const obj2: Route = {
-          id: '2',
-          totalAmount: 4125,
-          totalDistance: 2057,
-          // loads: result.data,
-          loads: [],
-          isSelected: false,
-        };
-        routesRs.push(obj2);
+        // const obj2: Route = {
+        //   id: '2',
+        //   totalAmount: 4125,
+        //   totalDistance: 2057,
+        //   // loads: result.data,
+        //   loads: [],
+        //   isSelected: false,
+        // };
+        // routesRs.push(obj2);
       }
       setRoutes((prevState) => routesRs);
       toast('Search data successfully', { type: 'success' });
@@ -220,7 +198,9 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
               </Button>
             </div>
           </Form>
-          {isEnableRouteOverview && routes.length === 0 && <div>Can not found suitable route </div>}
+          {isEnableRouteOverview && routes.length === 0 && (
+            <div className="flex justify-center p-5">Can not found suitable route </div>
+          )}
           {isEnableRouteOverview && routes.length > 0 && (
             <RouteOverview
               setIsOpenDetail={setIsOpenDetail}

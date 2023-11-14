@@ -7,7 +7,7 @@ export interface BaseField {
   helperText?: string;
   required?: boolean;
   fullWidth?: boolean;
-  error?: boolean;
+  error?: string;
   disabled?: boolean;
   rules?: RegisterOptions;
   className?: string;

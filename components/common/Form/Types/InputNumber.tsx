@@ -1,10 +1,11 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'antd';
 import { type BaseField } from '@/components/common/Form/Types/type';
-import React, { type ReactNode, useState } from 'react';
+import React, { type ReactNode, useEffect, useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import cn from 'classnames';
 import { useDebouncedCallback } from 'use-debounce';
+import CustomErrorMessage from '@/components/common/CustomErrorMessage';
 
 type Props = {
   multiline?: boolean;
@@ -14,22 +15,23 @@ type Props = {
   customClass?: string;
   isDebounce?: boolean;
   timeDebounce?: number;
+  required: boolean;
+  error: string;
 } & BaseField;
 
 export const FormInputNumber = ({
   name,
   rules,
-  required,
   placeholder,
   disabled,
   suffix,
   customClass,
   isDebounce = false,
   timeDebounce = 0,
+  error,
 }: Props) => {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, getValues } = useFormContext();
   const [inputValue, setInputValue] = useState('');
-
   const handleChange = (inputValue: string) => {
     const reg = /^-?\d*(\.\d*)?$/;
     if (reg.test(inputValue) || inputValue === '' || inputValue === '-') {
@@ -55,28 +57,36 @@ export const FormInputNumber = ({
     }
     setValue(name, valueTemp.replace(/0*(\d+)/, '$1'));
   };
+  useEffect(() => {
+    const value = getValues(name);
+    if (value) {
+      setInputValue(value);
+    }
+  }, [getValues, name]);
   return (
     <>
       <Controller
         name={name}
         control={control as any}
         rules={rules}
-        render={({ field }) => (
-          <div className={cn(customClass)}>
-            <Input
-              {...field}
-              value={inputValue}
-              onChange={onChangeValue}
-              onBlur={handleBlur}
-              required={required}
-              placeholder={placeholder}
-              disabled={disabled}
-              className="h-[52px] rounded-lg font-normal"
-              allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
-              suffix={suffix}
-            />
-          </div>
-        )}
+        render={({ field }) => {
+          return (
+            <div className={cn(customClass)}>
+              <Input
+                {...field}
+                value={inputValue}
+                onChange={onChangeValue}
+                onBlur={handleBlur}
+                placeholder={placeholder}
+                disabled={disabled}
+                className="h-[52px] rounded-lg font-normal"
+                allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
+                suffix={suffix}
+              />
+              {error && <CustomErrorMessage message={error} />}
+            </div>
+          );
+        }}
       />
     </>
   );

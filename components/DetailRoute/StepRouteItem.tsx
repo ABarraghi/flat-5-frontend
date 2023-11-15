@@ -19,12 +19,12 @@ const StepRouteItem = ({ carrierName = 'Coyote', metadata }: StepRouteItemProps)
   return (
     <div className={cn('rounded-xl bg-[#F2F2F7] text-[#393978]')}>
       <div className="flex p-3">
-        <BranchLogo name={metadata.name} classNames="h-14 w-14" />
+        <BranchLogo name={carrierName} classNames="h-14 w-14" />
         <div className="my-auto px-5 ">
           <span className="text-xl font-normal">{metadata.name}</span>
           <PriceAndDistance
-            price={metadata.estimationAmount}
-            distance={metadata.estimationDistance}
+            price={Math.floor(metadata.estimationAmount)}
+            distance={Math.floor(metadata.estimationDistance)}
             customClass={'text-base'}
             isMock={false}
           />

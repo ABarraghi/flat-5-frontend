@@ -44,7 +44,6 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
   }, [latitude]);
   useEffect(() => {
     const freights = getValues('freights');
-    console.log(freights);
     const locations: MapLocation[] = [];
     freights.forEach((freight: FreightBase) => {
       if (

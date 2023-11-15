@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import CoyoteLogo from 'public/images/coyote.svg';
 import LandStarLogo from 'public/images/land-star.svg';
+import TruckStopLogo from 'public/images/ts_waypoint-red.svg';
+import DATLogo from 'public/images/DAT-Logo.svg';
 import cn from 'classnames';
 
 interface CarrierLogoProps {
@@ -16,6 +18,14 @@ const CARRIER_LOGOS = [
   {
     name: 'coyote',
     url: CoyoteLogo,
+  },
+  {
+    name: 'truckStop',
+    url: TruckStopLogo,
+  },
+  {
+    name: 'dat',
+    url: DATLogo,
   },
 ];
 const CarrierLogo = ({ name, classNames = '' }: CarrierLogoProps) => {

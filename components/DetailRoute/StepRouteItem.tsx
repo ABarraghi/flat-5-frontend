@@ -8,10 +8,10 @@ import { type Metadata } from '@/types/load';
 
 // const Carriers = ['land-star', 'coyote'];
 interface StepRouteItemProps {
-  carrierName: string;
+  brokerName: string;
   metadata: Metadata;
 }
-const StepRouteItem = ({ carrierName = 'Coyote', metadata }: StepRouteItemProps) => {
+const StepRouteItem = ({ brokerName = 'Coyote', metadata }: StepRouteItemProps) => {
   const [isOpenDescription, setIsOpenDescription] = useState(false);
   const toggleCollapseDescription = () => {
     setIsOpenDescription((state) => !state);
@@ -19,21 +19,21 @@ const StepRouteItem = ({ carrierName = 'Coyote', metadata }: StepRouteItemProps)
   return (
     <div className={cn('rounded-xl bg-[#F2F2F7] text-[#393978]')}>
       <div className="flex p-3">
-        <BranchLogo name={metadata.name} classNames="h-14 w-14" />
+        <BranchLogo name={brokerName} classNames="h-14 w-14" />
         <div className="my-auto px-5 ">
-          <span className="text-xl font-normal">{metadata.name}</span>
+          <span className="text-xl font-normal">{metadata?.name}</span>
           <PriceAndDistance
-            price={metadata.estimationAmount}
-            distance={metadata.estimationDistance}
+            price={Math.floor(metadata?.estimationAmount || 0)}
+            distance={Math.floor(metadata?.estimationDistance || 0)}
             customClass={'text-base'}
             isMock={false}
           />
         </div>
       </div>
       <div className="flex justify-items-start gap-3 p-3 text-base font-normal text-[#2E2F44]">
-        {metadata.phone && <ContactInfo icon={<PhoneFilled />} content={metadata.phone} />}
-        {metadata.fax && <ContactInfo icon={<WhatsAppOutlined />} content={metadata.fax} />}
-        {metadata.email && <ContactInfo icon={<MailFilled />} content={metadata.email} />}
+        {metadata?.phone && <ContactInfo icon={<PhoneFilled />} content={metadata.phone} />}
+        {metadata?.fax && <ContactInfo icon={<WhatsAppOutlined />} content={metadata.fax} />}
+        {metadata?.email && <ContactInfo icon={<MailFilled />} content={metadata.email} />}
       </div>
       <span className="flex items-center p-3 text-base font-medium text-[#393978]" onClick={toggleCollapseDescription}>
         {isOpenDescription ? 'Hide Description' : 'View Description '} &nbsp;

@@ -15,8 +15,6 @@ type Props = {
   customClass?: string;
   isDebounce?: boolean;
   timeDebounce?: number;
-  required: boolean;
-  error: string;
 } & BaseField;
 
 export const FormInputNumber = ({

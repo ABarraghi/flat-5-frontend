@@ -3,13 +3,14 @@ import dynamic from 'next/dynamic';
 import { DeleteFilled } from '@ant-design/icons';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { UpperCaseAlphabet } from '@/types/common';
+import { type MapLocation, UpperCaseAlphabet } from '@/types/common';
+import { type FreightBase } from '@/types/search';
 const MapboxSuggestion = dynamic(() => import('@/components/MapboxSuggestion'), {
   ssr: false,
 });
 
 interface LocationItemNewProps {
-  name?: string;
+  name: string;
   index: number;
   remove: (value: number) => void;
   setLocations: Dispatch<SetStateAction<any>>;
@@ -22,7 +23,6 @@ const SuffixRadius = () => {
 const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProps) => {
   const {
     watch,
-    control,
     getValues,
     setValue,
     formState: { errors },
@@ -45,19 +45,23 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
   useEffect(() => {
     const freights = getValues('freights');
     console.log(freights);
-    const locations = [];
-    freights.forEach((freight) => {
-      if (freight.latitude !== 0 && freight.location.coordinate.longitude !== 0) {
+    const locations: MapLocation[] = [];
+    freights.forEach((freight: FreightBase) => {
+      if (
+        freight?.location.coordinate &&
+        freight.location.coordinate.latitude !== 0 &&
+        freight.location.coordinate.longitude !== 0
+      ) {
         const location = {
           address: freight.location.address,
           coordinate: {
             longitude: freight.location.coordinate.longitude,
             latitude: freight.location.coordinate.latitude,
           },
-          title: freight.title,
+          title: freight?.title,
           radius: freight.radius,
         };
-        locations.push(location);
+        locations.push(location as MapLocation);
       }
     });
     setLocations(locations);
@@ -81,7 +85,7 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
           <MapboxSuggestion
             name={`${name}.${index}.location`}
             rules={{ required: 'Required' }}
-            error={errors[name]?.[index]?.location?.address?.message}
+            error={(errors[`${name}`] as any)?.[`${index}`]?.location?.address?.message as string}
           />
           <Form.DateRangePicker
             name={`${name}.${index}.stopDate`}
@@ -89,19 +93,19 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
             placeholder="Name"
             required
             customClass="w-full"
-            error={errors[name]?.[index]?.stopDate?.message}
+            error={(errors[`${name}`] as any)?.[`${index}`]?.stopDate?.message as string}
             rules={{ required: 'Required' }}
           />
           {routeOptionWatch !== 'en_route' && (
             <Form.InputNumber
-              name={`${name}[${index}].radius`}
+              name={`${name}.${index}.radius`}
               label="Radius"
               placeholder="Radius"
               rules={{ required: 'Required', min: { value: 1, message: 'Required' } }}
               suffix={<SuffixRadius />}
               customClass="w-full max-w-[150px]"
               isDebounce={true}
-              error={errors[name]?.[index]?.radius?.message}
+              error={(errors[`${name}`] as any)?.[`${index}`]?.radius?.message as string}
               timeDebounce={1000}
             />
           )}

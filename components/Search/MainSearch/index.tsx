@@ -1,11 +1,10 @@
 import { Form } from '@/components/common/Form';
-import LocationSearch from '@/components/Search/LocationSearch';
 import { type FreightBase, type LocationBase, type SearchForm } from '@/types/search';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/common/Button';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import cn from 'classnames';
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 import AdvancedForm from '@/components/Search/MainSearch/AdvancedForm';
 import RouteOverview from '@/components/RouteOverview';
 import axios from 'axios';
@@ -19,11 +18,12 @@ interface MainSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
   setPoints: Dispatch<SetStateAction<any>>;
   locations: LocationBase[];
+  setIsLoading: Dispatch<SetStateAction<any>>;
+  isLoading: boolean;
 }
-const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => {
+const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoading }: MainSearchProps) => {
   const [isOpenAdvanced, setIsOpenAdvanced] = useState(false);
   const [isEnableRouteOverview, setIsEnableRouteOverview] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [routes, setRoutes] = useState<Route[]>([]);
 
   const [isOpenDetail, setIsOpenDetail] = useState(false);
@@ -79,27 +79,26 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
   };
   const transformData = (data: any) => {
     const stopPoints = data.freights
-      .filter((item) => {
+      .filter((item: FreightBase) => {
         return (
-          (item.location.coordinate.latitude && item.location.coordinate.longitude) ||
+          (item.location.coordinate?.latitude && item.location.coordinate?.longitude) ||
           item.location.city ||
           item.location.state ||
           item.location.country
         );
       })
-      .map((item) => {
-        console.log('item: ', item);
+      .map((item: any) => {
         return {
           location: {
             coordinate: {
-              latitude: item.location.coordinate.latitude,
-              longitude: item.location.coordinate.longitude,
+              latitude: item.location.coordinate?.latitude,
+              longitude: item.location.coordinate?.longitude,
             },
             city: item.location.city !== '' ? item.location.city : undefined,
             state: item.location.state !== '' ? item.location.state : undefined,
             country: item.location.country !== '' ? item.location.country : undefined,
           },
-          radius: item.radius ? parseInt(item.radius) : 0,
+          radius: item.radius ? parseInt(String(item.radius)) : 0,
           stopDate: {
             from: item.stopDate[0] ? item.stopDate[0] : undefined,
             to: item.stopDate[1] ? item.stopDate[1] : undefined,
@@ -117,12 +116,9 @@ const MainSearch = ({ setLocations, setPoints, locations }: MainSearchProps) => 
 
   const onSubmit = async (data: any) => {
     try {
-      console.log('data: ', data);
       setIsLoading(true);
       setRoutes((prevState) => []);
       const requestData = transformData(data);
-      console.log('==========');
-      console.log('requestData: ', requestData);
       if (requestData.stopPoints.length < 2) {
         toast('The position is not accurate; we need at least a starting point and an endpoint. ', { type: 'error' });
         return;

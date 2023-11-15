@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { DatePicker, type DatePickerProps } from 'antd';
 import cn from 'classnames';
 import { type BaseField } from '@/components/common/Form/Types/type';
+import { type Dayjs } from 'dayjs';
 
 type Props = {
   multiline?: boolean;
@@ -11,24 +12,28 @@ type Props = {
 } & BaseField;
 
 const CustomDate = ({ customClass }: Props) => {
-  const [selectedRange, setSelectedRange] = useState(null);
+  const [selectedRange, setSelectedRange] = useState<Array<Dayjs | null>>([]);
   const [popoverVisible, setPopoverVisible] = useState(false);
   const dateFormat = 'MM/DD/YYYY';
 
-  const handleDateChange = (dates) => {
-    if (!dates || dates.length === 0) {
-      setSelectedRange(null);
+  const handleDateChange = (dates: null | Array<Dayjs | null>) => {
+    if (dates && dates.length > 0) {
+      setSelectedRange([dates[0], !dates[1] ? dates[0] : dates[1]]);
     } else {
-      // Set the range with the same start and end date when only one date is selected
-      setSelectedRange([dates[0], dates.length === 1 ? dates[0] : dates[1]]);
+      setSelectedRange([]);
     }
+    // if (!dates || dates.length === 0) {
+    //   setSelectedRange(null);
+    // } else {
+    //   // Set the range with the same start and end date when only one date is selected
+    //   setSelectedRange([dates[0], dates.length === 1 ? dates[0] : dates[1]]);
+    // }
   };
 
   const handleConfirm = () => {
-    // Handle your logic here, e.g., updating an input field
-    if (selectedRange.length === 1) {
-      const startDateString = selectedRange[0].format('MM/DD/YYYY');
-      const endDateString = selectedRange[1].format('MM/DD/YYYY');
+    if (selectedRange && selectedRange.length === 2) {
+      const startDateString = selectedRange[0]?.format('MM/DD/YYYY');
+      const endDateString = selectedRange[1]?.format('MM/DD/YYYY');
       console.log(`Selected Range: ${startDateString} - ${endDateString}`);
       // Update your input field or perform other actions
     }

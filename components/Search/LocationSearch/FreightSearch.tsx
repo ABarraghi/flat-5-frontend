@@ -1,14 +1,13 @@
-import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import LocationItemNew from '@/components/Search/LocationSearch/LocationItem/LocationItemNew';
 import { PlusOutlined } from '@ant-design/icons';
-import { type Dispatch, type SetStateAction, useCallback, useEffect } from 'react';
+import { type Dispatch, type SetStateAction, useCallback } from 'react';
 
 interface FreightSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
-  setFreights: Dispatch<SetStateAction<any>>;
 }
-const FreightSearch = ({ setLocations, setFreights }: FreightSearchProps) => {
-  const { control, getValues, watch, formState } = useFormContext();
+const FreightSearch = ({ setLocations }: FreightSearchProps) => {
+  const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'freights',
@@ -36,7 +35,7 @@ const FreightSearch = ({ setLocations, setFreights }: FreightSearchProps) => {
       { shouldFocus: false },
     );
   }, [append]);
-  const handleRemove = (index) => {
+  const handleRemove = (index: number) => {
     if (fields.length > 2) {
       remove(index);
     }

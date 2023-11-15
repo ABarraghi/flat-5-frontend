@@ -31,3 +31,10 @@ export const UpperCaseAlphabet: string[] = [
   'Y',
   'Z',
 ];
+
+export interface MapLocation {
+  address: string;
+  coordinate: Coordinate;
+  title: string;
+  radius: number;
+}

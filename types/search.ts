@@ -20,9 +20,10 @@ export interface RangeDate {
 }
 
 export interface FreightBase {
+  title: string;
   location: LocationBase;
   radius: number;
-  stopDate: RangeDate;
+  stopDate: RangeDate | null;
 }
 
 export interface LocationBase {

@@ -2,7 +2,7 @@ import Layout from '@/components/layout';
 import MainSearch from '@/components/Search/MainSearch';
 import { useState } from 'react';
 import MapContainer from '@/components/MapContainer';
-import { type FreightBase, type LocationBase } from '@/types/search';
+import { type LocationBase } from '@/types/search';
 import { WrapperLoadingIcon } from '@/components/Loading';
 
 // const points = [
@@ -18,7 +18,6 @@ import { WrapperLoadingIcon } from '@/components/Loading';
 // const points2 = [[-75.15454438944138, 39.721350023945575]];
 export default function TruckRouting() {
   const [locations, setLocations] = useState<LocationBase[]>([]);
-  const [freights, setFreights] = useState<FreightBase[]>([]);
   const [points, setPoints] = useState<number[][]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,11 +30,12 @@ export default function TruckRouting() {
             setLocations={setLocations}
             setPoints={setPoints}
             locations={locations}
-            setFreights={setFreights}
+            setIsLoading={setIsLoading}
+            isLoading={isLoading}
           />
         </div>
         <div className="col-span-4 w-7/12 rounded-xl bg-white text-2xl text-[#393978]">
-          <MapContainer locations={locations} points={points} setIsLoading={setIsLoading} freights={freights} />
+          <MapContainer locations={locations} points={points} setIsLoading={setIsLoading} />
         </div>
       </div>
     </Layout>

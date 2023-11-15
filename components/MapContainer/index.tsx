@@ -1,6 +1,6 @@
 import mapboxgl, { type Map } from 'mapbox-gl';
 import React, { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
-import { type FreightBase, type LocationBase } from '@/types/search';
+import { type LocationBase } from '@/types/search';
 import { gettingZoomLevel } from '@/utils/common';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const turf = require('@turf/turf');
@@ -10,7 +10,6 @@ interface MapContainerProps {
   points: number[][];
   locations: LocationBase[];
   setIsLoading: Dispatch<SetStateAction<any>>;
-  Freight: FreightBase[];
 }
 
 function makeRadius(coordinate: number[], radiusInMeters: number) {
@@ -77,7 +76,9 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
   async function getRoute(map: any, start: number[], end: number[], points: number[][]) {
     setIsLoading(true);
 
-    const { primaryRoute: data, otherRoutes } = await getGeoJson(start, end, points);
+    const routeData = await getGeoJson(start, end, points);
+    const { primaryRoute: data, otherRoutes } = routeData ?? { primaryRoute: null, otherRoutes: [] };
+
     if (!data) {
       // No route found
       return null;

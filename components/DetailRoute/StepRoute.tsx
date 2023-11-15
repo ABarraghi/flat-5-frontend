@@ -28,7 +28,7 @@ const StepRoute = ({ locations, loads }: StepRouteProps) => {
       steps.push({
         title: <span className="text-md mt-[-10px] block font-medium text-[#393978]">{load.pickupStop.address}</span>,
         subTitle: '',
-        description: <StepRouteItem carrierName={load.broker} metadata={load.metadata} />,
+        description: <StepRouteItem brokerName={load.broker} metadata={load.metadata} />,
         icon: (
           <div className="chain-icon m-auto flex h-3 w-3 flex-none items-center justify-center rounded-full bg-[#393978]"></div>
         ),

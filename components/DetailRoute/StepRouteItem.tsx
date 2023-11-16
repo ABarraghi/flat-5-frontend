@@ -4,14 +4,14 @@ import cn from 'classnames';
 import ContactInfo from '@/components/ContactInfo';
 import { DownOutlined, MailFilled, PhoneFilled, WhatsAppOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { type Metadata } from '@/types/load';
+import { type LoadBase } from '@/types/load';
 
 // const Carriers = ['land-star', 'coyote'];
 interface StepRouteItemProps {
   brokerName: string;
-  metadata: Metadata;
+  load: LoadBase;
 }
-const StepRouteItem = ({ brokerName = 'Coyote', metadata }: StepRouteItemProps) => {
+const StepRouteItem = ({ brokerName = 'Coyote', load }: StepRouteItemProps) => {
   const [isOpenDescription, setIsOpenDescription] = useState(false);
   const toggleCollapseDescription = () => {
     setIsOpenDescription((state) => !state);
@@ -21,19 +21,19 @@ const StepRouteItem = ({ brokerName = 'Coyote', metadata }: StepRouteItemProps) 
       <div className="flex p-3">
         <BranchLogo name={brokerName} classNames="h-14 w-14" />
         <div className="my-auto px-5 ">
-          <span className="text-xl font-normal">{metadata?.name}</span>
+          <span className="text-xl font-normal">{load?.shipperInfo?.name}</span>
           <PriceAndDistance
-            price={Math.floor(metadata?.estimationAmount || 0)}
-            distance={Math.floor(metadata?.estimationDistance || 0)}
+            price={Math.floor(load?.amount || 0)}
+            distance={Math.floor(load?.distance || 0)}
             customClass={'text-base'}
             isMock={false}
           />
         </div>
       </div>
       <div className="flex justify-items-start gap-3 p-3 text-base font-normal text-[#2E2F44]">
-        {metadata?.phone && <ContactInfo icon={<PhoneFilled />} content={metadata.phone} />}
-        {metadata?.fax && <ContactInfo icon={<WhatsAppOutlined />} content={metadata.fax} />}
-        {metadata?.email && <ContactInfo icon={<MailFilled />} content={metadata.email} />}
+        {load?.shipperInfo?.phone && <ContactInfo icon={<PhoneFilled />} content={load?.shipperInfo?.phone ?? ''} />}
+        {load?.shipperInfo?.fax && <ContactInfo icon={<WhatsAppOutlined />} content={load?.shipperInfo?.fax ?? ''} />}
+        {load?.shipperInfo?.email && <ContactInfo icon={<MailFilled />} content={load?.shipperInfo?.email ?? ''} />}
       </div>
       <span className="flex items-center p-3 text-base font-medium text-[#393978]" onClick={toggleCollapseDescription}>
         {isOpenDescription ? 'Hide Description' : 'View Description '} &nbsp;

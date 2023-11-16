@@ -95,19 +95,17 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
             error={(errors[`${name}`] as any)?.[`${index}`]?.stopDate?.message as string}
             rules={{ required: 'Required' }}
           />
-          {routeOptionWatch !== 'en_route' && (
-            <Form.InputNumber
-              name={`${name}.${index}.radius`}
-              label="Radius"
-              placeholder="Radius"
-              rules={{ required: 'Required', min: { value: 1, message: 'Required' } }}
-              suffix={<SuffixRadius />}
-              customClass="w-full max-w-[150px]"
-              isDebounce={true}
-              error={(errors[`${name}`] as any)?.[`${index}`]?.radius?.message as string}
-              timeDebounce={1000}
-            />
-          )}
+          <Form.InputNumber
+            name={`${name}.${index}.radius`}
+            label="Radius"
+            placeholder="Radius"
+            rules={{ required: 'Required', min: { value: 1, message: 'Required' } }}
+            suffix={<SuffixRadius />}
+            customClass="w-full max-w-[150px]"
+            isDebounce={true}
+            error={(errors[`${name}`] as any)?.[`${index}`]?.radius?.message as string}
+            timeDebounce={1000}
+          />
         </div>
       </div>
     </>

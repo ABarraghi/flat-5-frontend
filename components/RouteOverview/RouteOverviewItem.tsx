@@ -4,14 +4,14 @@ import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from 'antd';
 import PriceAndDistance from '@/components/RouteOverview/PriceAndDistance';
 import React from 'react';
-import { type Route } from '@/types/load';
+import { type RouteInfo } from '@/types/route';
+import dayjs from 'dayjs';
 
-const Carriers = ['coyote'];
 interface RouteOverviewProps {
-  data: Route;
+  data: RouteInfo;
   onChangeSelected: (id: string) => void;
   setIsOpenDetail: (isOpen: boolean) => void;
-  handleViewDetailRoute: (id: string) => void;
+  handleViewDetailRoute: (id?: string) => void;
 }
 const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleViewDetailRoute }: RouteOverviewProps) => {
   const { id, isSelected } = data;
@@ -33,17 +33,19 @@ const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleView
       onClick={() => handleClick(id)}
     >
       <div className="flex justify-between px-6 pt-6 text-[#393978]">
-        <PriceAndDistance price={data.totalAmount} distance={data.totalDistance} />
+        <PriceAndDistance price={data.amount ?? 0} distance={data.distance ?? 0} />
 
         <div className="flex">
-          {Carriers.map((logo, index) => (
+          {data.brokers?.map((logo, index) => (
             <BranchLogo key={index} name={logo} />
           ))}
         </div>
       </div>
       <div className="flex justify-between p-6 text-[16px]">
-        <span className="mock-data font-normal">Via Detroit, Louisville, and Cincinnati</span>
-        <span className="mock-data font-light">Return on 11/12/2023</span>
+        <span className="mock-data font-normal">{data.description || 'Via Detroit, Louisville, and Cincinnati'}</span>
+        <span className="mock-data font-light">
+          Return on {data.returnAt ? dayjs(data.returnAt).format('MM/DD/YYYY') : '11/12/2023'}
+        </span>
       </div>
       {isSelected && (
         <>

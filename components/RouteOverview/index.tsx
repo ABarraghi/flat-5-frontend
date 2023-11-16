@@ -22,7 +22,7 @@ const RouteOverview = ({
     const newItems = routes.map((item) => {
       if (item.id === id) {
         if (!item.isSelected) {
-          const pickupAndDeliveryPoints = [];
+          const pickupAndDeliveryPoints: number[][] = [];
           item.loads?.forEach((load) => {
             pickupAndDeliveryPoints.push([load.pickupStop.coordinates.longitude, load.pickupStop.coordinates.latitude]);
             pickupAndDeliveryPoints.push([

@@ -3,6 +3,7 @@ import { type LocationBase } from '@/types/search';
 import { type LoadBase } from '@/types/load';
 import { useEffect, useState } from 'react';
 import { GenerateStepRoute } from '@/components/DetailRoute/GenerateStepRoute';
+import { type StepProps } from 'antd/es/steps';
 
 interface StepRouteProps {
   locations: LocationBase[];
@@ -10,7 +11,7 @@ interface StepRouteProps {
   routeType: string;
 }
 const StepRoute = ({ locations, loads, routeType }: StepRouteProps) => {
-  const [stepItems, setStepItems] = useState([]);
+  const [stepItems, setStepItems] = useState<StepProps[]>([]);
   const [current, setCurrent] = useState(2);
 
   useEffect(() => {

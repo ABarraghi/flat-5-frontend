@@ -11,7 +11,7 @@ interface RouteOverviewProps {
   data: RouteInfo;
   onChangeSelected: (id: string) => void;
   setIsOpenDetail: (isOpen: boolean) => void;
-  handleViewDetailRoute: (id?: string) => void;
+  handleViewDetailRoute: (id: string) => void;
 }
 const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleViewDetailRoute }: RouteOverviewProps) => {
   const { id, isSelected } = data;

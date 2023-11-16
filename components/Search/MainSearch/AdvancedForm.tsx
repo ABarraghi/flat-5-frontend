@@ -16,13 +16,13 @@ const AdvancedForm = () => {
   const specialNotes = watch('specialNotes');
   const shipmentFormats = watch('shipmentFormats');
   const handleChangeEquipmentTypes = (value: string) => {
-    setValue('equipmentTypes', toggleSelectingItem(equipmentTypes, value, false));
+    setValue('equipmentTypes', toggleSelectingItem(equipmentTypes, value, false, true));
   };
   const handleChangeSpecialNotes = (value: string) => {
-    setValue('specialNotes', toggleSelectingItem(specialNotes, value, true));
+    setValue('specialNotes', toggleSelectingItem(specialNotes, value, true, false));
   };
   const handleChangeShipmentFormats = (value: string) => {
-    setValue('shipmentFormats', toggleSelectingItem(shipmentFormats, value, false));
+    setValue('shipmentFormats', toggleSelectingItem(shipmentFormats, value, false, false));
   };
   return (
     <div className="py-10 text-[16px] font-normal">

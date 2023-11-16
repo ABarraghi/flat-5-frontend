@@ -4,7 +4,7 @@ export interface SearchForm {
   freights: FreightBase[];
   returnToOrigin: boolean;
   routeOption: string;
-  equipmentTypes?: EquipmentType[];
+  equipmentTypes?: string[];
   specialNotes?: SpecialNote[];
   shipmentFormats?: ShipmentFormat[];
 }

@@ -1,11 +1,11 @@
 import { type Dispatch, type SetStateAction } from 'react';
 import RouteOverviewItem from '@/components/RouteOverview/RouteOverviewItem';
-import { type Route } from '@/types/load';
+import { type RouteInfo } from '@/types/route';
 
 interface RouteOverviewProps {
   setIsOpenDetail: (isOpen: boolean) => void;
   handleViewDetailRoute: (id: string) => void;
-  routes: Route[];
+  routes: RouteInfo[];
   setPoints: Dispatch<SetStateAction<any>>;
   setSelectedRoute: Dispatch<SetStateAction<any>>;
   setRoutes: Dispatch<SetStateAction<any>>;
@@ -22,10 +22,15 @@ const RouteOverview = ({
     const newItems = routes.map((item) => {
       if (item.id === id) {
         if (!item.isSelected) {
-          const pickupPoints = item.loads.map((load) => {
-            return [load.pickupStop.coordinates.longitude, load.pickupStop.coordinates.latitude];
+          const pickupAndDeliveryPoints: number[][] = [];
+          item.loads?.forEach((load) => {
+            pickupAndDeliveryPoints.push([load.pickupStop.coordinates.longitude, load.pickupStop.coordinates.latitude]);
+            pickupAndDeliveryPoints.push([
+              load.deliveryStop.coordinates.longitude,
+              load.deliveryStop.coordinates.latitude,
+            ]);
           });
-          setPoints(pickupPoints);
+          setPoints(pickupAndDeliveryPoints);
           setSelectedRoute({ ...item, isSelected: !item.isSelected });
         }
         return { ...item, isSelected: !item.isSelected };

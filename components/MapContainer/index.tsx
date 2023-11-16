@@ -166,7 +166,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       map.removeLayer(`search-radius-${id}`);
       map.removeSource(`search-radius-${id}`);
     }
-    map.addSource(`points-${id}`, sourceData);
+    map?.addSource(`points-${id}`, sourceData);
     newSources.push(`points-${id}`);
     let circleRadius = 5;
     const strokeWidth = 1;
@@ -249,44 +249,48 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
 
   useEffect(() => {
     setIsLoading(true);
-    const [startLocation, endLocation] = locations;
-    removeSource(map.current);
-    locations.forEach((location, index) => {
-      if (location.coordinate) {
-        const point = [[location.coordinate.longitude, location.coordinate.latitude]];
-        initSource(map.current, point, `${index}`, location.title, location.radius);
-      }
-    });
-    if (locations[locations.length - 1]?.coordinate?.longitude) {
-      map.current?.setCenter([
-        locations[locations.length - 1]?.coordinate?.longitude || 0,
-        locations[locations.length - 1]?.coordinate?.latitude || 0,
-      ]);
-      // map.current?.flyTo({
-      //   center: [
-      //     locations[locations.length - 1]?.coordinate?.longitude || 0,
-      //     locations[locations.length - 1]?.coordinate?.latitude || 0,
-      //   ],
-      //   essential: true,
-      // });
-    }
-    if (points?.length > 23) {
-      points = points?.slice(0, 5);
-    }
-
-    if (startLocation?.coordinate && endLocation?.coordinate) {
-      const start = [startLocation?.coordinate?.longitude || 0, startLocation?.coordinate?.latitude || 0];
-      const end = [endLocation?.coordinate?.longitude || 0, endLocation?.coordinate?.latitude || 0];
-      const initPoints: number[][] = [];
-      points.forEach((point, index) => {
-        if (point.length > 0) {
-          initPoints.push(point);
+    const reDrawMap = async () => {
+      const [startLocation, endLocation] = locations;
+      removeSource(map.current);
+      locations.forEach((location, index) => {
+        if (location.coordinate) {
+          const point = [[location.coordinate.longitude, location.coordinate.latitude]];
+          initSource(map.current, point, `${index}`, location.title, location.radius);
         }
       });
-      initSource(map.current, initPoints, ``, '', 0);
-      getRoute(map.current, start, end, points).then(() => {});
-    }
-    setIsLoading(false);
+      if (locations[locations.length - 1]?.coordinate?.longitude) {
+        map.current?.setCenter([
+          locations[locations.length - 1]?.coordinate?.longitude || 0,
+          locations[locations.length - 1]?.coordinate?.latitude || 0,
+        ]);
+        // map.current?.flyTo({
+        //   center: [
+        //     locations[locations.length - 1]?.coordinate?.longitude || 0,
+        //     locations[locations.length - 1]?.coordinate?.latitude || 0,
+        //   ],
+        //   essential: true,
+        // });
+      }
+      if (points?.length > 23) {
+        points = points?.slice(0, 5);
+      }
+
+      if (startLocation?.coordinate && endLocation?.coordinate) {
+        const start = [startLocation?.coordinate?.longitude || 0, startLocation?.coordinate?.latitude || 0];
+        const end = [endLocation?.coordinate?.longitude || 0, endLocation?.coordinate?.latitude || 0];
+        const initPoints: number[][] = [];
+        points.forEach((point, index) => {
+          if (point.length > 0) {
+            initPoints.push(point);
+          }
+        });
+        initSource(map.current, initPoints, ``, '', 0);
+        await getRoute(map.current, start, end, points).then(() => {});
+      }
+    };
+    reDrawMap().then(() => {
+      setIsLoading(false);
+    });
   }, [points, locations]);
 
   return (

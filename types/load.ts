@@ -1,11 +1,20 @@
 import { type BrokerName, type Coordinate } from '@/types/common';
 
 export interface Stop {
-  address: any;
+  address?: string;
+  line1?: string;
+  line2?: string;
+  line3?: string;
+  city?: string;
+  county?: string;
+  state?: string;
+  country?: string;
+  countryCode?: string;
+  postalCode?: string;
   coordinates: Coordinate;
   appointment: {
-    appointmentStartDateTimeUtc: string;
-    appointmentEndDateTimeUtc: string;
+    startTime?: string;
+    endTime?: string;
   };
 }
 
@@ -14,7 +23,30 @@ export interface LoadBase {
   loadId: string;
   pickupStop: Stop;
   deliveryStop: Stop;
-  metadata: Metadata;
+  rate: number;
+  deadheadRate?: number;
+  amount: number;
+  currency: string;
+  distance: number;
+  distanceUnit: string;
+  duration: number;
+  durationUnit: 'seconds' | 'minutes' | 'hours';
+  originDeadhead?: number;
+  destinationDeadhead?: number;
+  rawLoad: any;
+  truckCompanyName: string;
+  truckCompanyEmail: string;
+  truckCompanyPhone: string;
+  truckCompanyFax: string;
+  shipperInfo: ShipperInfo;
+  metadata?: Metadata;
+}
+
+export interface ShipperInfo {
+  name?: string;
+  phone?: string;
+  fax?: string;
+  email?: string;
 }
 
 export interface Metadata {
@@ -25,12 +57,4 @@ export interface Metadata {
   email: string;
   fax: string;
   phone: string;
-}
-
-export interface Route {
-  id: string;
-  totalAmount: number;
-  totalDistance: number;
-  loads: LoadBase[];
-  isSelected?: boolean;
 }

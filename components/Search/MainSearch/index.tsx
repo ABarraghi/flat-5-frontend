@@ -4,15 +4,16 @@ import { useForm } from 'react-hook-form';
 import Button from '@/components/common/Button';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import cn from 'classnames';
-import { type Dispatch, type SetStateAction, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import AdvancedForm from '@/components/Search/MainSearch/AdvancedForm';
 import RouteOverview from '@/components/RouteOverview';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { type Route } from '@/types/load';
 import DetailRoute from '@/components/DetailRoute';
 import FreightSearch from '@/components/Search/LocationSearch/FreightSearch';
+import { type RouteInfo } from '@/types/route';
+import { getSearchLoad } from '@/services/searchAPI';
+import dayjs from 'dayjs';
 
 interface MainSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
@@ -24,11 +25,12 @@ interface MainSearchProps {
 const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoading }: MainSearchProps) => {
   const [isOpenAdvanced, setIsOpenAdvanced] = useState(false);
   const [isEnableRouteOverview, setIsEnableRouteOverview] = useState(false);
-  const [routes, setRoutes] = useState<Route[]>([]);
+  const [routes, setRoutes] = useState<RouteInfo[]>([]);
+  const [originalData, setOriginalData] = useState<RouteInfo[]>([]);
 
   const [isOpenDetail, setIsOpenDetail] = useState(false);
-  const [detailRoute, setDetailRoute] = useState<Route>();
-  const [selectedRoute, setSelectedRoute] = useState<Route>();
+  const [detailRoute, setDetailRoute] = useState<RouteInfo>();
+  const [selectedRoute, setSelectedRoute] = useState<RouteInfo>();
   const handleOpenDetail = (isOpen: boolean) => {
     setIsOpenDetail(isOpen);
   };
@@ -69,7 +71,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       ],
       returnToOrigin: true,
       routeOption: 'route_my_truck',
-      equipmentTypes: [],
+      equipmentTypes: ['dry_van'],
       specialNotes: [],
       shipmentFormats: [],
     },
@@ -100,8 +102,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
           },
           radius: item.radius ? parseInt(String(item.radius)) : 0,
           stopDate: {
-            from: item.stopDate[0] ? item.stopDate[0] : undefined,
-            to: item.stopDate[1] ? item.stopDate[1] : undefined,
+            from: item.stopDate[0] ? dayjs(item.stopDate[0]).startOf('day') : undefined,
+            to: item.stopDate[1] ? dayjs(item.stopDate[1]).endOf('day') : undefined,
           },
         };
       });
@@ -114,37 +116,33 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
     setDetailRoute(routes.find((route) => route.id === id));
   };
 
-  const onSubmit = async (data: any) => {
+  const watchRouteOption = methods.watch('routeOption');
+  const onSubmit = async (submitData: any) => {
     try {
       setIsLoading(true);
       setRoutes((prevState) => []);
-      const requestData = transformData(data);
+      const requestData = transformData(submitData);
       if (requestData.stopPoints.length < 2) {
         toast('The position is not accurate; we need at least a starting point and an endpoint. ', { type: 'error' });
         return;
       }
-      const { data: result } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/loads/available`, requestData);
 
-      const routesRs: Route[] = [];
-      if (result.data.length > 0) {
-        const obj1: Route = {
-          id: '1',
-          totalAmount: 5540,
-          totalDistance: 2232,
-          loads: result.data,
-          isSelected: false,
-        };
-        routesRs.push(obj1);
-        // const obj2: Route = {
-        //   id: '2',
-        //   totalAmount: 4125,
-        //   totalDistance: 2057,
-        //   // loads: result.data,
-        //   loads: [],
-        //   isSelected: false,
-        // };
-        // routesRs.push(obj2);
-      }
+      const data = await getSearchLoad(requestData);
+      let routesRs: RouteInfo[] = [];
+      routesRs = data.map((route, index) => {
+        const brokers = route.loads?.map((load) => load.broker);
+        return { ...route, id: `${index}`, isSelected: false, brokers };
+      });
+      setOriginalData(routesRs);
+
+      routesRs = routesRs.filter((route) => {
+        if (watchRouteOption === 'en_route') {
+          return route.type === 'enRoute';
+        } else {
+          return route;
+        }
+      });
+
       setRoutes((prevState) => routesRs);
       toast('Search data successfully', { type: 'success' });
       setIsEnableRouteOverview(true);
@@ -156,6 +154,16 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       setIsLoading(false);
     }
   };
+  useEffect(() => {
+    if (watchRouteOption && originalData) {
+      if (watchRouteOption === 'en_route') {
+        const routeRs = originalData.filter((route) => route.type === 'enRoute');
+        setRoutes(routeRs);
+      } else {
+        setRoutes(originalData);
+      }
+    }
+  }, [originalData, watchRouteOption]);
   return (
     <>
       {!isOpenDetail && (

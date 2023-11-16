@@ -1,10 +1,18 @@
 // toggle selecting an item in array
-export function toggleSelectingItem<T = string>(arrItems: T[], item: T, isMultiple: boolean = true) {
+export function toggleSelectingItem<T = string>(
+  arrItems: T[],
+  item: T,
+  isMultiple: boolean = true,
+  required: boolean = false,
+) {
   const selectedIndex = arrItems.indexOf(item);
   if (isMultiple) {
     return selectedIndex === -1
       ? [...arrItems, item]
       : [...arrItems.slice(0, selectedIndex), ...arrItems.slice(selectedIndex + 1)];
+  }
+  if (required) {
+    return selectedIndex === -1 ? [item] : [item];
   }
   return selectedIndex === -1 ? [item] : [];
 }

@@ -69,7 +69,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       ],
       returnToOrigin: true,
       routeOption: 'route_my_truck',
-      equipmentTypes: [],
+      equipmentTypes: ['dry_van'],
       specialNotes: [],
       shipmentFormats: [],
     },

@@ -5,6 +5,7 @@ import ContactInfo from '@/components/ContactInfo';
 import { DownOutlined, MailFilled, PhoneFilled, WhatsAppOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { type LoadBase } from '@/types/load';
+import DetailDescription from '@/components/DetailRoute/DetailDescription';
 
 // const Carriers = ['land-star', 'coyote'];
 interface StepRouteItemProps {
@@ -43,14 +44,7 @@ const StepRouteItem = ({ brokerName = 'Coyote', load }: StepRouteItemProps) => {
           })}
         />
       </span>
-      {isOpenDescription && (
-        <div className=" p-3 text-base text-[#2E2F44]">
-          <span className="mock-data">
-            A transportation solutions provider that prioritizes safety in every aspect of our services, ensuring secure
-            and reliable transportation solutions for all your cargo needs.
-          </span>
-        </div>
-      )}
+      {isOpenDescription && <DetailDescription load={load} />}
     </div>
   );
 };

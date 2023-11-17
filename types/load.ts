@@ -16,6 +16,7 @@ export interface Stop {
     startTime?: string;
     endTime?: string;
   };
+  notes: string;
 }
 
 export interface LoadBase {
@@ -33,11 +34,16 @@ export interface LoadBase {
   durationUnit: 'seconds' | 'minutes' | 'hours';
   originDeadhead?: number;
   destinationDeadhead?: number;
+  weight: number;
+  weightUnit: string;
+  equipmentType: string;
+  length: number;
+  lengthUnit: string;
+  width: number;
+  widthUnit: string;
+  height: number;
+  heightUnit: string;
   rawLoad: any;
-  truckCompanyName: string;
-  truckCompanyEmail: string;
-  truckCompanyPhone: string;
-  truckCompanyFax: string;
   shipperInfo: ShipperInfo;
   metadata?: Metadata;
 }

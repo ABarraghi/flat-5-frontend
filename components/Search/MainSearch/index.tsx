@@ -154,6 +154,11 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       setIsLoading(false);
     }
   };
+
+  const refreshData = () => {
+    setRoutes([]);
+    setPoints([]);
+  };
   useEffect(() => {
     if (watchRouteOption && originalData) {
       if (watchRouteOption === 'en_route') {
@@ -177,7 +182,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
               ]}
               customClass="py-10"
             />
-            <FreightSearch setLocations={setLocations} />
+            <FreightSearch setLocations={setLocations} refreshData={refreshData} />
             {/* <LocationSearch /> */}
             <div className="flex items-center justify-between text-[16px] font-normal">
               {/* <Form.Checkbox name="returnToOrigin" label="Return to origin after delivery" /> */}

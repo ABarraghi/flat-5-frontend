@@ -5,8 +5,9 @@ import { type Dispatch, type SetStateAction, useCallback } from 'react';
 
 interface FreightSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
+  refreshData: () => void;
 }
-const FreightSearch = ({ setLocations }: FreightSearchProps) => {
+const FreightSearch = ({ setLocations, refreshData }: FreightSearchProps) => {
   const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -34,10 +35,12 @@ const FreightSearch = ({ setLocations }: FreightSearchProps) => {
       ],
       { shouldFocus: false },
     );
-  }, [append]);
+    refreshData();
+  }, [append, refreshData]);
   const handleRemove = (index: number) => {
     if (fields.length > 2) {
       remove(index);
+      refreshData();
     }
   };
   return (

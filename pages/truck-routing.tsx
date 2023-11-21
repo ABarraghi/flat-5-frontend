@@ -4,6 +4,7 @@ import { useState } from 'react';
 import MapContainer from '@/components/MapContainer';
 import { type LocationBase } from '@/types/search';
 import { WrapperLoadingIcon } from '@/components/Loading';
+import { type LoadPoint } from '@/types/load';
 
 // const points = [
 //   // [-80.827149, 41.09671],
@@ -18,7 +19,7 @@ import { WrapperLoadingIcon } from '@/components/Loading';
 // const points2 = [[-75.15454438944138, 39.721350023945575]];
 export default function TruckRouting() {
   const [locations, setLocations] = useState<LocationBase[]>([]);
-  const [points, setPoints] = useState<number[][]>([]);
+  const [points, setPoints] = useState<LoadPoint[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   return (

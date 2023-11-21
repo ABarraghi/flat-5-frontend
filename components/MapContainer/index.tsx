@@ -2,12 +2,13 @@ import mapboxgl, { type Map } from 'mapbox-gl';
 import React, { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
 import { type LocationBase } from '@/types/search';
 import { gettingZoomLevel } from '@/utils/common';
+import { type LoadPoint } from '@/types/load';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const turf = require('@turf/turf');
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
 
 interface MapContainerProps {
-  points: number[][];
+  points: LoadPoint[];
   locations: LocationBase[];
   setIsLoading: Dispatch<SetStateAction<any>>;
 }
@@ -250,7 +251,8 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
   useEffect(() => {
     setIsLoading(true);
     const reDrawMap = async () => {
-      const [startLocation, endLocation] = locations;
+      const startLocation = locations[0];
+      const endLocation = locations[locations.length - 1];
       removeSource(map.current);
       locations.forEach((location, index) => {
         if (location.coordinate) {
@@ -263,13 +265,6 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
           locations[locations.length - 1]?.coordinate?.longitude || 0,
           locations[locations.length - 1]?.coordinate?.latitude || 0,
         ]);
-        // map.current?.flyTo({
-        //   center: [
-        //     locations[locations.length - 1]?.coordinate?.longitude || 0,
-        //     locations[locations.length - 1]?.coordinate?.latitude || 0,
-        //   ],
-        //   essential: true,
-        // });
       }
       if (points?.length > 23) {
         points = points?.slice(0, 5);
@@ -279,13 +274,27 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
         const start = [startLocation?.coordinate?.longitude || 0, startLocation?.coordinate?.latitude || 0];
         const end = [endLocation?.coordinate?.longitude || 0, endLocation?.coordinate?.latitude || 0];
         const initPoints: number[][] = [];
-        points.forEach((point, index) => {
-          if (point.length > 0) {
-            initPoints.push(point);
+        const subPoints: number[][] = [];
+        if (locations.length > 1) {
+          for (let i = 1; i < locations.length; i++) {
+            const location = locations[i];
+            const previousPoint = locations[i - 1];
+            const keyPoints = `${previousPoint.coordinate?.latitude}_${previousPoint.coordinate?.longitude}_${location.coordinate?.latitude}_${location.coordinate?.longitude}`;
+            points?.forEach((point: LoadPoint) => {
+              if (point.keyPoints === keyPoints) {
+                initPoints.push(point.fromPoint);
+                initPoints.push(point.toPoint);
+                subPoints.push(point.fromPoint);
+                subPoints.push(point.toPoint);
+              }
+            });
+            if (i !== locations.length - 1) {
+              initPoints.push([location?.coordinate?.longitude || 0, location?.coordinate?.latitude || 0]);
+            }
           }
-        });
-        initSource(map.current, initPoints, ``, '', 0);
-        await getRoute(map.current, start, end, points).then(() => {});
+        }
+        initSource(map.current, subPoints, '', '', 0);
+        await getRoute(map.current, start, end, initPoints).then(() => {});
       }
     };
     reDrawMap().then(() => {

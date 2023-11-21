@@ -6,11 +6,11 @@ export interface SearchLoadRequest {
 }
 
 export interface StopPointRequest {
-  location: LocationRquest;
+  location: LocationRequest;
   radius: number;
   stopDate: StopDateRequest;
 }
-export interface LocationRquest {
+export interface LocationRequest {
   coordinate: Coordinate;
   city?: string;
   state?: string;

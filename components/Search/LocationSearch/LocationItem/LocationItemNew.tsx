@@ -42,6 +42,30 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
     // setPoints([]);
     // console.lrouteOptionog('3333');
   }, [latitude]);
+  const handleRemove = (index: number) => {
+    remove(index);
+    const freights = getValues('freights');
+    const locations: MapLocation[] = [];
+    freights.forEach((freight: FreightBase) => {
+      if (
+        freight?.location.coordinate &&
+        freight.location.coordinate.latitude !== 0 &&
+        freight.location.coordinate.longitude !== 0
+      ) {
+        const location = {
+          address: freight.location.address,
+          coordinate: {
+            longitude: freight.location.coordinate.longitude,
+            latitude: freight.location.coordinate.latitude,
+          },
+          title: freight?.title,
+          radius: freight.radius,
+        };
+        locations.push(location as MapLocation);
+      }
+    });
+    setLocations(locations);
+  };
   useEffect(() => {
     const freights = getValues('freights');
     const locations: MapLocation[] = [];
@@ -70,7 +94,7 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
       <div className="my-2 flex w-full flex-wrap items-center gap-3">
         <div
           className="flex h-10 w-10 flex-none cursor-pointer flex-wrap items-center justify-center rounded-full bg-[#393978] hover:bg-[#C4C4D7]"
-          onClick={() => (remove ? remove(index) : null)}
+          onClick={() => handleRemove(index)}
           onMouseEnter={() => setIsShowDeleteIcon(true)}
           onMouseLeave={() => setIsShowDeleteIcon(false)}
         >

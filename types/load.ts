@@ -20,6 +20,7 @@ export interface Stop {
 }
 
 export interface LoadBase {
+  keyByPoints: string;
   broker: BrokerName;
   loadId: string;
   pickupStop: Stop;
@@ -63,4 +64,10 @@ export interface Metadata {
   email: string;
   fax: string;
   phone: string;
+}
+
+export interface LoadPoint {
+  keyPoints: string;
+  fromPoint: number[];
+  toPoint: number[];
 }

@@ -94,7 +94,7 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
       <div className="my-2 flex w-full flex-wrap items-center gap-3">
         <div
           className="flex h-10 w-10 flex-none cursor-pointer flex-wrap items-center justify-center rounded-full bg-[#393978] hover:bg-[#C4C4D7]"
-          onClick={() => (remove ? handleRemove(index) : null)}
+          onClick={() => handleRemove(index)}
           onMouseEnter={() => setIsShowDeleteIcon(true)}
           onMouseLeave={() => setIsShowDeleteIcon(false)}
         >

@@ -39,7 +39,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
     defaultValues: {
       freights: [
         {
-          title: '',
+          title: 'A',
           location: {
             coordinate: {
               latitude: 0,
@@ -54,7 +54,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
           stopDate: null,
         },
         {
-          title: '',
+          title: 'B',
           location: {
             coordinate: {
               latitude: 0,

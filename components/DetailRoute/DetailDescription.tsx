@@ -127,7 +127,7 @@ const DetailDescription = ({ load }: DetailDescriptionProps) => {
   }
 
   return (
-    <div className="p-3 text-base text-[#2E2F44]">
+    <div className="px-6 py-3 text-base text-[#2E2F44]">
       <Descriptions size={'default'} items={items} column={1} />
     </div>
   );

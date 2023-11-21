@@ -135,7 +135,7 @@ body {
     background-color: #393978;
 }
 
-.detail-container.ant-steps.ant-steps-vertical:first-child .ant-steps-item:first-child .ant-steps-item-container .ant-steps-item-tail{
+.detail-container.ant-steps.ant-steps-vertical .main-points.ant-steps-item .ant-steps-item-container .ant-steps-item-tail{
     padding: 40px 0.5px 7px;
 }
 .sidebar {

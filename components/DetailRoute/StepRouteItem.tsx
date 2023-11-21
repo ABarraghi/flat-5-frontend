@@ -19,7 +19,7 @@ const StepRouteItem = ({ brokerName = 'Coyote', load }: StepRouteItemProps) => {
   };
   return (
     <div className={cn('rounded-xl bg-[#F2F2F7] text-[#393978]')}>
-      <div className="flex p-3">
+      <div className="flex p-6">
         <BranchLogo name={brokerName} classNames="h-14 w-14" />
         <div className="my-auto px-5 ">
           <span className="text-xl font-normal">{load?.shipperInfo?.name}</span>
@@ -31,12 +31,17 @@ const StepRouteItem = ({ brokerName = 'Coyote', load }: StepRouteItemProps) => {
           />
         </div>
       </div>
-      <div className="flex justify-items-start gap-3 p-3 text-base font-normal text-[#2E2F44]">
-        {load?.shipperInfo?.phone && <ContactInfo icon={<PhoneFilled />} content={load?.shipperInfo?.phone ?? ''} />}
-        {load?.shipperInfo?.fax && <ContactInfo icon={<WhatsAppOutlined />} content={load?.shipperInfo?.fax ?? ''} />}
-        {load?.shipperInfo?.email && <ContactInfo icon={<MailFilled />} content={load?.shipperInfo?.email ?? ''} />}
-      </div>
-      <span className="flex items-center p-3 text-base font-medium text-[#393978]" onClick={toggleCollapseDescription}>
+      {(load?.shipperInfo?.phone || load?.shipperInfo?.fax || load?.shipperInfo?.email) && (
+        <div className="flex justify-items-start gap-3 px-6 py-3 text-base font-normal text-[#2E2F44]">
+          {load?.shipperInfo?.phone && <ContactInfo icon={<PhoneFilled />} content={load?.shipperInfo?.phone ?? ''} />}
+          {load?.shipperInfo?.fax && <ContactInfo icon={<WhatsAppOutlined />} content={load?.shipperInfo?.fax ?? ''} />}
+          {load?.shipperInfo?.email && <ContactInfo icon={<MailFilled />} content={load?.shipperInfo?.email ?? ''} />}
+        </div>
+      )}
+      <span
+        className="flex items-center px-6 py-3 text-base font-medium text-[#393978]"
+        onClick={toggleCollapseDescription}
+      >
         {isOpenDescription ? 'Hide Description' : 'View Description '} &nbsp;
         <DownOutlined
           className={cn('origin-center stroke-[#393978] stroke-[50px] font-bold', {

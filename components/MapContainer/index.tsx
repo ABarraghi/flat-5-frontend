@@ -252,7 +252,10 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
     setIsLoading(true);
     const reDrawMap = async () => {
       const startLocation = locations[0];
-      const endLocation = locations[locations.length - 1];
+      let endLocation;
+      if (locations.length > 1) {
+        endLocation = locations[locations.length - 1];
+      }
       removeSource(map.current);
       locations.forEach((location, index) => {
         if (location.coordinate) {
@@ -270,7 +273,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
         points = points?.slice(0, 5);
       }
 
-      if (startLocation?.coordinate && endLocation?.coordinate) {
+      if (startLocation?.coordinate?.latitude && endLocation?.coordinate?.latitude) {
         const start = [startLocation?.coordinate?.longitude || 0, startLocation?.coordinate?.latitude || 0];
         const end = [endLocation?.coordinate?.longitude || 0, endLocation?.coordinate?.latitude || 0];
         const initPoints: number[][] = [];

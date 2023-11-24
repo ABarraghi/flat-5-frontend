@@ -21,14 +21,26 @@ interface MainSearchProps {
   locations: LocationBase[];
   setIsLoading: Dispatch<SetStateAction<any>>;
   isLoading: boolean;
+  routes: RouteInfo[];
+  setRoutes: Dispatch<SetStateAction<any>>;
+  isOpenDetail: boolean;
+  setIsOpenDetail: Dispatch<SetStateAction<any>>;
 }
-const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoading }: MainSearchProps) => {
+const MainSearch = ({
+  setLocations,
+  setPoints,
+  locations,
+  setIsLoading,
+  isLoading,
+  routes,
+  setRoutes,
+  isOpenDetail,
+  setIsOpenDetail,
+}: MainSearchProps) => {
   const [isOpenAdvanced, setIsOpenAdvanced] = useState(false);
   const [isEnableRouteOverview, setIsEnableRouteOverview] = useState(false);
-  const [routes, setRoutes] = useState<RouteInfo[]>([]);
   const [originalData, setOriginalData] = useState<RouteInfo[]>([]);
 
-  const [isOpenDetail, setIsOpenDetail] = useState(false);
   const [detailRoute, setDetailRoute] = useState<RouteInfo>();
   const [selectedRoute, setSelectedRoute] = useState<RouteInfo>();
   const handleOpenDetail = (isOpen: boolean) => {
@@ -128,8 +140,9 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       }
 
       const data = await getSearchLoad(requestData);
+      const filterValues = data.filter((route) => route.amount > 0).sort((a, b) => b.amount - a.amount);
       let routesRs: RouteInfo[] = [];
-      routesRs = data.map((route, index) => {
+      routesRs = filterValues.map((route, index) => {
         const brokers = route.loads?.map((load) => load.broker);
         return { ...route, id: `${index}`, isSelected: false, brokers };
       });

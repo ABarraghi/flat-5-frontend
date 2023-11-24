@@ -5,27 +5,41 @@ import MapContainer from '@/components/MapContainer';
 import { type LocationBase } from '@/types/search';
 import { WrapperLoadingIcon } from '@/components/Loading';
 import { type LoadPoint } from '@/types/load';
+import { type RouteInfo } from '@/types/route';
 
 export default function TruckRouting() {
   const [locations, setLocations] = useState<LocationBase[]>([]);
   const [points, setPoints] = useState<LoadPoint[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMapLoading, setIsMapLoading] = useState(false);
+  const [routes, setRoutes] = useState<RouteInfo[]>([]);
+  const [isOpenDetail, setIsOpenDetail] = useState(false);
 
   return (
     <Layout>
-      <div className="flex w-full gap-x-3  bg-transparent lg:items-start">
-        {isLoading && <WrapperLoadingIcon title="" />}
-        <div className="h-full max-h-[calc(100vh_-_10rem)] min-h-[calc(100vh_-_10rem)] w-5/12 overflow-scroll rounded-xl bg-white font-normal text-[#393978] ">
+      <div className="flex w-full flex-col gap-x-3 gap-y-3 bg-transparent sm:flex-row sm:gap-y-0 lg:items-start">
+        {(isLoading || isMapLoading) && <WrapperLoadingIcon title="" />}
+        <div className="h-[50vh] max-h-[calc(100vh_-_10rem)] w-full overflow-scroll rounded-xl bg-white font-normal text-[#393978] sm:h-full sm:h-full sm:min-h-[calc(100vh_-_10rem)] sm:w-5/12 ">
           <MainSearch
             setLocations={setLocations}
             setPoints={setPoints}
             locations={locations}
             setIsLoading={setIsLoading}
             isLoading={isLoading}
+            routes={routes}
+            setRoutes={setRoutes}
+            setIsOpenDetail={setIsOpenDetail}
+            isOpenDetail={isOpenDetail}
           />
         </div>
-        <div className="col-span-4 w-7/12 rounded-xl bg-white text-2xl text-[#393978]">
-          <MapContainer locations={locations} points={points} setIsLoading={setIsLoading} />
+        <div className="h-[50vh] w-full overflow-scroll rounded-xl bg-white text-2xl text-[#393978] sm:h-full sm:w-7/12">
+          <MapContainer
+            locations={locations}
+            points={points}
+            setIsLoading={setIsMapLoading}
+            routes={routes}
+            isOpenDetail={isOpenDetail}
+          />
         </div>
       </div>
     </Layout>

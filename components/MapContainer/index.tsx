@@ -1,8 +1,9 @@
 import mapboxgl, { type Map } from 'mapbox-gl';
-import React, { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { type Dispatch, type SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { type LocationBase } from '@/types/search';
 import { gettingZoomLevel } from '@/utils/common';
-import { type LoadPoint } from '@/types/load';
+import { type LoadBase, type LoadPoint } from '@/types/load';
+import { type RouteInfo } from '@/types/route';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const turf = require('@turf/turf');
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
@@ -11,6 +12,8 @@ interface MapContainerProps {
   points: LoadPoint[];
   locations: LocationBase[];
   setIsLoading: Dispatch<SetStateAction<any>>;
+  routes: RouteInfo[];
+  isOpenDetail: boolean;
 }
 
 function makeRadius(coordinate: number[], radiusInMeters: number) {
@@ -19,7 +22,7 @@ function makeRadius(coordinate: number[], radiusInMeters: number) {
   return buffered;
 }
 
-const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) => {
+const MapContainer = ({ points, locations, setIsLoading, routes, isOpenDetail }: MapContainerProps) => {
   const mapContainer = useRef() as React.MutableRefObject<HTMLInputElement>;
   const map = useRef<Map | null>(null);
   const [lng, setLng] = useState(locations[0]?.coordinate?.longitude || -87.9014469);
@@ -28,7 +31,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
   const [layers, setLayers] = useState<string[]>([]);
   const [sources, setSources] = useState<string[]>([]);
 
-  async function getGeoJson(start: number[], end: number[], points: number[][]) {
+  const getGeoJson = useCallback(async (start: number[], end: number[], points: number[][]) => {
     let url = `https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]}`;
     points.forEach((point) => {
       url += `;${point[0]},${point[1]}`;
@@ -40,7 +43,6 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
         method: 'GET',
       },
     );
-    setIsLoading(false);
     const json = await query.json();
     if (!json?.routes || json.routes.length === 0) {
       return null;
@@ -58,8 +60,8 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
         otherRoutes.push(route);
       }
     }
-    return { primaryRoute: data, otherRoutes };
-  }
+    return { primaryRoute: data };
+  }, []);
 
   const removeSource = (map: any) => {
     layers.forEach((layer) => {
@@ -74,30 +76,52 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
     });
   };
 
-  async function getRoute(map: any, start: number[], end: number[], points: number[][]) {
-    setIsLoading(true);
+  const getRoute = useCallback(
+    async (map: any, start: number[], end: number[], points: number[][], isPrimary: boolean = true, index: number) => {
+      console.log('index: ', index);
+      setIsLoading(true);
 
-    const routeData = await getGeoJson(start, end, points);
-    const { primaryRoute: data, otherRoutes } = routeData ?? { primaryRoute: null, otherRoutes: [] };
+      const routeData = await getGeoJson(start, end, points);
+      const { primaryRoute: data } = routeData ?? { primaryRoute: null, otherRoutes: [] };
 
-    if (!data) {
-      // No route found
-      return null;
-    }
+      if (!data) {
+        // No route found
+        return null;
+      }
+      if (isPrimary) {
+        const zoomLevel = gettingZoomLevel(data.distance);
+        setZoom(zoomLevel);
+        map.flyTo({
+          zoom: zoomLevel - 3,
+          essential: true,
+        });
+      }
+      // otherRoutes.forEach((tempRoute, index: number) => {
+      //   const dataRoute = tempRoute.geometry.coordinates;
+      //   drawRoute(map, dataRoute, false, index + 1);
+      // });
+      const route = data.geometry.coordinates;
+      drawRoute(map, route, isPrimary, index);
+      setIsLoading(false);
+    },
+    [getGeoJson, setIsLoading],
+  );
 
-    const zoomLevel = gettingZoomLevel(data.distance);
-    setZoom(zoomLevel);
-    map.flyTo({
-      zoom: zoomLevel - 3,
-      essential: true,
-    });
-    otherRoutes.forEach((tempRoute, index: number) => {
-      const dataRoute = tempRoute.geometry.coordinates;
-      drawRoute(map, dataRoute, false, index + 1);
-    });
-    const route = data.geometry.coordinates;
-    drawRoute(map, route, true);
-  }
+  // const createSubRoute = useCallback(
+  //   async (map: any, start: number[], end: number[], points: number[][]) => {
+  //     const routeData = await getGeoJson(start, end, points);
+  //     const { primaryRoute: data } = routeData ?? { primaryRoute: null, otherRoutes: [] };
+  //
+  //     if (!data) {
+  //       // No route found
+  //       return null;
+  //     }
+  //
+  //     const route = data.geometry.coordinates;
+  //     drawRoute(map, route, false);
+  //   },
+  //   [getGeoJson],
+  // );
 
   const drawRoute = (map: any, route: any, isPrimary: boolean = false, indexRoute: number = 0) => {
     const geojson = {
@@ -135,7 +159,14 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       setLayers((prev) => [...prev, `route${indexRoute}`]);
     }
   };
-  const initSource = (map: any, initPoints: number[][], id: string, title: string, radius: number = 0) => {
+  const initSource = (
+    map: any,
+    initPoints: number[][],
+    id: string,
+    title: string,
+    radius: number = 0,
+    sub: boolean = false,
+  ) => {
     const newLayers: string[] = [];
     const newSources: string[] = [];
     const features: any[] = [];
@@ -199,7 +230,8 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       source: `points-${id}`,
       paint: {
         'circle-radius': circleRadius,
-        'circle-color': '#F16521',
+        'circle-color': sub ? '#2E2F44' : '#F16521',
+        'circle-opacity': sub ? 0.5 : 1,
         'circle-stroke-color': 'white',
         'circle-stroke-width': strokeWidth,
       },
@@ -249,7 +281,6 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
   }, [lat, lng, zoom]);
 
   useEffect(() => {
-    setIsLoading(true);
     const reDrawMap = async () => {
       const startLocation = locations[0];
       let endLocation;
@@ -257,10 +288,48 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
         endLocation = locations[locations.length - 1];
       }
       removeSource(map.current);
+      if (routes && routes.length > 0 && !isOpenDetail) {
+        if (routes.length > 3) {
+          routes = routes.slice(0, 3);
+        }
+        const startLocation = locations[0];
+        let endLocation;
+        if (locations.length > 1) {
+          endLocation = locations[locations.length - 1];
+        }
+        const start = [startLocation?.coordinate?.longitude || 0, startLocation?.coordinate?.latitude || 0];
+        const end = [endLocation?.coordinate?.longitude || 0, endLocation?.coordinate?.latitude || 0];
+        if (startLocation?.coordinate?.latitude && endLocation?.coordinate?.latitude) {
+          const promises = [];
+          routes.forEach((route, index) => {
+            const initPoints: number[][] = [];
+            const subPoints: number[][] = [];
+            for (let i = 1; i < locations.length; i++) {
+              const location = locations[i];
+              const previousPoint = locations[i - 1];
+              const keyPoints = `${previousPoint.coordinate?.latitude}_${previousPoint.coordinate?.longitude}_${location.coordinate?.latitude}_${location.coordinate?.longitude}`;
+              route.loads?.forEach((load: LoadBase) => {
+                if (load.keyByPoints === keyPoints) {
+                  const fromPoint = [load.pickupStop.coordinates.longitude, load.pickupStop.coordinates.latitude];
+                  const toPoint = [load.deliveryStop.coordinates.longitude, load.deliveryStop.coordinates.latitude];
+                  initPoints.push(fromPoint);
+                  initPoints.push(toPoint);
+                  subPoints.push(fromPoint);
+                  subPoints.push(toPoint);
+                }
+              });
+            }
+            initSource(map.current, subPoints, `${index}`, '', 0, true);
+            promises.push(getRoute(map.current, start, end, initPoints, false, index));
+          });
+          await Promise.all(promises).then(() => {});
+        }
+      }
+
       locations.forEach((location, index) => {
         if (location.coordinate) {
           const point = [[location.coordinate.longitude, location.coordinate.latitude]];
-          initSource(map.current, point, `${index}`, location.title, location.radius);
+          initSource(map.current, point, location.title, location.title, location.radius);
         }
       });
       if (locations[locations.length - 1]?.coordinate?.longitude) {
@@ -297,16 +366,14 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
           }
         }
         initSource(map.current, subPoints, '', '', 0);
-        await getRoute(map.current, start, end, initPoints).then(() => {});
+        await getRoute(map.current, start, end, initPoints, true, routes.length ?? 0).then(() => {});
       }
     };
-    reDrawMap().then(() => {
-      setIsLoading(false);
-    });
-  }, [points, locations]);
+    reDrawMap().then();
+  }, [points, locations, routes, isOpenDetail]);
 
   return (
-    <div className="xl-pr-5 container fixed h-[calc(100vh_-_10rem)] w-full max-w-[58vw] pr-3">
+    <div className="h-[600px] sm:container sm:fixed sm:h-[calc(100vh_-_10rem)] sm:w-full sm:max-w-[58vw] sm:pr-3 xl:pr-5">
       <div ref={mapContainer} className="h-full rounded-xl" />
     </div>
   );

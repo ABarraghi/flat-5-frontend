@@ -24,6 +24,7 @@ export interface FreightBase {
   location: LocationBase;
   radius: number;
   stopDate: RangeDate | null;
+  isPickedLoad: boolean;
 }
 
 export interface LocationBase {

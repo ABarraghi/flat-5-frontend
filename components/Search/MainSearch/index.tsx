@@ -177,7 +177,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
     <>
       {!isOpenDetail && (
         <>
-          <Form methods={methods as any} className={'p-5'}>
+          <Form methods={methods as any} className={'p-10'}>
             <div className="flex items-center justify-between gap-x-5">
               <Form.Radio
                 name="routeOption"

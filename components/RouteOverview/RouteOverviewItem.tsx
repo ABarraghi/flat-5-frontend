@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from 'antd';
 import PriceAndDistance from '@/components/RouteOverview/PriceAndDistance';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { type RouteInfo } from '@/types/route';
 import dayjs from 'dayjs';
 
@@ -13,8 +13,19 @@ interface RouteOverviewProps {
   setIsOpenDetail: (isOpen: boolean) => void;
   handleViewDetailRoute: (id: string) => void;
 }
+export function oxford(arr: string[], conjunction: 'and' | 'or' | 'and the' = 'and') {
+  const l = arr.length;
+  if (!l) return null;
+  if (l < 2) return arr[0];
+  if (l < 3) return arr.join(` ${conjunction} `);
+  arr = arr.slice();
+  arr[l - 1] = `${conjunction} ${arr[l - 1]}`;
+  return arr.join(', ');
+}
+
 const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleViewDetailRoute }: RouteOverviewProps) => {
   const { id, isSelected } = data;
+  const [viaInfo, setViaInfo] = useState<string>('');
   const handleClick = (id: string) => {
     onChangeSelected(id);
   };
@@ -23,6 +34,18 @@ const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleView
     setIsOpenDetail(true);
     handleViewDetailRoute(id);
   };
+
+  useEffect(() => {
+    if (data) {
+      const viaArr = [];
+      data.loads?.forEach((load) => {
+        viaArr.push(load.pickupStop.city || load.pickupStop.address);
+        viaArr.push(load.deliveryStop.city || load.deliveryStop.address);
+      });
+      const viaValue = oxford(viaArr);
+      setViaInfo(viaValue);
+    }
+  }, [data]);
   return (
     <div
       data-id={id}
@@ -42,7 +65,7 @@ const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleView
         </div>
       </div>
       <div className="flex justify-between p-6 text-[16px]">
-        <span className="mock-data font-normal">{data.description || 'Via Detroit, Louisville, and Cincinnati'}</span>
+        <span className="font-normal">Via {viaInfo}</span>
         <span className="mock-data font-light">
           Return on {data.returnAt ? dayjs(data.returnAt).format('MM/DD/YYYY') : '11/12/2023'}
         </span>

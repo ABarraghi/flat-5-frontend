@@ -37,12 +37,18 @@ const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleView
 
   useEffect(() => {
     if (data) {
-      const viaArr = [];
+      const viaArr: string[] = [];
       data.loads?.forEach((load) => {
-        viaArr.push(load.pickupStop.city || load.pickupStop.address);
-        viaArr.push(load.deliveryStop.city || load.deliveryStop.address);
+        const pickupValue = load.pickupStop.city || load.pickupStop.address;
+        const deliveryValue = load.deliveryStop.city || load.deliveryStop.address;
+        if (pickupValue) {
+          viaArr.push(pickupValue);
+        }
+        if (deliveryValue) {
+          viaArr.push(deliveryValue);
+        }
       });
-      const viaValue = oxford(viaArr);
+      const viaValue: string = oxford(viaArr) || '';
       setViaInfo(viaValue);
     }
   }, [data]);

@@ -93,6 +93,7 @@ const LocationItem = ({ name, index, remove, setLocations, length }: LocationIte
     setLocations(locations);
   }, [latitude, getValues, radius, setLocations, routeOptionWatch]);
   const isEmptyLoad = watch(`${name}.${index}.isEmptyLoad`);
+  const isEmptyLoadPrevious = index > 0 ? watch(`${name}.${index - 1}.isEmptyLoad`) : false;
   const togglePickLoad = () => {
     const currentPickedLoadStatus = getValues(`${name}.${index}.isEmptyLoad`);
     console.log('currentPickedLoadStatus: ', currentPickedLoadStatus);
@@ -121,26 +122,30 @@ const LocationItem = ({ name, index, remove, setLocations, length }: LocationIte
             rules={{ required: 'Required' }}
             error={(errors[`${name}`] as any)?.[`${index}`]?.location?.address?.message as string}
           />
-          <Form.DateRangePicker
-            name={`${name}.${index}.stopDate`}
-            label="Name"
-            placeholder="Name"
-            required
-            customClass="w-full"
-            error={(errors[`${name}`] as any)?.[`${index}`]?.stopDate?.message as string}
-            rules={{ required: 'Required' }}
-          />
-          <Form.InputNumber
-            name={`${name}.${index}.radius`}
-            label="Radius"
-            placeholder="Radius"
-            rules={{ required: 'Required', min: { value: 1, message: 'Required' } }}
-            suffix={<SuffixRadius />}
-            customClass="w-full max-w-[150px]"
-            isDebounce={true}
-            error={(errors[`${name}`] as any)?.[`${index}`]?.radius?.message as string}
-            timeDebounce={1000}
-          />
+          {!isEmptyLoadPrevious && (
+            <>
+              <Form.DateRangePicker
+                name={`${name}.${index}.stopDate`}
+                label="Name"
+                placeholder="Name"
+                required
+                customClass="w-full"
+                error={(errors[`${name}`] as any)?.[`${index}`]?.stopDate?.message as string}
+                rules={{ required: 'Required' }}
+              />
+              <Form.InputNumber
+                name={`${name}.${index}.radius`}
+                label="Radius"
+                placeholder="Radius"
+                rules={{ required: 'Required', min: { value: 1, message: 'Required' } }}
+                suffix={<SuffixRadius />}
+                customClass="w-full max-w-[150px]"
+                isDebounce={true}
+                error={(errors[`${name}`] as any)?.[`${index}`]?.radius?.message as string}
+                timeDebounce={1000}
+              />
+            </>
+          )}
         </div>
         {index < length - 1 && (
           <div className="flex w-full cursor-pointer" onClick={togglePickLoad}>

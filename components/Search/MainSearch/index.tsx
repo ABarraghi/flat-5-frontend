@@ -177,8 +177,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
     <>
       {!isOpenDetail && (
         <>
-          <Form methods={methods as any} className={'p-5'}>
-            <div className="flex items-center gap-x-5">
+          <Form methods={methods as any} className={'p-10'}>
+            <div className="flex items-center justify-between gap-x-5">
               <Form.Radio
                 name="routeOption"
                 options={[
@@ -187,11 +187,13 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
                 ]}
                 customClass="py-10"
               />
-              <div className="flex items-center">
-                <EmptyTruckIcon className="h-6 w-6" /> <span className="text-sm"> Empty </span>
-              </div>
-              <div className="flex items-center">
-                <FullTruckIcon className="h-6 w-6" /> <span className="text-sm"> Full</span>
+              <div className="flex items-center gap-10">
+                <div className="flex items-center">
+                  <EmptyTruckIcon className="h-6 w-6" /> <span className="text-sm"> Empty </span>
+                </div>
+                <div className="flex items-center">
+                  <FullTruckIcon className="h-6 w-6" /> <span className="text-sm"> Full</span>
+                </div>
               </div>
             </div>
 

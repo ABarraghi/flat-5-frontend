@@ -165,4 +165,41 @@ body {
 }
 .overflow-scroll::-webkit-scrollbar {
     display: none;
-} 
+}
+
+li {
+    position: relative;
+    z-index: 1;
+}
+
+li:not(first-child):before {
+    content: "";
+    position: absolute;
+    height: calc(100% + 14px);
+    width: 50px;
+    background: transparent;
+    border-radius: 50px;
+    border: 2px solid #F2F2F7;
+    top: 25px;
+    left: -20px;
+    z-index: -1;
+}
+
+li:not(first-child):after {
+    content: "";
+    position: absolute;
+    height: calc(100% + 14px);
+    width: 40px;
+    background: #fff;
+    top: 25px;
+    left: -3px;
+    z-index: -1;
+}
+
+li:last-child:after {
+    content: none;
+}
+
+li:last-child:before {
+    content: none;
+}

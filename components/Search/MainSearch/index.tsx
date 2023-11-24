@@ -14,6 +14,8 @@ import FreightSearch from '@/components/Search/LocationSearch/FreightSearch';
 import { type RouteInfo } from '@/types/route';
 import { getSearchLoad } from '@/services/searchAPI';
 import dayjs from 'dayjs';
+import FullTruckIcon from '@/components/common/icons/FullTruckIcon';
+import EmptyTruckIcon from '@/components/common/icons/EmptyTruckIcon';
 
 interface MainSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
@@ -52,6 +54,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
           },
           radius: 0,
           stopDate: null,
+          isPickedLoad: false,
         },
         {
           title: 'B',
@@ -67,6 +70,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
           },
           radius: 0,
           stopDate: null,
+          isPickedLoad: false,
         },
       ],
       returnToOrigin: true,
@@ -174,14 +178,23 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       {!isOpenDetail && (
         <>
           <Form methods={methods as any} className={'p-5'}>
-            <Form.Radio
-              name="routeOption"
-              options={[
-                { value: 'route_my_truck', label: 'Route my truck' },
-                { value: 'en_route', label: 'En Route' },
-              ]}
-              customClass="py-10"
-            />
+            <div className="flex items-center gap-x-5">
+              <Form.Radio
+                name="routeOption"
+                options={[
+                  { value: 'route_my_truck', label: 'Route my truck' },
+                  { value: 'en_route', label: 'En Route' },
+                ]}
+                customClass="py-10"
+              />
+              <div className="flex items-center">
+                <EmptyTruckIcon className="h-6 w-6" /> <span className="text-sm"> Empty </span>
+              </div>
+              <div className="flex items-center">
+                <FullTruckIcon className="h-6 w-6" /> <span className="text-sm"> Full</span>
+              </div>
+            </div>
+
             <FreightSearch setLocations={setLocations} refreshData={refreshData} />
             {/* <LocationSearch /> */}
             <div className="flex items-center justify-between text-[16px] font-normal">

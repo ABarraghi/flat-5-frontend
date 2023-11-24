@@ -1,10 +1,12 @@
 import { Form } from '@/components/common/Form';
 import dynamic from 'next/dynamic';
-import { DeleteFilled } from '@ant-design/icons';
+import { DeleteFilled, LockFilled } from '@ant-design/icons';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { type MapLocation, UpperCaseAlphabet } from '@/types/common';
 import { type FreightBase } from '@/types/search';
+import EmptyTruckIcon from '@/components/common/icons/EmptyTruckIcon';
+import FullTruckIcon from '@/components/common/icons/FullTruckIcon';
 const MapboxSuggestion = dynamic(() => import('@/components/MapboxSuggestion'), {
   ssr: false,
 });
@@ -14,13 +16,14 @@ interface LocationItemNewProps {
   index: number;
   remove: (value: number) => void;
   setLocations: Dispatch<SetStateAction<any>>;
+  length: number;
 }
 
 const SuffixRadius = () => {
   return <span className="text-[12px] text-[#2E2F44] opacity-50">mi</span>;
 };
 
-const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProps) => {
+const LocationItem = ({ name, index, remove, setLocations, length }: LocationItemNewProps) => {
   const {
     watch,
     getValues,
@@ -89,6 +92,15 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
     });
     setLocations(locations);
   }, [latitude, getValues, radius, setLocations, routeOptionWatch]);
+  const isEmptyLoad = watch(`${name}.${index}.isEmptyLoad`);
+  const isEmptyLoadPrevious = index > 0 ? watch(`${name}.${index - 1}.isEmptyLoad`) : false;
+  const togglePickLoad = () => {
+    const currentPickedLoadStatus = getValues(`${name}.${index}.isEmptyLoad`);
+    console.log('currentPickedLoadStatus: ', currentPickedLoadStatus);
+    setValue(`${name}.${index}.isEmptyLoad`, !currentPickedLoadStatus);
+  };
+  console.log('length-1:', length - 1);
+  console.log('index:', index);
   return (
     <>
       <div className="my-2 flex w-full flex-wrap items-center gap-3">
@@ -110,27 +122,36 @@ const LocationItem = ({ name, index, remove, setLocations }: LocationItemNewProp
             rules={{ required: 'Required' }}
             error={(errors[`${name}`] as any)?.[`${index}`]?.location?.address?.message as string}
           />
-          <Form.DateRangePicker
-            name={`${name}.${index}.stopDate`}
-            label="Name"
-            placeholder="Name"
-            required
-            customClass="w-full"
-            error={(errors[`${name}`] as any)?.[`${index}`]?.stopDate?.message as string}
-            rules={{ required: 'Required' }}
-          />
-          <Form.InputNumber
-            name={`${name}.${index}.radius`}
-            label="Radius"
-            placeholder="Radius"
-            rules={{ required: 'Required', min: { value: 1, message: 'Required' } }}
-            suffix={<SuffixRadius />}
-            customClass="w-full max-w-[150px]"
-            isDebounce={true}
-            error={(errors[`${name}`] as any)?.[`${index}`]?.radius?.message as string}
-            timeDebounce={1000}
-          />
+          {!isEmptyLoadPrevious && (
+            <>
+              <Form.DateRangePicker
+                name={`${name}.${index}.stopDate`}
+                label="Name"
+                placeholder="Name"
+                required
+                customClass="w-full"
+                error={(errors[`${name}`] as any)?.[`${index}`]?.stopDate?.message as string}
+                rules={{ required: 'Required' }}
+              />
+              <Form.InputNumber
+                name={`${name}.${index}.radius`}
+                label="Radius"
+                placeholder="Radius"
+                rules={{ required: 'Required', min: { value: 1, message: 'Required' } }}
+                suffix={<SuffixRadius />}
+                customClass="w-full max-w-[150px]"
+                isDebounce={true}
+                error={(errors[`${name}`] as any)?.[`${index}`]?.radius?.message as string}
+                timeDebounce={1000}
+              />
+            </>
+          )}
         </div>
+        {index < length - 1 && (
+          <div className="flex w-full cursor-pointer" onClick={togglePickLoad}>
+            {isEmptyLoad ? <FullTruckIcon /> : <EmptyTruckIcon />}
+          </div>
+        )}
       </div>
     </>
   );

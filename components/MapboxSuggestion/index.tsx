@@ -15,7 +15,9 @@ const MapboxSuggestion = ({ name, rules, error }: MapboxSuggestionProps) => {
   const handleRetrieve = useCallback(
     (res: any) => {
       const feature = res.features[0];
-      const address = feature.properties?.full_address || feature.properties?.place_formatted;
+      console.log('feature: ', feature);
+      const fullAddr = feature.properties?.full_address || feature.properties?.place_formatted;
+      const address = `${feature.properties?.name}${fullAddr && `, ${fullAddr}`}`;
       const postCode = feature.properties?.context?.postCode?.name;
       const countryCode = feature.properties?.context?.country?.country_code_alpha_3 || '';
       const regionCode = feature.properties?.context?.region?.region_code || '';

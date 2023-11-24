@@ -31,6 +31,7 @@ const FreightSearch = ({ setLocations, refreshData }: FreightSearchProps) => {
           },
           radius: 0,
           stopDate: null,
+          isPickedLoad: false,
         },
       ],
       { shouldFocus: false },
@@ -48,7 +49,13 @@ const FreightSearch = ({ setLocations, refreshData }: FreightSearchProps) => {
       <ul>
         {fields.map((item, index) => (
           <li key={index}>
-            <LocationItemNew index={index} remove={handleRemove} name="freights" setLocations={setLocations} />
+            <LocationItemNew
+              index={index}
+              remove={handleRemove}
+              name="freights"
+              setLocations={setLocations}
+              length={fields.length}
+            />
           </li>
         ))}
       </ul>

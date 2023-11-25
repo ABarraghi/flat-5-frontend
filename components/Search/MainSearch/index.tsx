@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import Button from '@/components/common/Button';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import cn from 'classnames';
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useCallback, useEffect, useState } from 'react';
 import AdvancedForm from '@/components/Search/MainSearch/AdvancedForm';
 import RouteOverview from '@/components/RouteOverview';
 import { ToastContainer, toast } from 'react-toastify';
@@ -16,6 +16,7 @@ import { getSearchLoad } from '@/services/searchAPI';
 import dayjs from 'dayjs';
 import FullTruckIcon from '@/components/common/icons/FullTruckIcon';
 import EmptyTruckIcon from '@/components/common/icons/EmptyTruckIcon';
+import { type LoadPoint } from '@/types/load';
 
 interface MainSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
@@ -32,7 +33,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
 
   const [isOpenDetail, setIsOpenDetail] = useState(false);
   const [detailRoute, setDetailRoute] = useState<RouteInfo>();
-  const [selectedRoute, setSelectedRoute] = useState<RouteInfo>();
+  const [selectedRoute, setSelectedRoute] = useState<RouteInfo | undefined>();
+  const [returnDate, setReturnDate] = useState<string>('');
   const handleOpenDetail = (isOpen: boolean) => {
     setIsOpenDetail(isOpen);
   };
@@ -104,6 +106,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
             state: item.location.state !== '' ? item.location.state : undefined,
             country: item.location.country !== '' ? item.location.country : undefined,
           },
+          isPickedLoad: item.isPickedLoad,
           radius: item.radius ? parseInt(String(item.radius)) : 0,
           stopDate: {
             from: item.stopDate[0] ? dayjs(item.stopDate[0]).startOf('day') : undefined,
@@ -135,7 +138,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       let routesRs: RouteInfo[] = [];
       routesRs = data.map((route, index) => {
         const brokers = route.loads?.map((load) => load.broker);
-        return { ...route, id: `${index}`, isSelected: false, brokers };
+        return { ...route, id: `${index}`, brokers };
       });
       setOriginalData(routesRs);
 
@@ -146,6 +149,15 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
           return route;
         }
       });
+      if (routesRs.length > 0) {
+        handleChangeRouteOverview(routesRs[0].id);
+      }
+
+      const lastDateTo = requestData.stopPoints[requestData.stopPoints.length - 1]?.stopDate?.to;
+      if (lastDateTo) {
+        const returnDate = dayjs(lastDateTo).format('MM/DD/YYYY');
+        setReturnDate(returnDate);
+      }
 
       setRoutes((prevState) => routesRs);
       toast('Search data successfully', { type: 'success' });
@@ -159,6 +171,24 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
     }
   };
 
+  const handleChangeRouteOverview = useCallback(
+    (id: string) => {
+      const selectRoute = originalData.find((route) => route.id === id);
+      setSelectedRoute(selectRoute);
+      const pickupAndDeliveryPoints: LoadPoint[] = [];
+      selectRoute?.loads?.forEach((load) => {
+        const point: LoadPoint = {
+          keyPoints: load.keyByPoints,
+          fromPoint: [load.pickupStop.coordinates.longitude, load.pickupStop.coordinates.latitude],
+          toPoint: [load.deliveryStop.coordinates.longitude, load.deliveryStop.coordinates.latitude],
+        };
+        pickupAndDeliveryPoints.push(point);
+      });
+      setPoints(pickupAndDeliveryPoints);
+    },
+    [originalData, setPoints],
+  );
+
   const refreshData = () => {
     setRoutes([]);
     setPoints([]);
@@ -168,11 +198,17 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       if (watchRouteOption === 'en_route') {
         const routeRs = originalData.filter((route) => route.type === 'enRoute');
         setRoutes(routeRs);
+        if (routeRs.length) {
+          handleChangeRouteOverview(routeRs[0].id);
+        }
       } else {
         setRoutes(originalData);
+        if (originalData.length) {
+          handleChangeRouteOverview(originalData[0].id);
+        }
       }
     }
-  }, [originalData, watchRouteOption]);
+  }, [handleChangeRouteOverview, originalData, watchRouteOption]);
   return (
     <>
       {!isOpenDetail && (
@@ -222,7 +258,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
               </Button>
             </div>
           </Form>
-          {isEnableRouteOverview && routes.length === 0 && (
+          {isEnableRouteOverview && routes.length === 0 && !isLoading && (
             <div className="flex justify-center p-5">Can not found suitable route </div>
           )}
           {isEnableRouteOverview && routes.length > 0 && (
@@ -230,9 +266,9 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
               setIsOpenDetail={setIsOpenDetail}
               routes={routes}
               handleViewDetailRoute={handleViewDetailRoute}
-              setPoints={setPoints}
-              setSelectedRoute={setSelectedRoute}
-              setRoutes={setRoutes}
+              handleChangeRouteOverview={handleChangeRouteOverview}
+              selectedRouteId={selectedRoute?.id || ''}
+              returnDate={returnDate}
             />
           )}
         </>

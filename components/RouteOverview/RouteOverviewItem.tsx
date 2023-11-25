@@ -5,13 +5,14 @@ import { Button } from 'antd';
 import PriceAndDistance from '@/components/RouteOverview/PriceAndDistance';
 import React, { useEffect, useState } from 'react';
 import { type RouteInfo } from '@/types/route';
-import dayjs from 'dayjs';
 
 interface RouteOverviewProps {
   data: RouteInfo;
   onChangeSelected: (id: string) => void;
   setIsOpenDetail: (isOpen: boolean) => void;
   handleViewDetailRoute: (id: string) => void;
+  selectedRouteId: string;
+  returnDate: string;
 }
 export function oxford(arr: string[], conjunction: 'and' | 'or' | 'and the' = 'and') {
   const l = arr.length;
@@ -23,8 +24,15 @@ export function oxford(arr: string[], conjunction: 'and' | 'or' | 'and the' = 'a
   return arr.join(', ');
 }
 
-const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleViewDetailRoute }: RouteOverviewProps) => {
-  const { id, isSelected } = data;
+const RouteOverviewItem = ({
+  data,
+  onChangeSelected,
+  setIsOpenDetail,
+  handleViewDetailRoute,
+  selectedRouteId,
+  returnDate,
+}: RouteOverviewProps) => {
+  const { id } = data;
   const [viaInfo, setViaInfo] = useState<string>('');
   const handleClick = (id: string) => {
     onChangeSelected(id);
@@ -57,7 +65,7 @@ const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleView
       data-id={id}
       className={cn(
         'm-5 cursor-pointer rounded-xl bg-[#F2F2F7]',
-        isSelected ? 'border border-solid border-[#F16521]' : '',
+        selectedRouteId === id ? 'border border-solid border-[#F16521]' : '',
       )}
       onClick={() => handleClick(id)}
     >
@@ -72,11 +80,9 @@ const RouteOverviewItem = ({ data, onChangeSelected, setIsOpenDetail, handleView
       </div>
       <div className="flex justify-between p-6 text-[16px]">
         <span className="font-normal">Via {viaInfo}</span>
-        <span className="mock-data font-light">
-          Return on {data.returnAt ? dayjs(data.returnAt).format('MM/DD/YYYY') : '11/12/2023'}
-        </span>
+        <span className="font-light">Return on {returnDate}</span>
       </div>
-      {isSelected && (
+      {selectedRouteId === id && (
         <>
           <Button
             className="flex h-full w-full min-w-[100px] items-center justify-center !rounded-b-lg !rounded-t-none border-none bg-[#F16521] p-4 text-[16px] text-white transition-all"

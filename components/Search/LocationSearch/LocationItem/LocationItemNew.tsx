@@ -1,6 +1,6 @@
 import { Form } from '@/components/common/Form';
 import dynamic from 'next/dynamic';
-import { DeleteFilled, LockFilled } from '@ant-design/icons';
+import { DeleteFilled } from '@ant-design/icons';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { type MapLocation, UpperCaseAlphabet } from '@/types/common';

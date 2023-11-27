@@ -14,7 +14,7 @@ export interface RouteInfo {
   deadheadUnit?: string;
   directions?: string;
   brokers?: string[];
-  type: 'standard' | 'enRoute' | 'routeMyTrucks';
+  type: 'standard' | 'enRoute' | 'routeMyTruck';
   differInfo?: {
     distance?: number;
     duration?: number;

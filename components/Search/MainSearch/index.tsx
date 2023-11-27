@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import FullTruckIcon from '@/components/common/icons/FullTruckIcon';
 import EmptyTruckIcon from '@/components/common/icons/EmptyTruckIcon';
 import { type LoadPoint } from '@/types/load';
+import { Tooltip } from 'antd';
 
 interface MainSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
@@ -76,7 +77,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
         },
       ],
       returnToOrigin: true,
-      routeOption: 'route_my_truck',
+      routeOption: 'standard',
       equipmentTypes: ['dry_van'],
       specialNotes: [],
       shipmentFormats: [],
@@ -143,11 +144,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       setOriginalData(routesRs);
 
       routesRs = routesRs.filter((route) => {
-        if (watchRouteOption === 'en_route') {
-          return route.type === 'enRoute';
-        } else {
-          return route;
-        }
+        return route.type === watchRouteOption;
       });
       if (routesRs.length > 0) {
         handleChangeRouteOverview(routesRs[0].id);
@@ -195,17 +192,10 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
   };
   useEffect(() => {
     if (watchRouteOption && originalData) {
-      if (watchRouteOption === 'en_route') {
-        const routeRs = originalData.filter((route) => route.type === 'enRoute');
-        setRoutes(routeRs);
-        if (routeRs.length) {
-          handleChangeRouteOverview(routeRs[0].id);
-        }
-      } else {
-        setRoutes(originalData);
-        if (originalData.length) {
-          handleChangeRouteOverview(originalData[0].id);
-        }
+      const routeRs = originalData.filter((route) => route.type === watchRouteOption);
+      setRoutes(routeRs);
+      if (routeRs.length) {
+        handleChangeRouteOverview(routeRs[0].id);
       }
     }
   }, [handleChangeRouteOverview, originalData, watchRouteOption]);
@@ -218,18 +208,31 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
               <Form.Radio
                 name="routeOption"
                 options={[
-                  { value: 'route_my_truck', label: 'Route my truck' },
-                  { value: 'en_route', label: 'En Route' },
+                  { value: 'standard', label: 'Standard' },
+                  { value: 'routeMyTrucks', label: 'Route my truck' },
+                  { value: 'enRoute', label: 'En Route' },
                 ]}
                 customClass="py-10"
               />
               <div className="flex items-center gap-10">
-                <div className="flex items-center">
-                  <EmptyTruckIcon className="h-6 w-6" /> <span className="text-sm"> Empty </span>
-                </div>
-                <div className="flex items-center">
-                  <FullTruckIcon className="h-6 w-6" /> <span className="text-sm"> Full</span>
-                </div>
+                <Tooltip
+                  title="No predefined shipment for this route. Search for available freight on this route."
+                  color={'#393978'}
+                  key={'empty-tooltip'}
+                >
+                  <div className="flex items-center">
+                    <EmptyTruckIcon className="h-6 w-6" /> <span className="text-sm"> Empty </span>
+                  </div>
+                </Tooltip>
+                <Tooltip
+                  title="Shipment booked  on this route. No additional search needed."
+                  color={'#393978'}
+                  key={'full-tooltip'}
+                >
+                  <div className="flex items-center">
+                    <FullTruckIcon className="h-6 w-6" /> <span className="text-sm"> Full</span>
+                  </div>
+                </Tooltip>
               </div>
             </div>
 

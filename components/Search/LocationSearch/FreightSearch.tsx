@@ -59,7 +59,7 @@ const FreightSearch = ({ setLocations, refreshData }: FreightSearchProps) => {
           </li>
         ))}
       </ul>
-      <div className="flex cursor-pointer items-center gap-3 py-5" onClick={appendFreight}>
+      <div className="flex w-fit cursor-pointer items-center gap-3 py-5" onClick={appendFreight}>
         <div className="flex h-10 w-10 flex-none flex-wrap items-center justify-center rounded-full bg-[#F2F2F7]">
           <PlusOutlined className="text-[#393978]" />
         </div>

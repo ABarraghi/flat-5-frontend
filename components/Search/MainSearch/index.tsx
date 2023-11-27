@@ -194,8 +194,10 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
     if (watchRouteOption && originalData) {
       const routeRs = originalData.filter((route) => route.type === watchRouteOption);
       setRoutes(routeRs);
-      if (routeRs.length) {
+      if (routeRs.length > 0) {
         handleChangeRouteOverview(routeRs[0].id);
+      } else {
+        refreshData();
       }
     }
   }, [handleChangeRouteOverview, originalData, watchRouteOption]);

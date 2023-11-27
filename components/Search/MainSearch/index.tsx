@@ -186,10 +186,10 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
     [originalData, setPoints],
   );
 
-  const refreshData = () => {
+  const refreshData = useCallback(() => {
     setRoutes([]);
     setPoints([]);
-  };
+  }, [setPoints]);
   useEffect(() => {
     if (watchRouteOption && originalData) {
       const routeRs = originalData.filter((route) => route.type === watchRouteOption);
@@ -200,7 +200,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
         refreshData();
       }
     }
-  }, [handleChangeRouteOverview, originalData, watchRouteOption]);
+  }, [handleChangeRouteOverview, originalData, refreshData, watchRouteOption]);
   return (
     <>
       {!isOpenDetail && (

@@ -28,7 +28,7 @@ export function formatUsPrice(price: number, minimumFractionDigits = 0, maximumF
   return formatter.format(price).replace('$', '');
 }
 
-export function gettingZoomLevel(distance: number = 18489298): number {
+export function gettingZoomLevel(distance: number = 288895): number {
   const data: Record<string, number> = {
     '19': 1128.49722,
     '18': 2256.99444,

@@ -211,8 +211,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
                 name="routeOption"
                 options={[
                   { value: 'standard', label: 'Standard' },
-                  { value: 'routeMyTrucks', label: 'Route my truck' },
                   { value: 'enRoute', label: 'En Route' },
+                  { value: 'routeMyTrucks', label: 'Route my truck' },
                 ]}
                 customClass="py-10"
               />

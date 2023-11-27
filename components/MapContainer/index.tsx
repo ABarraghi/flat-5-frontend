@@ -58,7 +58,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
         otherRoutes.push(route);
       }
     }
-    return { primaryRoute: data, otherRoutes };
+    return { primaryRoute: data, otherRoutes: [] };
   }
 
   const removeSource = (map: any) => {
@@ -78,7 +78,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
     setIsLoading(true);
 
     const routeData = await getGeoJson(start, end, points);
-    const { primaryRoute: data, otherRoutes } = routeData ?? { primaryRoute: null, otherRoutes: [] };
+    const { primaryRoute: data } = routeData ?? { primaryRoute: null, otherRoutes: [] };
 
     if (!data) {
       // No route found
@@ -91,10 +91,10 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       zoom: zoomLevel - 3,
       essential: true,
     });
-    otherRoutes.forEach((tempRoute, index: number) => {
-      const dataRoute = tempRoute.geometry.coordinates;
-      drawRoute(map, dataRoute, false, index + 1);
-    });
+    // otherRoutes.forEach((tempRoute, index: number) => {
+    //   const dataRoute = tempRoute.geometry.coordinates;
+    //   drawRoute(map, dataRoute, false, index + 1);
+    // });
     const route = data.geometry.coordinates;
     drawRoute(map, route, true);
   }

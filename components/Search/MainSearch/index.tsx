@@ -98,7 +98,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       .map((item: any) => {
         return {
           location: {
-            coordinate: {
+            coordinates: {
               latitude: item.location.coordinate?.latitude,
               longitude: item.location.coordinate?.longitude,
             },
@@ -106,7 +106,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
             state: item.location.state !== '' ? item.location.state : undefined,
             country: item.location.country !== '' ? item.location.country : undefined,
           },
-          isPickedLoad: item.isPickedLoad,
+          hadLoad: item.isPickedLoad,
           radius: item.radius ? parseInt(String(item.radius)) : 0,
           stopDate: {
             from: item.stopDate[0] ? dayjs(item.stopDate[0]).startOf('day') : undefined,

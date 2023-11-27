@@ -9,9 +9,10 @@ export interface StopPointRequest {
   location: LocationRequest;
   radius: number;
   stopDate: StopDateRequest;
+  hadLoad: boolean;
 }
 export interface LocationRequest {
-  coordinate: Coordinate;
+  coordinates: Coordinate;
   city?: string;
   state?: string;
   country?: string;

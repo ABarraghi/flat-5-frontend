@@ -30,10 +30,10 @@ const Layout = ({
               <Image src={isHome ? LogoHome : LogoImage} alt="logo" />
             </Link>
             <div className="flex items-center justify-end gap-4">
-              <Link href="/about" className="h-fit">
+              <Link href="#" className="h-fit">
                 About
               </Link>
-              <Link href="/register" className="h-fit">
+              <Link href="#" className="h-fit">
                 Login
               </Link>
             </div>

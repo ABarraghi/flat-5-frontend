@@ -202,7 +202,6 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
   }, [setPoints]);
   useEffect(() => {
     if (watchRouteOption && originalData) {
-      setNoDataDisplay('');
       refreshData();
       const routeRs = originalData.filter((route) => route.type === watchRouteOption);
       setRoutes(routeRs);
@@ -211,6 +210,11 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       }
     }
   }, [handleChangeRouteOverview, originalData, refreshData, watchRouteOption]);
+  useEffect(() => {
+    if (watchRouteOption) {
+      setNoDataDisplay('');
+    }
+  }, [watchRouteOption]);
 
   return (
     <>

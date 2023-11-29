@@ -92,7 +92,7 @@ const LocationItem = ({ name, index, remove, setLocations, length, handleInsertA
             <span className="text-[16px] font-semibold text-white">{title}</span>
           )}
         </div>
-        <div className="flex flex-1 flex-col items-center gap-2 xl:flex-row">
+        <div className="flex flex-1 flex-col items-start gap-2 xl:flex-row">
           <MapboxSuggestion
             name={`${name}.${index}.location`}
             rules={{ required: 'Required' }}

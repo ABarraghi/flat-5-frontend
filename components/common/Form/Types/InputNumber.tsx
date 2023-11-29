@@ -28,7 +28,7 @@ export const FormInputNumber = ({
   timeDebounce = 0,
   error,
 }: Props) => {
-  const { control, setValue, getValues } = useFormContext();
+  const { control, setValue, getValues, clearErrors } = useFormContext();
   const [inputValue, setInputValue] = useState('');
   const handleChange = (inputValue: string) => {
     const reg = /^-?\d*(\.\d*)?$/;
@@ -54,6 +54,7 @@ export const FormInputNumber = ({
       valueTemp = inputValue.slice(0, -1);
     }
     setValue(name, valueTemp.replace(/0*(\d+)/, '$1'));
+    clearErrors(`${name}`);
   };
   useEffect(() => {
     const value = getValues(name);
@@ -77,7 +78,7 @@ export const FormInputNumber = ({
                 onBlur={handleBlur}
                 placeholder={placeholder}
                 disabled={disabled}
-                className="h-[52px] rounded-lg font-normal"
+                className="h-[40px] rounded-lg font-normal xl:h-[52px]"
                 allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
                 suffix={suffix}
               />

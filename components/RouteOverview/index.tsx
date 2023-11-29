@@ -6,7 +6,7 @@ interface RouteOverviewProps {
   handleViewDetailRoute: (id: string) => void;
   routes: RouteInfo[];
   selectedRouteId: string;
-  handleChangeRouteOverview: (id: string) => void;
+  handleChangeRouteOverview: (id: string, routes: RouteInfo[]) => void;
   returnDate: string;
 }
 const RouteOverview = ({
@@ -18,7 +18,7 @@ const RouteOverview = ({
   returnDate,
 }: RouteOverviewProps) => {
   const onChangeSelected = (id: string) => {
-    handleChangeRouteOverview(id);
+    handleChangeRouteOverview(id, routes);
   };
 
   return (

@@ -9,13 +9,12 @@ type MapboxSuggestionProps = {
   name: string;
 } & BaseField;
 const MapboxSuggestion = ({ name, rules, error }: MapboxSuggestionProps) => {
-  const { setValue, getValues, control } = useFormContext();
+  const { setValue, getValues, control, clearErrors } = useFormContext();
   const [token, setToken] = useState('');
   const [fullAddress, setFullAddress] = useState('');
   const handleRetrieve = useCallback(
     (res: any) => {
       const feature = res.features[0];
-      console.log('feature: ', feature);
       const fullAddr = feature.properties?.full_address || feature.properties?.place_formatted;
       const address = `${feature.properties?.name}${fullAddr && `, ${fullAddr}`}`;
       const postCode = feature.properties?.context?.postCode?.name;
@@ -23,6 +22,7 @@ const MapboxSuggestion = ({ name, rules, error }: MapboxSuggestionProps) => {
       const regionCode = feature.properties?.context?.region?.region_code || '';
       const place = feature.properties?.context?.place?.name || '';
       setFullAddress(address);
+      clearErrors(`${name}.address`);
       setValue(`${name}.address`, address);
       setValue(`${name}.postCode`, postCode);
       setValue(`${name}.country`, countryCode);
@@ -31,7 +31,7 @@ const MapboxSuggestion = ({ name, rules, error }: MapboxSuggestionProps) => {
       setValue(`${name}.coordinate.latitude`, feature.properties?.coordinates.latitude);
       setValue(`${name}.coordinate.longitude`, feature.properties?.coordinates.longitude);
     },
-    [name, setValue],
+    [clearErrors, name, setValue],
   );
   const handleChange = (value: string) => {
     setValue(`${name}.address`, '');
@@ -79,6 +79,11 @@ const MapboxSuggestion = ({ name, rules, error }: MapboxSuggestionProps) => {
                     },
                     icons: { search: '' },
                     cssText: `
+          @media only screen and (max-width: 1280px) {
+            .Input {
+              height: 40px !important;
+            }
+          }
         .Input {
             background-color: none;
             padding-left: 10px;

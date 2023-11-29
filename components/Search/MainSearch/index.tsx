@@ -202,6 +202,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
   }, [setPoints]);
   useEffect(() => {
     if (watchRouteOption && originalData) {
+      setNoDataDisplay('');
       refreshData();
       const routeRs = originalData.filter((route) => route.type === watchRouteOption);
       setRoutes(routeRs);

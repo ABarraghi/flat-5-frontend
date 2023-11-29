@@ -61,6 +61,7 @@ const FreightSearch = ({ setLocations, refreshData }: FreightSearchProps) => {
         isPickedLoad: false,
       },
     ]);
+    refreshData();
   };
   return (
     <>

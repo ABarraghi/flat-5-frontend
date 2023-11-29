@@ -31,7 +31,7 @@ const MapboxSuggestion = ({ name, rules, error }: MapboxSuggestionProps) => {
       setValue(`${name}.coordinate.latitude`, feature.properties?.coordinates.latitude);
       setValue(`${name}.coordinate.longitude`, feature.properties?.coordinates.longitude);
     },
-    [name, setValue],
+    [clearErrors, name, setValue],
   );
   const handleChange = (value: string) => {
     setValue(`${name}.address`, '');

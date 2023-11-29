@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { type BaseField } from './type';
-import { Radio, Select } from 'antd';
+import { Select } from 'antd';
 import classNames from 'classnames';
 
 type Props = BaseField & {

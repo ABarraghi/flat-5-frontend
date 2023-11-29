@@ -81,6 +81,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       equipmentTypes: ['dry_van'],
       specialNotes: [],
       shipmentFormats: [],
+      broker: 'all',
+      isReturnDraw: false,
     },
   });
   const toggleCollapseAdvanceForm = () => {
@@ -116,6 +118,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
         };
       });
     return {
+      broker: data.broker,
+      isReturnDraw: data.isReturnDraw,
       stopPoints,
       equipmentType: data.equipmentTypes?.length > 0 ? data.equipmentTypes[0] : '',
     };
@@ -135,7 +139,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
         return;
       }
 
-      const data = await getSearchLoad(requestData);
+      const data = await getSearchLoad(requestData, watchRouteOption);
       let routesRs: RouteInfo[] = [];
       routesRs = data.map((route, index) => {
         const brokers = route.loads?.map((load) => load.broker);
@@ -192,56 +196,55 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
   }, [setPoints]);
   useEffect(() => {
     if (watchRouteOption && originalData) {
-      const routeRs = originalData.filter((route) => route.type === watchRouteOption);
-      setRoutes(routeRs);
-      if (routeRs.length > 0) {
-        handleChangeRouteOverview(routeRs[0].id);
-      } else {
-        refreshData();
-      }
+      refreshData();
     }
-  }, [handleChangeRouteOverview, originalData, refreshData, watchRouteOption]);
+  }, [originalData, refreshData, watchRouteOption]);
   return (
     <>
       {!isOpenDetail && (
         <>
-          <Form methods={methods as any} className={'p-10'}>
-            <div className="flex items-center justify-between gap-x-5">
-              <Form.Radio
-                name="routeOption"
-                options={[
-                  { value: 'standard', label: 'Standard' },
-                  { value: 'enRoute', label: 'En Route' },
-                  { value: 'routeMyTruck', label: 'Route my truck' },
-                ]}
-                customClass="py-10"
-              />
-              <div className="flex items-center gap-10">
-                <Tooltip
-                  title="No predefined shipment for this route. Search for available freight on this route."
-                  color={'#393978'}
-                  key={'empty-tooltip'}
-                >
-                  <div className="flex items-center">
-                    <EmptyTruckIcon className="h-6 w-6" /> <span className="text-sm"> Empty </span>
-                  </div>
-                </Tooltip>
-                <Tooltip
-                  title="Shipment booked  on this route. No additional search needed."
-                  color={'#393978'}
-                  key={'full-tooltip'}
-                >
-                  <div className="flex items-center">
-                    <FullTruckIcon className="h-6 w-6" /> <span className="text-sm"> Full</span>
-                  </div>
-                </Tooltip>
+          <div className="flex items-center justify-end gap-5 px-10 pb-3 pt-5 xl:gap-10">
+            <Tooltip
+              title="No predefined shipment for this route. Search for available freight on this route."
+              color={'#393978'}
+              key={'empty-tooltip'}
+            >
+              <div className="flex items-center">
+                <EmptyTruckIcon className="h-6 w-6" /> <span className="text-sm"> Empty </span>
               </div>
+            </Tooltip>
+            <Tooltip
+              title="Shipment booked  on this route. No additional search needed."
+              color={'#393978'}
+              key={'full-tooltip'}
+            >
+              <div className="flex items-center">
+                <FullTruckIcon className="h-6 w-6" /> <span className="text-sm"> Full</span>
+              </div>
+            </Tooltip>
+          </div>
+          <Form methods={methods as any} className={'p-10 pl-10 pr-5 pt-2'}>
+            <div className="text-[10px] font-bold tracking-[5%] text-black/50 lg:text-[16px]">
+              <span className="text-[10px] uppercase text-[#2E2F44] opacity-50 lg:text-[12px]">Broker</span>
+            </div>
+            <div className="flex flex-wrap items-center  gap-x-5 py-5">
+              <Form.Select
+                name="broker"
+                defaultValue="all"
+                customClass="w-[120px]"
+                // onChange={handleChange}
+                options={[
+                  { key: 'all', label: 'All' },
+                  { key: 'coyote', label: 'Coyote' },
+                  { key: 'dat', label: 'Dat' },
+                  { key: 'truck_stop', label: 'TruckStop' },
+                ]}
+              />
+              <Form.Checkbox name="isReturnDraw" label="Return draw" />
             </div>
 
             <FreightSearch setLocations={setLocations} refreshData={refreshData} />
-            {/* <LocationSearch /> */}
             <div className="flex items-center justify-between text-[16px] font-normal">
-              {/* <Form.Checkbox name="returnToOrigin" label="Return to origin after delivery" /> */}
               <span className="flex items-center justify-between text-[#393978]" onClick={toggleCollapseAdvanceForm}>
                 {isOpenAdvanced ? 'Hide advanced options' : 'View advanced options'} &nbsp;
                 <ChevronDownIcon
@@ -250,7 +253,15 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
               </span>
             </div>
             {isOpenAdvanced && <AdvancedForm />}
-            <div className="flex justify-end p-5">
+            <div className="flex justify-between py-5">
+              <Form.Radio
+                name="routeOption"
+                options={[
+                  { value: 'standard', label: 'Standard' },
+                  { value: 'enRoute', label: 'En Route' },
+                  { value: 'routeMyTruck', label: 'Route my truck' },
+                ]}
+              />
               <Button
                 name="Search"
                 wrapperClass="rounded-md bg-[#F16521] py-[5px] justify-ebd"

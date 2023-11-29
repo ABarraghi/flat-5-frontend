@@ -36,6 +36,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
   const [detailRoute, setDetailRoute] = useState<RouteInfo>();
   const [selectedRoute, setSelectedRoute] = useState<RouteInfo | undefined>();
   const [returnDate, setReturnDate] = useState<string>('');
+  const [noDataDisplay, setNoDataDisplay] = useState<string>('');
   const handleOpenDetail = (isOpen: boolean) => {
     setIsOpenDetail(isOpen);
   };
@@ -129,6 +130,24 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
   };
 
   const watchRouteOption = methods.watch('routeOption');
+  const handleChangeRouteOverview = useCallback(
+    (id: string, data: RouteInfo[]) => {
+      const selectRoute = data.find((route) => route.id === id);
+      setSelectedRoute(selectRoute);
+      const pickupAndDeliveryPoints: LoadPoint[] = [];
+      selectRoute?.loads?.forEach((load) => {
+        const point: LoadPoint = {
+          keyPoints: load.keyByPoints,
+          fromPoint: [load.pickupStop.coordinates.longitude, load.pickupStop.coordinates.latitude],
+          toPoint: [load.deliveryStop.coordinates.longitude, load.deliveryStop.coordinates.latitude],
+        };
+        pickupAndDeliveryPoints.push(point);
+      });
+      setPoints(pickupAndDeliveryPoints);
+    },
+    [setPoints],
+  );
+
   const onSubmit = async (submitData: any) => {
     try {
       setIsLoading(true);
@@ -150,9 +169,6 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       routesRs = routesRs.filter((route) => {
         return route.type === watchRouteOption;
       });
-      if (routesRs.length > 0) {
-        handleChangeRouteOverview(routesRs[0].id);
-      }
 
       const lastDateTo = requestData.stopPoints[requestData.stopPoints.length - 1]?.stopDate?.to;
       if (lastDateTo) {
@@ -160,7 +176,15 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
         setReturnDate(returnDate);
       }
 
-      setRoutes((prevState) => routesRs);
+      setRoutes(routesRs);
+      if (routesRs.length > 0) {
+        handleChangeRouteOverview(routesRs[0].id, routesRs);
+      }
+      if (routesRs.length === 0) {
+        setNoDataDisplay('Can not found suitable route for your search criteria');
+      } else {
+        setNoDataDisplay('');
+      }
       toast('Search data successfully', { type: 'success' });
       setIsEnableRouteOverview(true);
       setIsOpenAdvanced(false);
@@ -172,24 +196,6 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
     }
   };
 
-  const handleChangeRouteOverview = useCallback(
-    (id: string) => {
-      const selectRoute = originalData.find((route) => route.id === id);
-      setSelectedRoute(selectRoute);
-      const pickupAndDeliveryPoints: LoadPoint[] = [];
-      selectRoute?.loads?.forEach((load) => {
-        const point: LoadPoint = {
-          keyPoints: load.keyByPoints,
-          fromPoint: [load.pickupStop.coordinates.longitude, load.pickupStop.coordinates.latitude],
-          toPoint: [load.deliveryStop.coordinates.longitude, load.deliveryStop.coordinates.latitude],
-        };
-        pickupAndDeliveryPoints.push(point);
-      });
-      setPoints(pickupAndDeliveryPoints);
-    },
-    [originalData, setPoints],
-  );
-
   const refreshData = useCallback(() => {
     setRoutes([]);
     setPoints([]);
@@ -197,8 +203,13 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
   useEffect(() => {
     if (watchRouteOption && originalData) {
       refreshData();
+      const routeRs = originalData.filter((route) => route.type === watchRouteOption);
+      setRoutes(routeRs);
+      if (routeRs.length > 0) {
+        handleChangeRouteOverview(routeRs[0].id, routeRs);
+      }
     }
-  }, [originalData, refreshData, watchRouteOption]);
+  }, [handleChangeRouteOverview, originalData, refreshData, watchRouteOption]);
   return (
     <>
       {!isOpenDetail && (
@@ -231,7 +242,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
               <Form.Select
                 name="broker"
                 defaultValue="all"
-                customClass="w-[120px]"
+                customClass="w-[200px]"
                 // onChange={handleChange}
                 options={[
                   { key: 'all', label: 'All' },
@@ -274,8 +285,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
               </Button>
             </div>
           </Form>
-          {isEnableRouteOverview && routes.length === 0 && !isLoading && (
-            <div className="flex justify-center p-5">Can not found suitable route </div>
+          {isEnableRouteOverview && routes.length === 0 && !isLoading && noDataDisplay && (
+            <div className="flex justify-center p-5">{noDataDisplay}</div>
           )}
           {isEnableRouteOverview && routes.length > 0 && (
             <RouteOverview

@@ -28,7 +28,7 @@ const AdvancedForm = () => {
   return (
     <div className="py-10 text-[16px] font-normal">
       <div className="pb-5 text-[10px] font-bold tracking-[5%] text-black/50 lg:text-[16px]">
-        <span className="text-[10px] uppercase text-[#2E2F44] opacity-50 lg:text-[12px]">Broker</span>
+        <span className="text-[10px] uppercase text-[#2E2F44] opacity-50 lg:text-[12px]">Brokers</span>
       </div>
       <div className="flex flex-wrap items-center gap-x-5 ">
         <Form.Select
@@ -37,9 +37,9 @@ const AdvancedForm = () => {
           customClass="w-[200px]"
           options={[
             { key: 'all', label: 'All' },
-            { key: 'coyote', label: 'Coyote' },
-            { key: 'dat', label: 'Dat' },
-            { key: 'truck_stop', label: 'TruckStop' },
+            { key: 'coyote', label: 'Coyote Only' },
+            { key: 'dat', label: 'Dat Only' },
+            { key: 'truck_stop', label: 'TruckStop Only' },
           ]}
         />
         <Form.Checkbox name="isReturnOrigin" label="Return origin data" />

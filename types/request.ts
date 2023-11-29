@@ -3,6 +3,8 @@ import { type Coordinate } from '@/types/common';
 export interface SearchLoadRequest {
   stopPoints: StopPointRequest[];
   equipmentType: string;
+  brokers: string[];
+  isReturnOrigin: boolean;
 }
 
 export interface StopPointRequest {

@@ -119,8 +119,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
         };
       });
     return {
-      broker: data.broker,
-      isReturnDraw: data.isReturnDraw,
+      broker: data.broker === 'all' ? ['coyote', 'dat', 'truck_stop'] : [data.broker],
+      isReturnOrigin: data.isReturnOrigin,
       stopPoints,
       equipmentType: data.equipmentTypes?.length > 0 ? data.equipmentTypes[0] : '',
     };

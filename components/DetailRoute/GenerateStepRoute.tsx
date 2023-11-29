@@ -7,7 +7,7 @@ export const GenerateStepRoute = (loads: LoadBase[] = [], routeType: string, loc
   if (locations.length > 1) {
     steps.push({
       className: 'main-points',
-      title: <span className="AAA text-xl font-medium text-[#393978]">{locations[0].address}</span>,
+      title: <span className="text-lg font-medium text-[#393978] xl:text-xl">{locations[0].address}</span>,
       subTitle: '',
       description: <div className="h-10" />,
       icon: (

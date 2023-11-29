@@ -1,6 +1,6 @@
 import DistanceIcon from '@/components/common/icons/DistanceIcon';
 import { DollarCircleFilled } from '@ant-design/icons';
-import { formatUsPrice } from '@/utils/common';
+import { formatDistance, formatUsPrice } from '@/utils/common';
 import cn from 'classnames';
 
 interface PriceAndDistanceProps {
@@ -16,9 +16,9 @@ const PriceAndDistance = ({ price, distance, customClass }: PriceAndDistanceProp
         <DollarCircleFilled />
         <span className="ml-2">${formatUsPrice(price)}</span>
       </div>
-      <div className={cn('distance ml-10 flex items-center')}>
+      <div className={cn('distance ml-5 flex items-center xl:ml-10')}>
         <DistanceIcon />
-        <span className="ml-2 font-light">{distance} mi</span>
+        <span className="ml-2 font-light">{formatDistance(distance)} mi</span>
       </div>
     </div>
   );

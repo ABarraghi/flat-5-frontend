@@ -7,6 +7,8 @@ export interface SearchForm {
   equipmentTypes?: string[];
   specialNotes?: SpecialNote[];
   shipmentFormats?: ShipmentFormat[];
+  broker: 'all' | 'coyote' | 'dat' | 'truck_stop';
+  isReturnDraw: boolean;
 }
 
 export interface Locations {

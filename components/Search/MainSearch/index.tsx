@@ -83,7 +83,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       specialNotes: [],
       shipmentFormats: [],
       broker: 'all',
-      isReturnDraw: false,
+      isReturnOrigin: false,
     },
   });
   const toggleCollapseAdvanceForm = () => {
@@ -214,44 +214,37 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
     <>
       {!isOpenDetail && (
         <>
-          <div className="flex items-center justify-end gap-5 px-10 pb-3 pt-5 xl:gap-10">
-            <Tooltip
-              title="No predefined shipment for this route. Search for available freight on this route."
-              color={'#393978'}
-              key={'empty-tooltip'}
-            >
-              <div className="flex items-center">
-                <EmptyTruckIcon className="h-6 w-6" /> <span className="text-sm"> Empty </span>
-              </div>
-            </Tooltip>
-            <Tooltip
-              title="Shipment booked  on this route. No additional search needed."
-              color={'#393978'}
-              key={'full-tooltip'}
-            >
-              <div className="flex items-center">
-                <FullTruckIcon className="h-6 w-6" /> <span className="text-sm"> Full</span>
-              </div>
-            </Tooltip>
-          </div>
           <Form methods={methods as any} className={'p-10 pl-10 pr-5 pt-2'}>
-            <div className="text-[10px] font-bold tracking-[5%] text-black/50 lg:text-[16px]">
-              <span className="text-[10px] uppercase text-[#2E2F44] opacity-50 lg:text-[12px]">Broker</span>
-            </div>
-            <div className="flex flex-wrap items-center  gap-x-5 py-5">
-              <Form.Select
-                name="broker"
-                defaultValue="all"
-                customClass="w-[200px]"
-                // onChange={handleChange}
+            <div className="flex flex-wrap justify-between">
+              <Form.Radio
+                name="routeOption"
                 options={[
-                  { key: 'all', label: 'All' },
-                  { key: 'coyote', label: 'Coyote' },
-                  { key: 'dat', label: 'Dat' },
-                  { key: 'truck_stop', label: 'TruckStop' },
+                  { value: 'standard', label: 'Standard' },
+                  { value: 'enRoute', label: 'En Route' },
+                  { value: 'routeMyTruck', label: 'Route my truck' },
                 ]}
+                customClass="py-5"
               />
-              <Form.Checkbox name="isReturnDraw" label="Return draw" />
+              <div className="flex items-center justify-end gap-5 xl:gap-10">
+                <Tooltip
+                  title="No predefined shipment for this route. Search for available freight on this route."
+                  color={'#393978'}
+                  key={'empty-tooltip'}
+                >
+                  <div className="flex items-center">
+                    <EmptyTruckIcon className="h-6 w-6" /> <span className="text-sm"> Empty </span>
+                  </div>
+                </Tooltip>
+                <Tooltip
+                  title="Shipment booked  on this route. No additional search needed."
+                  color={'#393978'}
+                  key={'full-tooltip'}
+                >
+                  <div className="flex items-center">
+                    <FullTruckIcon className="h-6 w-6" /> <span className="text-sm"> Full</span>
+                  </div>
+                </Tooltip>
+              </div>
             </div>
 
             <FreightSearch setLocations={setLocations} refreshData={refreshData} />
@@ -265,14 +258,6 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
             </div>
             {isOpenAdvanced && <AdvancedForm />}
             <div className="flex justify-between py-5">
-              <Form.Radio
-                name="routeOption"
-                options={[
-                  { value: 'standard', label: 'Standard' },
-                  { value: 'enRoute', label: 'En Route' },
-                  { value: 'routeMyTruck', label: 'Route my truck' },
-                ]}
-              />
               <Button
                 name="Search"
                 wrapperClass="rounded-md bg-[#F16521] py-[5px] justify-ebd"

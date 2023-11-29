@@ -210,6 +210,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       }
     }
   }, [handleChangeRouteOverview, originalData, refreshData, watchRouteOption]);
+
   return (
     <>
       {!isOpenDetail && (
@@ -257,7 +258,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
               </span>
             </div>
             {isOpenAdvanced && <AdvancedForm />}
-            <div className="flex justify-between py-5">
+            <div className="flex justify-end py-5">
               <Button
                 name="Search"
                 wrapperClass="rounded-md bg-[#F16521] py-[5px] justify-ebd"

@@ -18,7 +18,7 @@ export const FormSelect = ({ name, rules, options, customClass, defaultValue }: 
       control={control}
       rules={rules}
       render={({ field }) => (
-        <Select {...field} defaultValue={defaultValue} className={classNames('h-[52px]', customClass)}>
+        <Select {...field} defaultValue={defaultValue} className={classNames('h-[40px] xl:h-[52px]', customClass)}>
           {options.map((option, idx) => (
             <Select.Option value={option.key} key={option.key}>
               {option.label}

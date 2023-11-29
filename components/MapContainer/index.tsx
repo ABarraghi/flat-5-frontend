@@ -99,7 +99,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
     drawRoute(map, route, true);
   }
 
-  const drawRoute = (map: any, route: any, isPrimary: boolean = false, indexRoute: number = 0) => {
+  const drawRoute = async (map: any, route: any, isPrimary: boolean = false, indexRoute: number = 0) => {
     const geojson = {
       type: 'Feature',
       properties: {},
@@ -114,7 +114,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
     }
     // otherwise, we'll make a new request
     else {
-      map.addLayer({
+      await map.addLayer({
         id: `route${indexRoute}`,
         type: 'line',
         source: {
@@ -171,6 +171,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
     newSources.push(`points-${id}`);
     let circleRadius = 5;
     const strokeWidth = 1;
+    let circleColor = '#393978';
     if (title) {
       map.addLayer({
         id: `search-radius-${id}`,
@@ -190,6 +191,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
         map.getSource(`search-radius-${id}`).setData(searchRadius);
       }
       circleRadius = 14;
+      circleColor = '#F16521';
       newSources.push(`search-radius-${id}`);
       newLayers.push(`search-radius-${id}`);
     }
@@ -199,7 +201,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       source: `points-${id}`,
       paint: {
         'circle-radius': circleRadius,
-        'circle-color': '#F16521',
+        'circle-color': circleColor,
         'circle-stroke-color': 'white',
         'circle-stroke-width': strokeWidth,
       },

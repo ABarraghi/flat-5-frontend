@@ -31,7 +31,7 @@ export const FormDateRangePicker = ({ name, rules, required, placeholder, disabl
         control={control as any}
         rules={rules}
         render={({ field }) => (
-          <div className={cn('relative max-w-[250px]', customClass)}>
+          <div className={cn('relative', customClass)}>
             <RangePicker
               {...field}
               format={dateFormat}

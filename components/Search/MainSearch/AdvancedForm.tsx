@@ -9,6 +9,7 @@ import {
 } from '@/types/search';
 import { useFormContext } from 'react-hook-form';
 import { toggleSelectingItem } from '@/utils/common';
+import { Form } from '@/components/common/Form';
 
 const AdvancedForm = () => {
   const { setValue, watch } = useFormContext();
@@ -26,6 +27,23 @@ const AdvancedForm = () => {
   };
   return (
     <div className="py-10 text-[16px] font-normal">
+      <div className="pb-5 text-[10px] font-bold tracking-[5%] text-black/50 lg:text-[16px]">
+        <span className="text-[10px] uppercase text-[#2E2F44] opacity-50 lg:text-[12px]">Broker</span>
+      </div>
+      <div className="flex flex-wrap items-center gap-x-5 ">
+        <Form.Select
+          name="broker"
+          defaultValue="all"
+          customClass="w-[200px]"
+          options={[
+            { key: 'all', label: 'All' },
+            { key: 'coyote', label: 'Coyote' },
+            { key: 'dat', label: 'Dat' },
+            { key: 'truck_stop', label: 'TruckStop' },
+          ]}
+        />
+        <Form.Checkbox name="isReturnOrigin" label="Return origin data" />
+      </div>
       <TagList<EquipmentType>
         label="Equipment Type"
         selectedTags={equipmentTypes}

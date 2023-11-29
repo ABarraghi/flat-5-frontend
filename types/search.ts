@@ -8,7 +8,7 @@ export interface SearchForm {
   specialNotes?: SpecialNote[];
   shipmentFormats?: ShipmentFormat[];
   broker: 'all' | 'coyote' | 'dat' | 'truck_stop';
-  isReturnDraw: boolean;
+  isReturnOrigin: boolean;
 }
 
 export interface Locations {

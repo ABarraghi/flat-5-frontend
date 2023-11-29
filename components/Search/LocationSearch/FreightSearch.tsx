@@ -9,7 +9,7 @@ interface FreightSearchProps {
 }
 const FreightSearch = ({ setLocations, refreshData }: FreightSearchProps) => {
   const { control } = useFormContext();
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, insert } = useFieldArray({
     control,
     name: 'freights',
     rules: {
@@ -44,17 +44,36 @@ const FreightSearch = ({ setLocations, refreshData }: FreightSearchProps) => {
       refreshData();
     }
   };
+  const handleInsertAt = (index: number) => {
+    insert(index + 1, [
+      {
+        title: '',
+        location: {
+          coordinate: { latitude: 0, longitude: 0 },
+          city: '',
+          state: '',
+          country: '',
+          postCode: '',
+          address: '',
+        },
+        radius: 0,
+        stopDate: null,
+        isPickedLoad: false,
+      },
+    ]);
+  };
   return (
     <>
       <ul>
         {fields.map((item, index) => (
-          <li key={index}>
+          <li key={item.id}>
             <LocationItemNew
               index={index}
               remove={handleRemove}
               name="freights"
               setLocations={setLocations}
               length={fields.length}
+              handleInsertAt={handleInsertAt}
             />
           </li>
         ))}

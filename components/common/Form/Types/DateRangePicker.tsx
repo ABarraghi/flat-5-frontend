@@ -36,7 +36,7 @@ export const FormDateRangePicker = ({ name, rules, required, placeholder, disabl
               {...field}
               format={dateFormat}
               disabledDate={disabledDate}
-              className="h-[40px] w-full rounded-lg text-[12px] font-normal xl:h-[52px]"
+              className="h-[40px] w-full min-w-[220px] rounded-lg text-[12px] font-normal xl:h-[52px]"
               allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
             />
             {error && <CustomErrorMessage message={error} />}

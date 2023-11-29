@@ -28,6 +28,13 @@ export function formatUsPrice(price: number, minimumFractionDigits = 0, maximumF
   return formatter.format(price).replace('$', '');
 }
 
+export function formatDistance(distance: number) {
+  if (distance) {
+    return Math.round(distance);
+  }
+  return 0;
+}
+
 export function gettingZoomLevel(distance: number = 288895): number {
   const data: Record<string, number> = {
     '19': 1128.49722,

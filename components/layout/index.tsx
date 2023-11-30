@@ -40,7 +40,8 @@ const Layout = ({
           </div>
         </div>
       </header>
-      <main className={cn('flex w-full flex-col gap-5 pb-20', isHome ? '' : ' p-2')}>{children}</main>
+      {/* <main className={cn('flex w-full flex-col gap-5 pb-20', isHome ? '' : ' p-2')}>{children}</main> */}
+      <main className={cn('flex w-full flex-col gap-5 overflow-scroll pb-20', isHome ? '' : ' p-2')}>{children}</main>
       <Footer />
     </div>
   );

@@ -310,7 +310,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
 
   return (
     // <div className="xl-pr-5 container fixed h-[calc(100vh_-_10rem)] w-full max-w-[58vw] pr-3">
-    <div className="h-[600px] sm:container sm:fixed sm:h-[calc(100vh_-_10rem)] sm:w-full sm:max-w-[58vw] sm:pr-3 xl:pr-5">
+    <div className="h-[600px] sm:container sm:fixed sm:h-[calc(100vh_-_10rem)] sm:w-full sm:max-w-[58vw] sm:pr-3 xl:pr-3">
       <div ref={mapContainer} className="h-full rounded-xl" />
     </div>
   );

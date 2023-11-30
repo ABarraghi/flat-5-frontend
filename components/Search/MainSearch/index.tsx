@@ -231,7 +231,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
                 ]}
                 customClass="py-5"
               />
-              <div className="flex flex-wrap items-center gap-5 xl:gap-10">
+              <div className="flex flex-wrap items-center gap-5 pb-5 xl:gap-10">
                 <Tooltip
                   title="No predefined shipment for this route. Search for available freight on this route."
                   color={'#393978'}

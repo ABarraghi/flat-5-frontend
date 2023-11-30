@@ -31,7 +31,7 @@ const CARRIER_LOGOS = [
 const CarrierLogo = ({ name, classNames = '' }: CarrierLogoProps) => {
   const logo = CARRIER_LOGOS.find((logo) => logo.name === name);
   return (
-    <div className="ml-1 rounded-xl">
+    <div className="ml-1 flex flex-none flex-wrap rounded-xl">
       <Image className={cn(classNames || 'h-6 w-6')} src={logo?.url || CoyoteLogo} alt={name}></Image>
     </div>
   );

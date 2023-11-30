@@ -3,6 +3,7 @@ import React, { type Dispatch, type SetStateAction, useEffect, useRef, useState 
 import { type LocationBase } from '@/types/search';
 import { gettingZoomLevel } from '@/utils/common';
 import { type LoadPoint } from '@/types/load';
+import 'mapbox-gl/dist/mapbox-gl.css';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const turf = require('@turf/turf');
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';

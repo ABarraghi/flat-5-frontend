@@ -9,7 +9,7 @@ export const GenerateStepRoute = (loads: LoadBase[] = [], routeType: string, loc
       className: 'main-points',
       title: <span className="text-lg font-medium text-[#393978] xl:text-xl">{locations[0].address}</span>,
       subTitle: '',
-      description: <div className="h-10" />,
+      description: <div className="h-5 xl:h-10" />,
       icon: (
         <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[#393978]">
           <span className="text-[16px] font-normal text-white">{locations[0].title}</span>
@@ -46,7 +46,7 @@ export const GenerateStepRoute = (loads: LoadBase[] = [], routeType: string, loc
         className: 'main-points',
         title: <span className="text-xl font-medium text-[#393978]">{location.address}</span>,
         subTitle: '',
-        description: <div className="h-10" />,
+        description: <div className="h-5 xl:h-10" />,
         icon: (
           <div className=" flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[#393978]">
             <span className="text-[16px] font-normal text-white">{location.title}</span>

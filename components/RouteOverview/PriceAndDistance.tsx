@@ -16,7 +16,7 @@ const PriceAndDistance = ({ price, distance, customClass }: PriceAndDistanceProp
         <DollarCircleFilled />
         <span className="ml-2">${formatUsPrice(price)}</span>
       </div>
-      <div className={cn('distance ml-5 flex items-center xl:ml-10')}>
+      <div className={cn('distance flex items-center')}>
         <DistanceIcon />
         <span className="ml-2 font-light">{formatDistance(distance)} mi</span>
       </div>

@@ -19,14 +19,14 @@ const StepRouteItem = ({ brokerName = 'Coyote', load }: StepRouteItemProps) => {
   };
   return (
     <div className={cn('rounded-xl bg-[#F2F2F7] text-[#393978]')}>
-      <div className="flex p-6">
-        <BranchLogo name={brokerName} classNames="h-14 w-14" />
+      <div className="flex p-3 xl:p-6">
+        <BranchLogo name={brokerName} classNames="h-10 w-10 xl:h-14 xl:w-14" />
         <div className="my-auto pl-5 ">
           <span className="text-lg font-normal xl:text-xl">{load?.shipperInfo?.name}</span>
           <PriceAndDistance
             price={Math.floor(load?.amount || 0)}
             distance={Math.floor(load?.distance || 0)}
-            customClass={'text-md lg:text-base'}
+            customClass={'text-md xl:text-base flex-wrap gap-2 xl:gap-5'}
             isMock={false}
           />
         </div>

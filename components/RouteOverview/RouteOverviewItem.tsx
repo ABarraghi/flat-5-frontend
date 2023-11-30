@@ -70,7 +70,7 @@ const RouteOverviewItem = ({
       onClick={() => handleClick(id)}
     >
       <div className="flex justify-between px-6 pt-6 text-[#393978]">
-        <PriceAndDistance price={data.amount ?? 0} distance={data.distance ?? 0} />
+        <PriceAndDistance price={data.amount ?? 0} distance={data.distance ?? 0} customClass="gap-5 xl:gap-10" />
 
         <div className="flex">
           {data.brokers?.map((logo, index) => (

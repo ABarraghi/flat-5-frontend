@@ -27,7 +27,7 @@ const DetailRoute = ({ isBooked, handleOpenDetail, item, locations }: DetailRout
       <div className="flex flex-wrap items-center justify-between gap-5 border-b px-5 py-2 text-[#393978]">
         <div className="flex gap-5">
           <LeftOutlined className="stroke-[#393978] stroke-[50px]" onClick={onBack} />
-          <PriceAndDistance price={amount} distance={distance} customClass="text-lg xl:text-2xl" />
+          <PriceAndDistance price={amount} distance={distance} customClass="text-lg xl:text-2xl gap-5 xl:gap-10" />
         </div>
 
         {!isBookedRoute ? (

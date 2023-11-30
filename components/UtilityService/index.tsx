@@ -10,10 +10,10 @@ const UtilityService = ({ icon, title, content }: UtilityServiceProps) => {
     <div className="flex flex-col items-center justify-around">
       <div>{icon}</div>
       <div>
-        <span className="font-medium text-[#393978]">{title}</span>
+        <span className="text-[12px] font-medium text-[#393978] md:text-base">{title}</span>
       </div>
       <div>
-        <span className="font-thin">{content}</span>
+        <span className="hidden font-thin sm:block">{content}</span>
       </div>
       <div />
     </div>

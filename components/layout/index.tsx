@@ -17,19 +17,19 @@ const Layout = ({
   isHome?: boolean;
 }) => {
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
+    <div className={cn('flex h-screen flex-col', !isHome && 'overflow-hidden')}>
       <header className={cn(isHome ? 'fixed z-10 w-full' : 'border-grey w-full p-2 text-center')}>
         <div
           className={cn(
-            'top-1 rounded-xl px-5 py-2 md:px-0',
+            'top-1 rounded-xl px-2 py-2 md:px-0 md:px-5',
             isHome ? 'bg-transparent text-white' : 'bg-white text-black',
           )}
         >
-          <div className="m-auto grid w-full grid-cols-2 px-5">
+          <div className="m-auto grid w-full grid-cols-2 px-2 md:px-5">
             <Link href="/" className="w-fit">
               <Image src={isHome ? LogoHome : LogoImage} alt="logo" />
             </Link>
-            <div className="flex items-center justify-end gap-4">
+            <div className="flex items-center justify-end gap-4 text-[10px] lg:text-base">
               <Link href="#" className="h-fit">
                 About
               </Link>

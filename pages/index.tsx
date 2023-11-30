@@ -13,7 +13,7 @@ export default function Home() {
             <Button
               name="Search Available Loads"
               wrapperClass="rounded-md bg-[#F16521]"
-              contentClass="text-white text-[16px] tracking-tight sm:tracking-normal normal-case"
+              contentClass="text-white text-[12px] md:text-[16px] tracking-tight sm:tracking-normal normal-case"
               internalHref={'/truck-routing'}
             >
               &nbsp; <ArrowRightIcon className="h-5 w-5 text-white" />

@@ -14,9 +14,11 @@ export default function TruckRouting() {
 
   return (
     <Layout>
-      <div className="flex w-full gap-x-3  bg-transparent lg:items-start">
+      {/* <div className="flex w-full gap-x-3  bg-transparent lg:items-start"> */}
+      <div className="flex w-full flex-col gap-x-3 gap-y-3 bg-transparent sm:flex-row sm:gap-y-0 lg:items-start">
         {(isLoading || isMapLoading) && <WrapperLoadingIcon title="" />}
-        <div className="h-full max-h-[calc(100vh_-_10rem)] min-h-[calc(100vh_-_10rem)] w-5/12 overflow-scroll rounded-xl bg-white font-normal text-[#393978] ">
+        {/* <div className="h-full max-h-[calc(100vh_-_10rem)] min-h-[calc(100vh_-_10rem)] w-full overflow-scroll rounded-xl bg-white font-normal text-[#393978] sm:w-5/12 "> */}
+        <div className="h-[50vh] max-h-[calc(100vh_-_10rem)] w-full overflow-scroll rounded-xl bg-white font-normal text-[#393978] sm:h-full sm:h-full sm:min-h-[calc(100vh_-_10rem)] sm:w-5/12 ">
           <MainSearch
             setLocations={setLocations}
             setPoints={setPoints}
@@ -25,7 +27,8 @@ export default function TruckRouting() {
             isLoading={isLoading}
           />
         </div>
-        <div className="col-span-4 w-7/12 rounded-xl bg-white text-2xl text-[#393978]">
+        {/* <div className="col-span-4 w-full rounded-xl bg-white  text-2xl text-[#393978] sm:w-7/12"> */}
+        <div className="h-[50vh] w-full overflow-scroll rounded-xl bg-white text-2xl text-[#393978] sm:h-full sm:w-7/12">
           <MapContainer locations={locations} points={points} setIsLoading={setIsMapLoading} />
         </div>
       </div>

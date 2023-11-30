@@ -28,7 +28,7 @@ export default function TruckRouting() {
           />
         </div>
         {/* <div className="col-span-4 w-full rounded-xl bg-white  text-2xl text-[#393978] sm:w-7/12"> */}
-        <div className="h-[50vh] w-full overflow-scroll rounded-xl bg-white text-2xl text-[#393978] sm:h-full sm:w-7/12">
+        <div className="h-[50vh] w-full overflow-scroll rounded-xl text-2xl text-[#393978] sm:h-full sm:w-7/12">
           <MapContainer locations={locations} points={points} setIsLoading={setIsMapLoading} />
         </div>
       </div>

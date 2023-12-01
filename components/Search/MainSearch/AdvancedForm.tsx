@@ -11,7 +11,10 @@ import { useFormContext } from 'react-hook-form';
 import { toggleSelectingItem } from '@/utils/common';
 import { Form } from '@/components/common/Form';
 
-const AdvancedForm = () => {
+interface AdvancedFormProps {
+  routeOption: string;
+}
+const AdvancedForm = ({ routeOption }: AdvancedFormProps) => {
   const { setValue, watch } = useFormContext();
   const equipmentTypes = watch('equipmentTypes');
   const specialNotes = watch('specialNotes');
@@ -35,14 +38,22 @@ const AdvancedForm = () => {
           name="broker"
           defaultValue="all"
           customClass="w-[200px]"
-          options={[
-            { key: 'all', label: 'All' },
-            { key: 'coyote', label: 'Coyote Only' },
-            { key: 'dat', label: 'Dat Only' },
-            { key: 'truck_stop', label: 'TruckStop Only' },
-          ]}
+          options={
+            routeOption === 'routeMyTruck'
+              ? [
+                  { key: 'all', label: 'All' },
+                  { key: 'coyote', label: 'Coyote Only' },
+                  { key: 'dat', label: 'Dat Only' },
+                ]
+              : [
+                  { key: 'all', label: 'All' },
+                  { key: 'coyote', label: 'Coyote Only' },
+                  { key: 'dat', label: 'Dat Only' },
+                  { key: 'truck_stop', label: 'TruckStop Only' },
+                ]
+          }
         />
-        <Form.Checkbox name="isReturnOrigin" label="Return origin data" />
+        {routeOption !== 'routeMyTruck' && <Form.Checkbox name="isReturnOrigin" label="Return origin data" />}
       </div>
       <TagList<EquipmentType>
         label="Equipment Type"

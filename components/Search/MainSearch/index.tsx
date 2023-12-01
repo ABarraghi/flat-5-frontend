@@ -118,8 +118,9 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
           },
         };
       });
+    const brokersAll = watchRouteOption !== 'routeMyTruck' ? ['coyote', 'dat', 'truck_stop'] : ['coyote', 'dat'];
     return {
-      brokers: data.broker === 'all' ? ['coyote', 'dat', 'truck_stop'] : [data.broker],
+      brokers: data.broker === 'all' ? brokersAll : [data.broker],
       isReturnOrigin: data.isReturnOrigin,
       stopPoints,
       equipmentType: data.equipmentTypes?.length > 0 ? data.equipmentTypes[0] : '',
@@ -262,7 +263,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
                 />
               </span>
             </div>
-            {isOpenAdvanced && <AdvancedForm />}
+            {isOpenAdvanced && <AdvancedForm routeOption={watchRouteOption} />}
             <div className="flex justify-end py-5">
               <Button
                 name="Search"

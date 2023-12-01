@@ -221,3 +221,9 @@ li:last-child:before {
     margin: 12px;
     border-radius: 4px;
 }
+
+@media(max-width: 576px) {
+    .ant-picker-panels {
+        flex-direction: column;
+    }
+}

@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://flat-5-frontend.vercel.app/_next/static/media/logo.522a8156.svg" width="200" alt="Nest Logo" /></a>
+  <a href="http://flat-5-frontend.vercel.app" target="blank"><img src="https://flat-5-frontend.vercel.app/_next/static/media/logo.522a8156.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
 [circleci-image]: https://flat-5-frontend.vercel.app/_next/static/media/logo.522a8156.svg

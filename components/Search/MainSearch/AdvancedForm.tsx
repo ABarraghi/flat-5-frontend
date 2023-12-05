@@ -41,7 +41,6 @@ const AdvancedForm = ({ routeOption }: AdvancedFormProps) => {
           options={
             routeOption === 'routeMyTruck'
               ? [
-                  { key: 'all', label: 'All' },
                   { key: 'coyote', label: 'Coyote Only' },
                   { key: 'dat', label: 'Dat Only' },
                 ]

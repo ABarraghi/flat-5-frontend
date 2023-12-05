@@ -29,7 +29,7 @@ const Layout = ({
             <Link href="/" className="w-fit">
               <Image src={isHome ? LogoHome : LogoImage} alt="logo" />
             </Link>
-            <div className="flex items-center justify-end gap-4 text-[10px] lg:text-base">
+            <div className="flex items-center justify-end gap-4 text-[12px] md:text-base">
               <Link href="#" className="h-fit">
                 About
               </Link>

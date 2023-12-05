@@ -214,8 +214,21 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
   useEffect(() => {
     if (watchRouteOption) {
       setNoDataDisplay('');
+      switch (watchRouteOption) {
+        case 'standard':
+          methods.setValue('broker', 'all');
+          break;
+        case 'enRoute':
+          methods.setValue('broker', 'all');
+          break;
+        case 'routeMyTruck':
+          methods.setValue('broker', 'coyote');
+          break;
+        default:
+          break;
+      }
     }
-  }, [watchRouteOption]);
+  }, [methods, watchRouteOption]);
 
   return (
     <>
@@ -232,7 +245,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
                 ]}
                 customClass="py-5"
               />
-              <div className="flex flex-wrap items-center gap-5 pb-5 xl:gap-10">
+              <div className="flex flex-wrap items-center gap-5 pb-5 xl:gap-10 xl:pb-0">
                 <Tooltip
                   title="No predefined shipment for this route. Search for available freight on this route."
                   color={'#393978'}
@@ -243,7 +256,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
                   </div>
                 </Tooltip>
                 <Tooltip
-                  title="Shipment booked  on this route. No additional search needed."
+                  title="Shipment booked on this route. No additional search needed."
                   color={'#393978'}
                   key={'full-tooltip'}
                 >

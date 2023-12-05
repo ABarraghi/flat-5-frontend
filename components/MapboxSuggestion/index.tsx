@@ -101,7 +101,7 @@ const MapboxSuggestion = ({ name, rules, error }: MapboxSuggestionProps) => {
         `,
                   }}
                 />
-                <EnvironmentFilled className="absolute bottom-0 right-1 top-0 z-10 mx-0 my-auto h-5 w-5 text-[#000] opacity-25" />
+                <EnvironmentFilled className="absolute bottom-0 right-1 top-0 z-10 mx-0 mb-auto mt-[11px] h-5 w-5 text-[#000] opacity-25 xl:mt-[16px]" />
               </>
               {error && <CustomErrorMessage message={error} />}
             </div>

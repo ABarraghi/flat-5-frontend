@@ -34,6 +34,7 @@ const RouteOverviewItem = ({
 }: RouteOverviewProps) => {
   const { id } = data;
   const [viaInfo, setViaInfo] = useState<string>('');
+  const [isShowFullLogo, setIsShowFullLogo] = useState<boolean>(false);
   const handleClick = (id: string) => {
     onChangeSelected(id);
   };
@@ -71,11 +72,15 @@ const RouteOverviewItem = ({
     >
       <div className="flex justify-between px-6 pt-6 text-[#393978]">
         <PriceAndDistance price={data.amount ?? 0} distance={data.distance ?? 0} customClass="gap-5 xl:gap-10" />
-
-        <div className="flex">
-          {data.brokers?.map((logo, index) => (
-            <BranchLogo key={index} name={logo} />
-          ))}
+        <div
+          className="flex items-center"
+          onMouseEnter={() => setIsShowFullLogo(true)}
+          onMouseLeave={() => setIsShowFullLogo(false)}
+        >
+          {data?.brokers && data.brokers.length > 5 && <span className="text-[10px]">{'<'}</span>}
+          {isShowFullLogo
+            ? data.brokers?.map((logo, index) => <BranchLogo key={index} name={logo} />)
+            : data.brokers?.slice(0, 5)?.map((logo, index) => <BranchLogo key={index} name={logo} />)}
         </div>
       </div>
       <div className="flex justify-between p-6 text-[16px]">

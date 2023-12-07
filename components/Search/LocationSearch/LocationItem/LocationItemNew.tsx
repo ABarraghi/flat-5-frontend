@@ -18,13 +18,22 @@ interface LocationItemNewProps {
   setLocations: Dispatch<SetStateAction<any>>;
   length: number;
   handleInsertAt: (value: number) => void;
+  routeOption: string;
 }
 
 const SuffixRadius = () => {
   return <span className="text-[12px] text-[#2E2F44] opacity-50">mi</span>;
 };
 
-const LocationItem = ({ name, index, remove, setLocations, length, handleInsertAt }: LocationItemNewProps) => {
+const LocationItem = ({
+  name,
+  index,
+  remove,
+  setLocations,
+  length,
+  handleInsertAt,
+  routeOption,
+}: LocationItemNewProps) => {
   const {
     watch,
     getValues,
@@ -107,17 +116,19 @@ const LocationItem = ({ name, index, remove, setLocations, length, handleInsertA
             error={(errors[`${name}`] as any)?.[`${index}`]?.stopDate?.message as string}
             rules={{ required: 'Required' }}
           />
-          <Form.InputNumber
-            name={`${name}.${index}.radius`}
-            label="Radius"
-            placeholder="Radius"
-            rules={{ required: 'Required', min: { value: 1, message: 'Required' } }}
-            suffix={<SuffixRadius />}
-            customClass="w-full xl:max-w-[150px]"
-            isDebounce={true}
-            error={(errors[`${name}`] as any)?.[`${index}`]?.radius?.message as string}
-            timeDebounce={1000}
-          />
+          {routeOption !== 'routeMyTruck' && (
+            <Form.InputNumber
+              name={`${name}.${index}.radius`}
+              label="Radius"
+              placeholder="Radius"
+              rules={{ required: 'Required', min: { value: 1, message: 'Required' } }}
+              suffix={<SuffixRadius />}
+              customClass="w-full xl:max-w-[150px]"
+              isDebounce={true}
+              error={(errors[`${name}`] as any)?.[`${index}`]?.radius?.message as string}
+              timeDebounce={1000}
+            />
+          )}
         </div>
         {index < length - 1 && (
           <div className="flex w-full justify-between">

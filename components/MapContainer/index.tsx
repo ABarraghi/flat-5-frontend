@@ -86,7 +86,7 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       return null;
     }
 
-    const zoomLevel = gettingZoomLevel(data.distance);
+    const zoomLevel = gettingZoomLevel(data.distance === 0 ? 1000 : data.distance);
     setZoom(zoomLevel);
     map.flyTo({
       zoom: zoomLevel - 3,

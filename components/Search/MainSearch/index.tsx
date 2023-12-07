@@ -100,6 +100,29 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
         );
       })
       .map((item: any) => {
+        const currentTime = dayjs();
+        let stopDateFrom = item.stopDate[0] ? dayjs(item.stopDate[0]) : undefined;
+        if (stopDateFrom && stopDateFrom.format('DD/MM/YYYY') === currentTime.format('DD/MM/YYYY')) {
+          stopDateFrom = stopDateFrom
+            ? stopDateFrom
+                .set('hour', currentTime.hour())
+                .set('minute', currentTime.minute())
+                .set('second', currentTime.second())
+                .set('millisecond', currentTime.millisecond())
+                .add(2, 'minutes')
+            : undefined;
+        } else {
+          stopDateFrom = stopDateFrom ? dayjs(stopDateFrom.startOf('day')) : undefined;
+        }
+
+        let stopDateTo = item.stopDate[1] ? dayjs(item.stopDate[1]) : undefined;
+        stopDateTo = stopDateTo
+          ? stopDateTo
+              .set('hour', currentTime.hour())
+              .set('minute', currentTime.minute())
+              .set('second', currentTime.second())
+              .set('millisecond', currentTime.millisecond())
+          : undefined;
         return {
           location: {
             coordinates: {
@@ -113,8 +136,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
           hadLoad: item.isPickedLoad,
           radius: item.radius ? parseInt(String(item.radius)) : 0,
           stopDate: {
-            from: item.stopDate[0] ? dayjs(item.stopDate[0]).startOf('day') : undefined,
-            to: item.stopDate[1] ? dayjs(item.stopDate[1]).endOf('day') : undefined,
+            from: item.stopDate[0] ? dayjs(stopDateFrom) : undefined,
+            to: item.stopDate[1] ? dayjs(stopDateTo).endOf('day') : undefined,
           },
         };
       });
@@ -223,6 +246,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
           break;
         case 'routeMyTruck':
           methods.setValue('broker', 'coyote');
+          locations = locations.map((location) => ({ ...location, radius: 0 }));
+          setLocations(locations);
           break;
         default:
           break;
@@ -267,8 +292,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
               </div>
             </div>
 
-            <FreightSearch setLocations={setLocations} refreshData={refreshData} />
-            <div className="flex items-center justify-between text-[16px] font-normal">
+            <FreightSearch setLocations={setLocations} refreshData={refreshData} routeOption={watchRouteOption} />
+            <div className="flex cursor-pointer items-center justify-between text-[16px] font-normal">
               <span className="flex items-center justify-between text-[#393978]" onClick={toggleCollapseAdvanceForm}>
                 {isOpenAdvanced ? 'Hide advanced options' : 'View advanced options'} &nbsp;
                 <ChevronDownIcon

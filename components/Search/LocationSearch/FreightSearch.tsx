@@ -6,8 +6,9 @@ import { type Dispatch, type SetStateAction, useCallback } from 'react';
 interface FreightSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
   refreshData: () => void;
+  routeOption: string;
 }
-const FreightSearch = ({ setLocations, refreshData }: FreightSearchProps) => {
+const FreightSearch = ({ setLocations, refreshData, routeOption }: FreightSearchProps) => {
   const { control } = useFormContext();
   const { fields, append, remove, insert } = useFieldArray({
     control,
@@ -75,6 +76,7 @@ const FreightSearch = ({ setLocations, refreshData }: FreightSearchProps) => {
               setLocations={setLocations}
               length={fields.length}
               handleInsertAt={handleInsertAt}
+              routeOption={routeOption}
             />
           </li>
         ))}

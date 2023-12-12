@@ -86,13 +86,15 @@ const MapContainer = ({ points, locations, setIsLoading }: MapContainerProps) =>
       return null;
     }
 
-    const distanceZoom = data.distance === 0 ? 4622324 : data.distance;
-    const zoomLevel = gettingZoomLevel(distanceZoom);
-    setZoom(zoomLevel);
-    map.flyTo({
-      zoom: zoomLevel - 3,
-      essential: true,
-    });
+    if (data.distance) {
+      const zoomLevel = gettingZoomLevel(data.distance);
+      setZoom(zoomLevel);
+      map.flyTo({
+        zoom: zoomLevel - 3,
+        essential: true,
+      });
+    }
+
     // otherRoutes.forEach((tempRoute, index: number) => {
     //   const dataRoute = tempRoute.geometry.coordinates;
     //   drawRoute(map, dataRoute, false, index + 1);

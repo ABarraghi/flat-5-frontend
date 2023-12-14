@@ -285,7 +285,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       const sortedRoutes = routes.slice().sort((a, b) => {
         const keyA = keyFunc(a);
         const keyB = keyFunc(b);
-        if (!keyA || !keyB) return 0;
+        if (keyA === undefined || keyB === undefined) return 0;
         return sortCondition ? keyA - keyB : keyB - keyA;
       });
 

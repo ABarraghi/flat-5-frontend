@@ -33,7 +33,7 @@ const Button = (props: ControlButtonProps) => {
   return (
     <ButtonWrapper internalHref={props.internalHref || ''}>
       <button
-        className={cn('flex min-w-[100px] items-center justify-center p-2 transition-all lg:p-4', props.wrapperClass, {
+        className={cn('flex min-w-[100px] items-center justify-center p-2 transition-all lg:p-3', props.wrapperClass, {
           'cursor-not-allowed opacity-40 hover:shadow-none': props.disabled || props.loading,
         })}
         type={props.type || 'button'}

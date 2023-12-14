@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import Button from '@/components/common/Button';
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import cn from 'classnames';
-import { type Dispatch, type SetStateAction, useCallback, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import AdvancedForm from '@/components/Search/MainSearch/AdvancedForm';
 import RouteOverview from '@/components/RouteOverview';
 import { ToastContainer, toast } from 'react-toastify';
@@ -17,7 +17,8 @@ import dayjs from 'dayjs';
 import FullTruckIcon from '@/components/common/icons/FullTruckIcon';
 import EmptyTruckIcon from '@/components/common/icons/EmptyTruckIcon';
 import { type LoadPoint } from '@/types/load';
-import { Tooltip } from 'antd';
+import { Select, Tooltip } from 'antd';
+import { SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
 
 interface MainSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
@@ -26,6 +27,13 @@ interface MainSearchProps {
   setIsLoading: Dispatch<SetStateAction<any>>;
   isLoading: boolean;
 }
+
+interface RoutesRefType {
+  routes: RouteInfo[];
+  currentSortCondition: boolean;
+  currentSortType: string;
+}
+
 const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoading }: MainSearchProps) => {
   const [isOpenAdvanced, setIsOpenAdvanced] = useState(false);
   const [isEnableRouteOverview, setIsEnableRouteOverview] = useState(false);
@@ -37,6 +45,14 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
   const [selectedRoute, setSelectedRoute] = useState<RouteInfo | undefined>();
   const [returnDate, setReturnDate] = useState<string>('');
   const [noDataDisplay, setNoDataDisplay] = useState<string>('');
+  const [sortType, setSortType] = useState<string>('rate');
+  const [sortCondition, setSortCondition] = useState<boolean>(true);
+  const routesRef = useRef<RoutesRefType>({
+    routes: [],
+    currentSortCondition: true,
+    currentSortType: 'rate',
+  });
+
   const handleOpenDetail = (isOpen: boolean) => {
     setIsOpenDetail(isOpen);
   };
@@ -199,7 +215,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
         const returnDate = dayjs(lastDateTo).format('MM/DD/YYYY');
         setReturnDate(returnDate);
       }
-
+      routesRs = sortRoutes(routesRs);
       setRoutes(routesRs);
       if (routesRs.length > 0) {
         handleChangeRouteOverview(routesRs[0].id, routesRs);
@@ -227,7 +243,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
   useEffect(() => {
     if (watchRouteOption && originalData) {
       refreshData();
-      const routeRs = originalData.filter((route) => route.type === watchRouteOption);
+      let routeRs = originalData.filter((route) => route.type === watchRouteOption);
+      routeRs = sortRoutes(routeRs);
       setRoutes(routeRs);
       if (routeRs.length > 0) {
         handleChangeRouteOverview(routeRs[0].id, routeRs);
@@ -254,6 +271,49 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       }
     }
   }, [methods, watchRouteOption]);
+  const sortRoutes = useCallback(
+    (routes: RouteInfo[]): RouteInfo[] => {
+      const keyFunc = (route: RouteInfo) => {
+        if (sortType === 'mile') {
+          return route.distance;
+        } else if (sortType === 'rate') {
+          return route.amount;
+        }
+        return route.amount;
+      };
+
+      const sortedRoutes = routes.slice().sort((a, b) => {
+        const keyA = keyFunc(a);
+        const keyB = keyFunc(b);
+        if (!keyA || !keyB) return 0;
+        return sortCondition ? keyA - keyB : keyB - keyA;
+      });
+
+      return sortedRoutes;
+    },
+    [sortCondition, sortType],
+  );
+
+  useEffect(() => {
+    const shouldSortRoutes = () => {
+      return (
+        routes.length > 0 &&
+        (sortCondition !== routesRef.current.currentSortCondition || sortType !== routesRef.current.currentSortType)
+      );
+    };
+
+    if (shouldSortRoutes()) {
+      const newRoutes = sortRoutes(routes);
+      routesRef.current = {
+        routes: newRoutes,
+        currentSortCondition: sortCondition,
+        currentSortType: sortType,
+      };
+
+      setRoutes(newRoutes);
+      handleChangeRouteOverview(newRoutes[0].id, newRoutes);
+    }
+  }, [handleChangeRouteOverview, routes, sortCondition, sortRoutes, sortType]);
 
   return (
     <>
@@ -319,14 +379,34 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
             <div className="flex justify-center p-5">{noDataDisplay}</div>
           )}
           {isEnableRouteOverview && routes.length > 0 && (
-            <RouteOverview
-              setIsOpenDetail={setIsOpenDetail}
-              routes={routes}
-              handleViewDetailRoute={handleViewDetailRoute}
-              handleChangeRouteOverview={handleChangeRouteOverview}
-              selectedRouteId={selectedRoute?.id || ''}
-              returnDate={returnDate}
-            />
+            <>
+              <div className="border- ml-5 mr-5 flex items-center justify-between border-b-2 border-[#F16521]/50 pb-3">
+                <div className="text-lg text-[#F16521]">{routes.length} routes</div>
+                <div className="flex items-center">
+                  <span className="text-sm">Sort by: &nbsp;</span>
+                  <Select
+                    defaultValue="rate"
+                    style={{ width: 120 }}
+                    onChange={(value) => setSortType(value)}
+                    options={[
+                      { value: 'rate', label: 'Rate' },
+                      { value: 'mile', label: 'Mile' },
+                    ]}
+                  />
+                  <div className="cursor-pointer" onClick={() => setSortCondition((prevState) => !prevState)}>
+                    {sortCondition ? <SortAscendingOutlined /> : <SortDescendingOutlined />}
+                  </div>
+                </div>
+              </div>
+              <RouteOverview
+                setIsOpenDetail={setIsOpenDetail}
+                routes={routes}
+                handleViewDetailRoute={handleViewDetailRoute}
+                handleChangeRouteOverview={handleChangeRouteOverview}
+                selectedRouteId={selectedRoute?.id || ''}
+                returnDate={returnDate}
+              />
+            </>
           )}
         </>
       )}

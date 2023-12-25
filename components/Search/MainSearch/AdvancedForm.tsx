@@ -14,6 +14,7 @@ import { Form } from '@/components/common/Form';
 interface AdvancedFormProps {
   routeOption: string;
 }
+
 const AdvancedForm = ({ routeOption }: AdvancedFormProps) => {
   const { setValue, watch } = useFormContext();
   const equipmentTypes = watch('equipmentTypes');
@@ -60,18 +61,18 @@ const AdvancedForm = ({ routeOption }: AdvancedFormProps) => {
         tags={EQUIPMENT_TYPES}
         onTagChange={handleChangeEquipmentTypes}
       />
-      <TagList<SpecialNote>
-        label="Specials Notes"
-        selectedTags={specialNotes}
-        tags={SPECIAL_NOTES}
-        onTagChange={handleChangeSpecialNotes}
-      />
-      <TagList<ShipmentFormat>
-        label="Shipment Format"
-        selectedTags={shipmentFormats}
-        tags={SHIPMENT_FORMATS}
-        onTagChange={handleChangeShipmentFormats}
-      />
+      {/* <TagList<SpecialNote> */}
+      {/*  label="Specials Notes" */}
+      {/*  selectedTags={specialNotes} */}
+      {/*  tags={SPECIAL_NOTES} */}
+      {/*  onTagChange={handleChangeSpecialNotes} */}
+      {/* /> */}
+      {/* <TagList<ShipmentFormat> */}
+      {/*  label="Shipment Format" */}
+      {/*  selectedTags={shipmentFormats} */}
+      {/*  tags={SHIPMENT_FORMATS} */}
+      {/*  onTagChange={handleChangeShipmentFormats} */}
+      {/* /> */}
     </div>
   );
 };

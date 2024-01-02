@@ -8,7 +8,11 @@ interface DetailDescriptionProps {
 
 const convertDate = (dateTime: string) => {
   if (dateTime !== 'DAILY') {
-    return dayjs(dateTime).format('MM/DD/YYYY HH:mm');
+    if (dayjs(dateTime).isValid()) {
+      return dayjs(dateTime).format('MM/DD/YYYY HH:mm');
+    } else {
+      return dateTime;
+    }
   } else {
     return 'DAILY';
   }

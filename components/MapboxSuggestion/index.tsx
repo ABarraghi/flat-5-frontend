@@ -64,6 +64,7 @@ const MapboxSuggestion = ({ name, rules, error }: MapboxSuggestionProps) => {
               <>
                 {/* @ts-expect-error Server Component */}
                 <SearchBox
+                  options={{ limit: 10 }}
                   accessToken={token}
                   onRetrieve={handleRetrieve}
                   placeholder="Enter Location"

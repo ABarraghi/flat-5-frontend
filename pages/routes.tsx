@@ -18,7 +18,7 @@ export default function TruckRouting() {
       <div className="flex w-full flex-col gap-x-3 gap-y-3 bg-transparent sm:flex-row sm:gap-y-0 lg:items-start">
         {(isLoading || isMapLoading) && <WrapperLoadingIcon title="" />}
         {/* <div className="h-full max-h-[calc(100vh_-_10rem)] min-h-[calc(100vh_-_10rem)] w-full overflow-scroll rounded-xl bg-white font-normal text-[#393978] sm:w-5/12 "> */}
-        <div className="h-[50vh] max-h-[calc(100vh_-_10rem)] w-full overflow-scroll rounded-xl bg-white font-normal text-[#393978] sm:h-full sm:h-full sm:min-h-[calc(100vh_-_10rem)] sm:w-5/12 ">
+        <div className="h-[50vh] max-h-[calc(100vh_-_10rem)] w-full overflow-scroll rounded-xl bg-white font-normal text-[#393978] sm:h-full sm:min-h-[calc(100vh_-_10rem)] sm:w-5/12 ">
           <MainSearch
             setLocations={setLocations}
             setPoints={setPoints}

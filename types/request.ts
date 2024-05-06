@@ -1,4 +1,5 @@
-import { type Coordinate } from '@/types/common';
+import { type BrokerName, type Coordinate } from '@/types/common';
+import { type Stop, type LoadBase } from './load';
 
 export interface SearchLoadRequest {
   stopPoints: StopPointRequest[];
@@ -13,13 +14,26 @@ export interface StopPointRequest {
   stopDate: StopDateRequest;
   hadLoad: boolean;
 }
+
 export interface LocationRequest {
   coordinates: Coordinate;
   city?: string;
   state?: string;
   country?: string;
 }
+
 export interface StopDateRequest {
   from?: string;
   to?: string;
+}
+
+export interface BookLoadRequest {
+  broker: BrokerName;
+  loadId: string;
+}
+
+export interface CoyoteBookLoadRequest {
+  carrierId?: string;
+  load: LoadBase;
+  stops: Stop[];
 }

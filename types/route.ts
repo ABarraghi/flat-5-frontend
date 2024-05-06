@@ -1,5 +1,7 @@
 import { type LoadBase } from '@/types/load';
 
+export type RouteType = 'standard' | 'enRoute' | 'routeMyTruck';
+
 export interface RouteInfo {
   id: string;
   distance?: number;
@@ -14,7 +16,7 @@ export interface RouteInfo {
   deadheadUnit?: string;
   directions?: string;
   brokers?: string[];
-  type: 'standard' | 'enRoute' | 'routeMyTruck';
+  type: RouteType;
   differInfo?: {
     distance?: number;
     duration?: number;

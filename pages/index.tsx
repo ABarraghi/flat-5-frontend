@@ -7,7 +7,7 @@ import HomeBanner from '@/components/layout/HomeBanner';
 export default function Home() {
   return (
     <Layout isHome={true}>
-      <div className="absolute relative bottom-0 left-0 right-0 top-0 max-h-[100vh] w-full bg-transparent">
+      <div className="relative bottom-0 left-0 right-0 top-0 max-h-[100vh] w-full bg-transparent">
         <HomeBanner>
           <div className="absolute ">
             <Button

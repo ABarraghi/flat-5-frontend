@@ -1,4 +1,5 @@
-export type BrokerName = 'coyote' | 'land-star';
+export type BrokerName = 'coyote' | 'dat' | 'truck_stop';
+
 export interface Coordinate {
   latitude: number;
   longitude: number;

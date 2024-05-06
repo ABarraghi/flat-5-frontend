@@ -93,7 +93,7 @@ const RouteOverviewItem = ({
             className="flex h-full w-full min-w-[100px] items-center justify-center !rounded-b-lg !rounded-t-none border-none bg-[#F16521] p-4 text-[16px] text-white transition-all"
             onClick={onClickViewDetail}
           >
-            <span className="flex items-center items-center justify-center text-white" style={{ lineHeight: '100%' }}>
+            <span className="flex items-center justify-center text-white" style={{ lineHeight: '100%' }}>
               <span>View Details &nbsp; </span>
             </span>
             <ArrowRightIcon className="h-5 w-5 text-white" />

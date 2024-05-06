@@ -34,6 +34,25 @@ interface RoutesRefType {
   currentSortType: string;
 }
 
+const defaultFreights = (title: string) => {
+  return {
+    title,
+    location: {
+      coordinate: {
+        latitude: 0,
+        longitude: 0,
+      },
+      city: '',
+      state: '',
+      country: '',
+      postCode: '',
+    },
+    radius: 0,
+    stopDate: null,
+    isPickedLoad: false,
+  };
+};
+
 const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoading }: MainSearchProps) => {
   const [isOpenAdvanced, setIsOpenAdvanced] = useState(false);
   const [isEnableRouteOverview, setIsEnableRouteOverview] = useState(false);
@@ -59,40 +78,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
 
   const methods = useForm<SearchForm>({
     defaultValues: {
-      freights: [
-        {
-          title: 'A',
-          location: {
-            coordinate: {
-              latitude: 0,
-              longitude: 0,
-            },
-            city: '',
-            state: '',
-            country: '',
-            postCode: '',
-          },
-          radius: 0,
-          stopDate: null,
-          isPickedLoad: false,
-        },
-        {
-          title: 'B',
-          location: {
-            coordinate: {
-              latitude: 0,
-              longitude: 0,
-            },
-            city: '',
-            state: '',
-            country: '',
-            postCode: '',
-          },
-          radius: 0,
-          stopDate: null,
-          isPickedLoad: false,
-        },
-      ],
+      freights: [defaultFreights('A'), defaultFreights('B')],
       returnToOrigin: true,
       routeOption: 'standard',
       equipmentTypes: ['dry_van'],
@@ -199,6 +185,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       }
 
       const data = await getSearchLoad(requestData, watchRouteOption);
+
       let routesRs: RouteInfo[] = [];
       routesRs = data.map((route, index) => {
         const brokers = route.loads?.map((load) => load.broker);
@@ -240,6 +227,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
     setRoutes([]);
     setPoints([]);
   }, [setPoints]);
+
   useEffect(() => {
     if (watchRouteOption && originalData) {
       refreshData();
@@ -251,6 +239,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       }
     }
   }, [handleChangeRouteOverview, originalData, refreshData, watchRouteOption]);
+
   useEffect(() => {
     if (watchRouteOption) {
       setNoDataDisplay('');

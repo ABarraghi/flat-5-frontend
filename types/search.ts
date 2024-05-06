@@ -1,13 +1,14 @@
-import { type Coordinate } from '@/types/common';
+import { type BrokerName, type Coordinate } from '@/types/common';
+import { type RouteType } from './route';
 
 export interface SearchForm {
   freights: FreightBase[];
   returnToOrigin: boolean;
-  routeOption: string;
+  routeOption: RouteType;
   equipmentTypes?: string[];
   specialNotes?: SpecialNote[];
   shipmentFormats?: ShipmentFormat[];
-  broker: 'all' | 'coyote' | 'dat' | 'truck_stop';
+  broker: 'all' | BrokerName;
   isReturnOrigin: boolean;
 }
 

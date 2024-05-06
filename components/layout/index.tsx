@@ -21,7 +21,7 @@ const Layout = ({
       <header className={cn(isHome ? 'fixed z-10 w-full' : 'border-grey w-full p-2 text-center')}>
         <div
           className={cn(
-            'top-1 rounded-xl px-2 py-2 md:px-0 md:px-5',
+            'top-1 rounded-xl px-2 py-2 md:px-8 md:py-[14px]',
             isHome ? 'bg-transparent text-white' : 'bg-white text-black',
           )}
         >
@@ -29,7 +29,7 @@ const Layout = ({
             <Link href="/" className="w-fit">
               <Image src={isHome ? LogoHome : LogoImage} alt="logo" />
             </Link>
-            <div className="flex items-center justify-end gap-4 text-[12px] md:text-base">
+            <div className="flex items-center justify-end gap-14 text-[12px] md:text-base">
               <Link href="#" className="h-fit">
                 About
               </Link>

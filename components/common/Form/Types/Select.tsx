@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { type BaseField } from './type';
-import { Select } from 'antd';
 import classNames from 'classnames';
 
 type Props = BaseField & {
@@ -18,13 +18,22 @@ export const FormSelect = ({ name, rules, options, customClass, defaultValue }: 
       control={control}
       rules={rules}
       render={({ field }) => (
-        <Select {...field} defaultValue={defaultValue} className={classNames('h-[40px] xl:h-[52px]', customClass)}>
-          {options.map((option, idx) => (
-            <Select.Option value={option.key} key={option.key}>
-              {option.label}
-            </Select.Option>
-          ))}
-        </Select>
+        <div className={classNames('h-[40px] xl:h-[52px]', customClass)}>
+          <Select {...field} defaultValue={defaultValue}>
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Default is rate" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {options.map((option) => (
+                  <SelectItem value={option.key} key={option.key}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       )}
     />
   );

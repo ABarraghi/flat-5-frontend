@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
-import { Button } from 'antd';
+import { Button } from '@/components/ui/button';
 import CarrierLogo from '@/app/routes/components/common/CarrierLogo';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import PriceAndDistance from '@/app/routes/components/common/PriceAndDistance';

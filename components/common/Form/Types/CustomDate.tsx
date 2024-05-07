@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
-import { DatePicker, type DatePickerProps } from 'antd';
-import cn from 'classnames';
+import { useState } from 'react';
 import { type BaseField } from '@/components/common/Form/Types/type';
-import { type Dayjs } from 'dayjs';
+import { addDays, format } from 'date-fns';
+import { type DateRange } from 'react-day-picker';
+import { cn } from '@/utils/common';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+
+const DATE_FORMAT = 'MM/dd/yyyy';
 
 type Props = {
   multiline?: boolean;
@@ -12,53 +17,40 @@ type Props = {
 } & BaseField;
 
 const CustomDate = ({ customClass }: Props) => {
-  const [selectedRange, setSelectedRange] = useState<Array<Dayjs | null>>([]);
-  const [popoverVisible, setPopoverVisible] = useState(false);
-  const dateFormat = 'MM/DD/YYYY';
-
-  const handleDateChange = (dates: null | Array<Dayjs | null>) => {
-    if (dates && dates.length > 0) {
-      setSelectedRange([dates[0], !dates[1] ? dates[0] : dates[1]]);
-    } else {
-      setSelectedRange([]);
-    }
-    // if (!dates || dates.length === 0) {
-    //   setSelectedRange(null);
-    // } else {
-    //   // Set the range with the same start and end date when only one date is selected
-    //   setSelectedRange([dates[0], dates.length === 1 ? dates[0] : dates[1]]);
-    // }
-  };
-
-  const handleConfirm = () => {
-    if (selectedRange && selectedRange.length === 2) {
-      const startDateString = selectedRange[0]?.format('MM/DD/YYYY');
-      const endDateString = selectedRange[1]?.format('MM/DD/YYYY');
-      console.log(`Selected Range: ${startDateString} - ${endDateString}`);
-      // Update your input field or perform other actions
-    }
-
-    // Close the pop-over manually
-    setPopoverVisible(false);
-  };
-  const customFormat: DatePickerProps['format'] = (value) => {
-    return `${value.format(dateFormat)}`;
-  };
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(2022, 0, 20),
+    to: addDays(new Date(2022, 0, 20), 20),
+  });
 
   return (
     <div className={cn('relative max-w-[250px]', customClass)}>
-      <DatePicker.RangePicker
-        onCalendarChange={handleDateChange}
-        format={customFormat}
-        onChange={(dates) => handleDateChange(dates)}
-        onOpenChange={(status) => setPopoverVisible(status)}
-        open={popoverVisible}
-        renderExtraFooter={() => (
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id="date"
+            variant={'outline'}
+            className={cn('w-[300px] justify-start text-left font-normal', !date && 'text-muted-foreground')}
+          >
+            {date?.from ? (
+              date.to ? (
+                <>
+                  {format(date.from, DATE_FORMAT)} - {format(date.to, DATE_FORMAT)}
+                </>
+              ) : (
+                format(date.from, DATE_FORMAT)
+              )
+            ) : (
+              <span>Pick a date</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar initialFocus mode="range" selected={date} onSelect={setDate} numberOfMonths={2} />
           <div>
-            <button onClick={handleConfirm}>Confirm</button>
+            <Button>Confirm</Button>
           </div>
-        )}
-      />
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };

@@ -17,6 +17,7 @@ const StepRouteItem = ({ brokerName = 'coyote', load }: StepRouteItemProps) => {
   const toggleCollapseDescription = () => {
     setIsOpenDescription((state) => !state);
   };
+
   return (
     <div className={cn('rounded-xl bg-[#F2F2F7] text-[#393978]')}>
       <div className="flex p-3 xl:p-6">

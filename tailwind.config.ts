@@ -1,22 +1,14 @@
 import type { Config } from 'tailwindcss';
 import defaultTheme from 'tailwindcss/defaultTheme';
-const config: Config = {
-  content: ['./app/**/*.{js,ts,jsx,tsx,mdx}', './pages/**/*.tsx', './components/**/*.tsx'],
+
+const config = {
+  darkMode: ['class'],
+  content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
+  prefix: '',
   theme: {
-    fontFamily: {
-      ...defaultTheme.fontFamily,
-      beni: ['Outfit-Beni', 'Beni', 'Icons', 'Roboto', 'sans-serif'],
-      inter: ['Outfit', 'Inter', 'Roboto', 'Oxygen', 'Ubuntu', 'sans-serif'],
-      icons: ['Outfit-Icons', 'Icons', 'Roboto', 'sans-serif'],
-      'monument-grotes': ['Monument-Grotes', 'Icons'],
-      'monument-grotes-mono': ['Monument-Grotes-Mono', 'Icons'],
-      'monument-grotesk-ultra': ['Monument-Grotesk-Ultra', 'Roboto', 'sans-serif'],
-      'happy-times': ['Happy-Times-at-the-ikob', 'sans-serif'],
-    },
     screens: {
       se: '376px',
       xs: '475px',
-      // '3xl': '2048px',
       ...defaultTheme.screens,
     },
     containers: {
@@ -27,7 +19,6 @@ const config: Config = {
       '2xl': '1536px',
       '3xl': '2048px',
     },
-
     extend: {
       aspectRatio: {
         '3/4': '3 / 4',
@@ -35,76 +26,66 @@ const config: Config = {
         artwork: '4 / 5',
       },
       colors: {
-        cherup: '#f2c2f2',
-        'cornflower-blue': '#2351fc',
-        'neon-green': '#e6ff00',
-        malachite: '#0fb73e',
-        mariner: '#2259e0',
-        'spring-wood': '#f7f7f0',
-        'electric-blue': '#0000ff',
-        'green-haze': '#019b67',
-        sulu: '#cdea6a',
-        'screaming-green': '#6cff42',
-        'mint-green': '#a8ff8f',
-        'brand-green': '#00D973',
-        'celtic-blue': '#2467D8',
-        'light-red': '#FF5C5C',
-        'light-gray': '#E9E9E9',
-        background: '#FCFCFC',
-        'text-gray': '#808080',
-        'kokushoku-black': '#191414',
-        error: '#FF0000',
-        primary: '#0F6BFF',
-        helper: '#667085',
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
       },
-      animation: {
-        // @keyframes duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name */
-        fadein: '2s linear 1s 1 normal forwards running fadein',
-        fadeinshort: '1s linear 0s 1 normal forwards running fadeinshort',
-        'madlib-imagepreview': '0.5s linear 0s 1 normal forwards running fadeinshort',
-        'slide-left': '1s ease 1s 1 normal forwards running slide-left',
-        'slide-right': '1s ease 1s 1 normal forwards running slide-right',
-        'slide-up': '1s ease 1s 1 normal forwards running slide-up',
-        'slide-up-quick': '0.2s ease 0s 1 normal forwards running slide-up-quick',
-        'scrolling-text': 'scroll 60s linear infinite',
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
-        fadein: {
-          from: { opacity: '0' },
-          to: { opacity: '1' },
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
         },
-        fadeinshort: {
-          from: { opacity: '0.3' },
-          to: { opacity: '1' },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
         },
-        'slide-left': {
-          from: { transform: 'translate(-25%,0)', opacity: '0.3' },
-          to: { transform: 'translate(0,0)', opacity: '1' },
-        },
-        scroll: {
-          from: { transform: 'translateX(-100%)' },
-          to: { transform: 'translateX(100%)' },
-        },
-        'slide-right': {
-          from: { transform: 'translate(25%,0)', opacity: '0.3' },
-          to: { transform: 'translate(0,0)', opacity: '1' },
-        },
-        'slide-up': {
-          from: { transform: 'translateY(100%)', opacity: '0.3' },
-          to: { transform: 'translateY(0)', opacity: '1' },
-        },
-        'slide-up-quick': {
-          from: { transform: 'translateY(100%)', opacity: '0.6' },
-          to: { transform: 'translateY(0)', opacity: '1' },
-        },
+      },
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
       },
       gridTemplateColumns: {
         profile: 'auto 1fr',
         '6/4': '3fr 2fr',
       },
-      transitionProperty: { snapshot: 'margin, top, right, bottom, left, width, height, opacity' },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/container-queries')],
-};
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/container-queries'), require('tailwindcss-animate')],
+} satisfies Config;
+
 export default config;

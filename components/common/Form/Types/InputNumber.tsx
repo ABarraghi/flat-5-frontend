@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { Input } from 'antd';
+import { Input } from '@/components/ui/input';
 import { type BaseField } from '@/components/common/Form/Types/type';
 import React, { type ReactNode, useEffect, useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
@@ -62,6 +62,7 @@ export const FormInputNumber = ({
       setInputValue(value);
     }
   }, [getValues, name]);
+
   return (
     <>
       <Controller
@@ -79,8 +80,8 @@ export const FormInputNumber = ({
                 placeholder={placeholder}
                 disabled={disabled}
                 className="h-[40px] rounded-lg font-normal xl:h-[52px]"
-                allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
-                suffix={suffix}
+                // allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
+                // suffix={suffix}
               />
               {error && <CustomErrorMessage message={error} />}
             </div>

@@ -1,4 +1,7 @@
 // toggle selecting an item in array
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
 export function toggleSelectingItem<T = string>(
   arrItems: T[],
   item: T,
@@ -68,4 +71,8 @@ export function gettingZoomLevel(distance: number = 288895): number {
     }
   }
   return matchingKey;
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
 }

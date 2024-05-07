@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Button } from 'antd';
+import { Button } from '@/components/ui/button';
 import { CheckOutlined, LeftOutlined } from '@ant-design/icons';
 import StepRoute from '@/app/routes/components/search-result/detail-route/StepRoute';
 import PriceAndDistance from '@/app/routes/components/common/PriceAndDistance';
@@ -17,10 +17,6 @@ interface DetailRouteProps {
 }
 
 const DetailRoute = ({ handleOpenDetail, item, locations }: DetailRouteProps) => {
-  console.log(item);
-  console.log('--');
-  console.log(locations);
-
   const { amount = 0, distance = 0, loads = [], type } = item;
   const [bookingStatus, setBookingStatus] = useState<CoyoteBookingStatus>();
 

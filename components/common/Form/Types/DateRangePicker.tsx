@@ -1,15 +1,16 @@
+import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { ConfigProvider, DatePicker } from 'antd';
-import { type BaseField } from '@/components/common/Form/Types/type';
-import { CloseOutlined } from '@ant-design/icons';
+import { type DateRange } from 'react-day-picker';
 import cn from 'classnames';
-import { type RangePickerProps } from 'antd/lib/date-picker';
-import dayjs from 'dayjs';
+import { format, setDate } from 'date-fns';
+import { X, CalendarIcon } from 'lucide-react';
+import { type BaseField } from '@/components/common/Form/Types/type';
 import CustomErrorMessage from '@/components/common/CustomErrorMessage';
-import React from 'react';
-import locale from 'antd/es/locale/en_US';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
 
-const { RangePicker } = DatePicker;
+const DATE_FORMAT = 'MM/dd/yyyy';
 
 type Props = {
   multiline?: boolean;
@@ -17,13 +18,9 @@ type Props = {
   rowsMax?: number;
   customClass?: string;
 } & BaseField;
-const dateFormat = 'MM/DD/YYYY';
 
 export const FormDateRangePicker = ({ name, rules, customClass, error }: Props) => {
-  const { control } = useFormContext();
-  const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-    return current && current <= dayjs().subtract(1, 'day');
-  };
+  const { control, reset, setValue } = useFormContext();
 
   return (
     <>
@@ -33,15 +30,51 @@ export const FormDateRangePicker = ({ name, rules, customClass, error }: Props) 
         rules={rules}
         render={({ field }) => (
           <div className={cn('relative', customClass)}>
-            <ConfigProvider locale={locale}>
-              <RangePicker
-                {...field}
-                format={dateFormat}
-                disabledDate={disabledDate}
-                className="h-[40px] w-full rounded-lg text-[12px] font-normal lg:min-w-[220px] xl:h-[52px]"
-                allowClear={{ clearIcon: <CloseOutlined style={{ fontSize: '15px', fontWeight: 'bold' }} /> }}
-              />
-            </ConfigProvider>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  id="date"
+                  variant={'outline'}
+                  className="h-[40px] w-full justify-start rounded-lg lg:min-w-[220px] xl:h-[52px]"
+                >
+                  {field.value?.from ? (
+                    field.value.to ? (
+                      <>
+                        {format(field.value.from, DATE_FORMAT)} - {format(field.value.to, DATE_FORMAT)}{' '}
+                      </>
+                    ) : (
+                      format(field.value.from, DATE_FORMAT)
+                    )
+                  ) : (
+                    <>
+                      <span className="text-muted-foreground">Select date</span>
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              {field.value && (
+                <button
+                  type="button"
+                  className="absolute right-2 top-[15px]"
+                  onClick={() => {
+                    reset();
+                  }}
+                >
+                  <X />
+                </button>
+              )}
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  initialFocus
+                  mode="range"
+                  selected={field.value}
+                  onSelect={field.onChange}
+                  disabled={{ before: new Date() }}
+                  showOutsideDays
+                />
+              </PopoverContent>
+            </Popover>
             {error && <CustomErrorMessage message={error} />}
           </div>
         )}

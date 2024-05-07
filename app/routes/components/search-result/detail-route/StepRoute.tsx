@@ -1,3 +1,4 @@
+// waiting for shadcn steps component: https://github.com/shadcn-ui/ui/pull/318
 import { Steps } from 'antd';
 import { type LocationBase } from '@/types/search';
 import { type LoadBase } from '@/types/load';
@@ -11,6 +12,7 @@ interface StepRouteProps {
   loads: LoadBase[];
   routeType: string;
 }
+
 const StepRoute = ({ locations, loads, routeType }: StepRouteProps) => {
   const [stepItems, setStepItems] = useState<StepProps[]>([]);
   const [current, setCurrent] = useState(2);

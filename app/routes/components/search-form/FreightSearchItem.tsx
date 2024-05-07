@@ -46,20 +46,25 @@ const FreightSearchItem = ({
   const title = UpperCaseAlphabet[index];
   const latitude = watch(`${name}.${index}.location.coordinate.latitude`);
   const radius = watch(`${name}.${index}.radius`);
+
   useEffect(() => {
     if (title) {
       setValue(`${name}.${index}.title`, title);
     }
   }, [index, name, setValue, title]);
+
   useEffect(() => {
     // setRoutes([]);
     // setPoints([]);
     // console.lrouteOptionog('3333');
   }, [latitude]);
+
   const handleRemove = (index: number) => {
     remove(index);
   };
+
   const watchFreight = watch(`freights`);
+
   useEffect(() => {
     const locations: MapLocation[] = [];
     watchFreight.forEach((freight: FreightBase) => {
@@ -82,11 +87,14 @@ const FreightSearchItem = ({
     });
     setLocations(locations);
   }, [latitude, getValues, radius, setLocations, routeOptionWatch, watchFreight]);
+
   const isPickedLoad = watch(`${name}.${index}.isPickedLoad`);
+
   const togglePickLoad = () => {
     const currentPickedLoadStatus = getValues(`${name}.${index}.isPickedLoad`);
     setValue(`${name}.${index}.isPickedLoad`, !currentPickedLoadStatus);
   };
+
   return (
     <>
       <div className="item-start my-2 flex w-full flex-wrap gap-3 xl:items-center">
@@ -110,8 +118,8 @@ const FreightSearchItem = ({
           />
           <Form.DateRangePicker
             name={`${name}.${index}.stopDate`}
-            label="Name"
-            placeholder="Name"
+            label="Stop date"
+            placeholder="Stop date"
             required
             customClass="w-full xl:max-w-[250px]"
             error={(errors[`${name}`] as any)?.[`${index}`]?.stopDate?.message as string}

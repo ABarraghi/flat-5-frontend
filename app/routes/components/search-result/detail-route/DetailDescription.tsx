@@ -1,4 +1,3 @@
-import { Descriptions, type DescriptionsProps } from 'antd';
 import { type LoadBase } from '@/types/load';
 import dayjs from 'dayjs';
 
@@ -20,7 +19,7 @@ const convertDate = (dateTime: string) => {
 
 const DetailDescription = ({ load }: DetailDescriptionProps) => {
   let count = 1;
-  const items: DescriptionsProps['items'] = [];
+  const items = [];
   if (load.pickupStop.address) {
     items.push({
       key: `${count}`,
@@ -132,7 +131,12 @@ const DetailDescription = ({ load }: DetailDescriptionProps) => {
 
   return (
     <div className="px-6 py-3 text-base text-[#2E2F44]">
-      <Descriptions size={'default'} items={items} column={1} />
+      {items.map((item) => (
+        <div key={item.key} className="pb-4">
+          <span className="text-sm text-[#00000073] after:me-2 after:ms-[2px] after:content-[':']">{item.label}</span>
+          <span className="break-words text-sm text-[#000000e0]">{item.children}</span>
+        </div>
+      ))}
     </div>
   );
 };

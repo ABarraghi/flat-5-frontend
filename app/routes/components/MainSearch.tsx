@@ -1,6 +1,6 @@
 import { type Dispatch, type SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
-import { Select, Tooltip } from 'antd';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import cn from 'classnames';
@@ -19,6 +19,9 @@ import { type LoadPoint } from '@/types/load';
 import { SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
 import AdvancedOptions from '@/app/routes/components/search-form/AdvancedOptions';
 import 'react-toastify/dist/ReactToastify.css';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface MainSearchProps {
   setLocations: Dispatch<SetStateAction<any>>;
@@ -103,7 +106,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
       })
       .map((item: any) => {
         const currentTime = dayjs();
-        let stopDateFrom = item.stopDate[0] ? dayjs(item.stopDate[0]) : undefined;
+        let stopDateFrom = item.stopDate.from ? dayjs(item.stopDate.from) : undefined;
         if (stopDateFrom && stopDateFrom.format('DD/MM/YYYY') === currentTime.format('DD/MM/YYYY')) {
           stopDateFrom = stopDateFrom
             ? stopDateFrom
@@ -117,7 +120,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
           stopDateFrom = stopDateFrom ? dayjs(stopDateFrom.startOf('day')) : undefined;
         }
 
-        let stopDateTo = item.stopDate[1] ? dayjs(item.stopDate[1]) : undefined;
+        let stopDateTo = item.stopDate.to ? dayjs(item.stopDate.to) : undefined;
         stopDateTo = stopDateTo
           ? stopDateTo
               .set('hour', currentTime.hour())
@@ -125,6 +128,7 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
               .set('second', currentTime.second())
               .set('millisecond', currentTime.millisecond())
           : undefined;
+
         return {
           location: {
             coordinates: {
@@ -138,12 +142,14 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
           hadLoad: item.isPickedLoad,
           radius: item.radius ? parseInt(String(item.radius)) : 0,
           stopDate: {
-            from: item.stopDate[0] ? dayjs(stopDateFrom) : undefined,
-            to: item.stopDate[1] ? dayjs(stopDateTo).endOf('day') : undefined,
+            from: item.stopDate.from ? dayjs(stopDateFrom) : undefined,
+            to: item.stopDate.to ? dayjs(stopDateTo).endOf('day') : undefined,
           },
         };
       });
+
     const brokersAll = watchRouteOption !== 'routeMyTruck' ? ['coyote', 'dat', 'truck_stop'] : ['coyote', 'dat'];
+
     return {
       brokers: data.broker === 'all' ? brokersAll : [data.broker],
       isReturnOrigin: data.isReturnOrigin,
@@ -313,35 +319,45 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
         <>
           <Form methods={methods as any} className={'p-10 pl-10 pr-5 pt-2'}>
             <div className="flex flex-wrap justify-between">
-              <Form.Radio
-                name="routeOption"
-                options={[
-                  { value: 'standard', label: 'Standard' },
-                  { value: 'enRoute', label: 'En Route' },
-                  { value: 'routeMyTruck', label: 'Route my truck' },
-                ]}
-                customClass="py-5"
-              />
-              <div className="flex flex-wrap items-center gap-5 pb-5 xl:gap-10 xl:pb-0">
-                <Tooltip
-                  title="No predefined shipment for this route. Search for available freight on this route."
-                  color={'#393978'}
-                  key={'empty-tooltip'}
-                >
-                  <div className="flex items-center">
-                    <EmptyTruckIcon className="h-6 w-6" /> <span className="text-sm"> Empty </span>
-                  </div>
-                </Tooltip>
-                <Tooltip
-                  title="Shipment booked on this route. No additional search needed."
-                  color={'#393978'}
-                  key={'full-tooltip'}
-                >
-                  <div className="flex items-center">
-                    <FullTruckIcon className="h-6 w-6" /> <span className="text-sm"> Full</span>
-                  </div>
-                </Tooltip>
-              </div>
+              <RadioGroup name="routeOption" defaultValue="standard" className="flex py-5">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="standard" id="standard" />
+                  <Label htmlFor="standard">Standard</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="enRoute" id="enRoute" />
+                  <Label htmlFor="enRoute">En Route</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="routeMyTruck" id="routeMyTruck" />
+                  <Label htmlFor="routeMyTruck">Route my truck</Label>
+                </div>
+              </RadioGroup>
+
+              <TooltipProvider>
+                <div className="flex flex-wrap items-center gap-5 pb-5 xl:gap-10 xl:pb-0">
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <div className="flex items-center">
+                        <EmptyTruckIcon className="h-6 w-6" /> <span className="text-sm"> Empty </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-primary text-white">
+                      <p>No predefined shipment for this route. Search for available freight on this route.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <div className="flex items-center">
+                        <FullTruckIcon className="h-6 w-6" /> <span className="text-sm"> Full</span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-primary text-white">
+                      <p>Shipment booked on this route. No additional search needed.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              </TooltipProvider>
             </div>
 
             <FreightSearch setLocations={setLocations} refreshData={refreshData} routeOption={watchRouteOption} />
@@ -354,6 +370,8 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
                 />
               </span>
             </div>
+
+            {isOpenAdvanced && <AdvancedOptions routeOption={watchRouteOption} />}
 
             {isOpenAdvanced && <AdvancedOptions routeOption={watchRouteOption} />}
 
@@ -381,15 +399,17 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
                 <div className="text-lg text-[#F16521]">{routes.length} routes</div>
                 <div className="flex items-center">
                   <span className="text-sm">Sort by: &nbsp;</span>
-                  <Select
-                    defaultValue="rate"
-                    style={{ width: 120 }}
-                    onChange={(value) => setSortType(value)}
-                    options={[
-                      { value: 'rate', label: 'Rate' },
-                      { value: 'mile', label: 'Mile' },
-                    ]}
-                  />
+                  <Select defaultValue="rate" onValueChange={(value) => setSortType(value)}>
+                    <SelectTrigger className="w-[120px]">
+                      <SelectValue placeholder="Default is rate" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="rate">Rate</SelectItem>
+                        <SelectItem value="mile">Mile</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                   <div className="cursor-pointer" onClick={() => setSortCondition((prevState) => !prevState)}>
                     {sortCondition ? <SortAscendingOutlined /> : <SortDescendingOutlined />}
                   </div>
@@ -407,7 +427,6 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
           )}
         </>
       )}
-
       <ToastContainer />
     </>
   );

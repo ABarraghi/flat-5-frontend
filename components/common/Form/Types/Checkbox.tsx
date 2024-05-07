@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { type BaseField } from '@/components/common/Form/Types/type';
 import cn from 'classnames';
-import { Checkbox } from 'antd';
+import { Checkbox } from '@/components/ui/checkbox';
+import { type BaseField } from '@/components/common/Form/Types/type';
 
 type Props = {
   multiline?: boolean;

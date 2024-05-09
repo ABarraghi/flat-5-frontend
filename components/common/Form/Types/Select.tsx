@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
+import classNames from 'classnames';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { type BaseField } from './type';
-import classNames from 'classnames';
 
 type Props = BaseField & {
   options: Array<{ label: string; key: string }>;
@@ -18,10 +18,10 @@ export const FormSelect = ({ name, rules, options, customClass, defaultValue }: 
       control={control}
       rules={rules}
       render={({ field }) => (
-        <div className={classNames('h-[40px] xl:h-[52px]', customClass)}>
-          <Select {...field} defaultValue={defaultValue}>
+        <div {...field} className={classNames('h-[40px] xl:h-[52px]', customClass)}>
+          <Select defaultValue={defaultValue}>
             <SelectTrigger className="w-[120px]">
-              <SelectValue placeholder="Default is rate" />
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>

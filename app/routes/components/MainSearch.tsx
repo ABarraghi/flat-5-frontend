@@ -373,8 +373,6 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
 
             {isOpenAdvanced && <AdvancedOptions routeOption={watchRouteOption} />}
 
-            {isOpenAdvanced && <AdvancedOptions routeOption={watchRouteOption} />}
-
             <div className="flex justify-end py-5">
               <Button
                 name="Search"

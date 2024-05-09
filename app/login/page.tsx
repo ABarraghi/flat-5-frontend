@@ -87,13 +87,12 @@ export default function Login() {
                 </div>
               </div>
             </div>
-            <div className="hidden bg-muted lg:block">
+            <div className="relative hidden bg-muted lg:block">
               <Image
                 src="/images/truck.png"
                 alt="Image"
-                width="1080"
-                height="720"
-                className="object-cover dark:brightness-[0.2] dark:grayscale"
+                fill
+                className="object-contain dark:brightness-[0.2] dark:grayscale"
               />
             </div>
           </div>

@@ -13,23 +13,28 @@ type Props = {
 
 export const FormCheckbox = ({ name, rules, required, placeholder, disabled, label, className }: Props) => {
   const { control } = useFormContext();
+
   return (
-    <>
-      <Controller
-        name={name}
-        control={control as any}
-        rules={rules}
-        render={({ field }) => (
+    <Controller
+      name={name}
+      control={control as any}
+      rules={rules}
+      render={({ field }) => (
+        <div className="flex items-center space-x-2">
           <Checkbox
             {...field}
             checked={field?.value || false}
             disabled={disabled}
             className={cn('rounded-lg text-[16px] font-normal', className)}
+          />
+          <label
+            htmlFor={name}
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {label}
-          </Checkbox>
-        )}
-      />
-    </>
+          </label>
+        </div>
+      )}
+    />
   );
 };

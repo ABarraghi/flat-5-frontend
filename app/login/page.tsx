@@ -9,7 +9,7 @@ import Layout from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { onLogin } from './actions';
+import { onLogin } from '@/services/authAPI';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -31,7 +31,6 @@ export default function Login() {
       const response = await onLogin(values);
 
       if (response.access_token) {
-        // can set access_token
         router.push('/routes');
       }
     } catch (error) {

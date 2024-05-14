@@ -23,3 +23,11 @@ export const getBookingStatus = async ({
 
   return result?.data;
 };
+
+export const getBookingList = async (): Promise<any> => {
+  const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/bookings`;
+
+  const { data: result } = await axios.get(url, { withCredentials: true });
+
+  return result?.data;
+};

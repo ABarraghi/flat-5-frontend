@@ -27,6 +27,9 @@ const Layout = ({ children, isHome = false }: { children: ReactNode; isHome?: bo
               <Link href="#" className="h-fit">
                 About
               </Link>
+              <Link href="/bookings" className="h-fit">
+                My bookings
+              </Link>
               <Link href="/login" className="h-fit">
                 Login
               </Link>

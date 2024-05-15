@@ -17,7 +17,7 @@ const Layout = ({ children, isHome = false }: { children: ReactNode; isHome?: bo
           <div className="m-auto grid w-full grid-cols-2 px-2 md:px-5">
             <Link href="/" className="w-fit">
               <Image
-                src={isHome ? '/images/logo-home-new.svg' : 'images/logo.svg'}
+                src={isHome ? '/images/logo-home-new.svg' : '/images/logo.svg'}
                 width={134}
                 height={40}
                 alt="logo"

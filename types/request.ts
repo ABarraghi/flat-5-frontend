@@ -1,5 +1,6 @@
 import { type BrokerName, type Coordinate } from '@/types/common';
 import { type Stop, type LoadBase } from './load';
+import { type RouteInfo } from './route';
 
 export interface SearchLoadRequest {
   stopPoints: StopPointRequest[];
@@ -30,6 +31,7 @@ export interface StopDateRequest {
 export interface BookLoadRequest {
   broker: BrokerName;
   loadId: string;
+  loadData?: RouteInfo;
 }
 
 export interface CoyoteBookLoadRequest {

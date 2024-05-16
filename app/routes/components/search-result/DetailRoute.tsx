@@ -28,18 +28,21 @@ const DetailRoute = ({ handleOpenDetail, item, locations }: DetailRouteProps) =>
         requestData: {
           broker: 'coyote',
           loadId: item.loads[0].loadId,
+          loadData: item,
         },
       });
 
       toast('Submit booking request successfully', { type: 'success' });
 
-      try {
-        const bookingStatus = await getBookingStatus({ broker: 'coyote', bookingId: submitResult.bookingId });
+      if (submitResult.bookingId) {
+        try {
+          const bookingStatus = await getBookingStatus({ broker: 'coyote', bookingId: submitResult.bookingId });
 
-        setBookingStatus(bookingStatus.status);
-      } catch (error) {
-        console.log('error: ', error);
-        toast('Occur error when get booking status', { type: 'error' });
+          setBookingStatus(bookingStatus.status);
+        } catch (error) {
+          console.log('error: ', error);
+          toast('Occur error when get booking status', { type: 'error' });
+        }
       }
     } catch (error) {
       console.log('error: ', error);

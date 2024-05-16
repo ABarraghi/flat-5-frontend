@@ -4,7 +4,6 @@ import { type BrokerName } from '@/types/common';
 
 export const submitBookingRequest = async ({ requestData }: { requestData: BookLoadRequest }): Promise<any> => {
   const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/loads/book`;
-
   const { data: result } = await axios.post(url, requestData, { withCredentials: true });
 
   return result?.data;

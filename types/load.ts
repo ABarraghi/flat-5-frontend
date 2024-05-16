@@ -20,31 +20,37 @@ export interface Stop {
 }
 
 export interface LoadBase {
-  keyByPoints: string;
-  broker: BrokerName;
-  loadId: string;
-  pickupStop: Stop;
-  deliveryStop: Stop;
-  rate: number;
-  deadheadRate?: number;
   amount: number;
+  broker: BrokerName;
   currency: string;
+  deliveryStop: Stop;
+  destinationDeadhead?: number;
   distance: number;
   distanceUnit: string;
+  driveDistance: number;
   duration: number;
   durationUnit: 'seconds' | 'minutes' | 'hours';
-  originDeadhead?: number;
-  destinationDeadhead?: number;
-  weight: number;
-  weightUnit: string;
   equipmentType: string;
-  length: number;
-  lengthUnit: string;
-  width: number;
-  widthUnit: string;
+  flyDistance: number;
   height: number;
   heightUnit: string;
+  keyByPoints: string;
+  length: number;
+  lengthUnit: string;
+  loadDetails?: any;
+  loadId: string;
+  originDeadhead?: number;
+  pickupStop: Stop;
+  rate: number;
   rawLoad: any;
+  stopPoints: Stop[];
+  stops: Stop[];
+  weight: number;
+  weightUnit: string;
+  width: number;
+  widthUnit: string;
+
+  deadheadRate?: number;
   shipperInfo: ShipperInfo;
   metadata?: Metadata;
 }

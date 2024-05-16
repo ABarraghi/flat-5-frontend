@@ -76,3 +76,7 @@ export function gettingZoomLevel(distance: number = 288895): number {
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export function roundStringToNumber(number: string) {
+  return parseFloat(number).toFixed(2);
+}

@@ -1,9 +1,11 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { RotateCw } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Layout from '@/components/layout';
 import { Button } from '@/components/ui/button';
@@ -18,6 +20,8 @@ const formSchema = z.object({
 
 export default function Login() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,13 +32,16 @@ export default function Login() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      setIsLoading(true);
       const response = await onLogin(values);
 
+      setIsLoading(false);
       if (response.access_token) {
         router.push('/routes');
       }
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -80,9 +87,16 @@ export default function Login() {
                       )}
                     />
                   </div>
-                  <Button type="submit" className="w-full">
-                    Login
-                  </Button>
+                  {isLoading ? (
+                    <Button disabled>
+                      <RotateCw className="mr-2 h-4 w-4 animate-spin" />
+                      Please wait
+                    </Button>
+                  ) : (
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      Login
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

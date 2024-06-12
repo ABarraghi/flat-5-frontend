@@ -35,8 +35,8 @@ export default function Login() {
       setIsLoading(true);
       const response = await onLogin(values);
 
-      setIsLoading(false);
       if (response.access_token) {
+        setIsLoading(false);
         router.push('/routes');
       }
     } catch (error) {

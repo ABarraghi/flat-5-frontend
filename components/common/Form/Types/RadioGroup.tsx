@@ -1,7 +1,8 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { type BaseField } from './type';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 type Props = BaseField & {
   options: Array<{ label: string; value: string }>;
@@ -17,15 +18,14 @@ export const FormRadio = ({ name, rules, options, customClass }: Props) => {
       control={control}
       rules={rules}
       render={({ field }) => (
-        <>
-          <RadioGroup {...field} className={classNames(customClass)}>
-            {options.map((option, idx) => (
-              <RadioGroupItem key={idx} value={option.value}>
-                {option.label}
-              </RadioGroupItem>
-            ))}
-          </RadioGroup>
-        </>
+        <RadioGroup defaultValue={field.value} onValueChange={field.onChange} className={classNames(customClass)}>
+          {options.map((option) => (
+            <div key={option.value} className="flex items-center space-x-2">
+              <RadioGroupItem value={option.value} />
+              <Label htmlFor={option.label}>{option.label}</Label>
+            </div>
+          ))}
+        </RadioGroup>
       )}
     />
   );

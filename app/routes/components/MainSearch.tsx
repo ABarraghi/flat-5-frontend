@@ -319,20 +319,15 @@ const MainSearch = ({ setLocations, setPoints, locations, setIsLoading, isLoadin
         <>
           <Form methods={methods as any} className={'p-10 pl-10 pr-5 pt-2'}>
             <div className="flex flex-wrap justify-between">
-              <RadioGroup name="routeOption" defaultValue="standard" className="flex py-5">
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="standard" id="standard" />
-                  <Label htmlFor="standard">Standard</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="enRoute" id="enRoute" />
-                  <Label htmlFor="enRoute">En Route</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="routeMyTruck" id="routeMyTruck" />
-                  <Label htmlFor="routeMyTruck">Route my truck</Label>
-                </div>
-              </RadioGroup>
+              <Form.Radio
+                name="routeOption"
+                options={[
+                  { value: 'standard', label: 'Standard' },
+                  { value: 'enRoute', label: 'En Route' },
+                  { value: 'routeMyTruck', label: 'Route my truck' },
+                ]}
+                customClass="flex py-5"
+              />
 
               <TooltipProvider>
                 <div className="flex flex-wrap items-center gap-5 pb-5 xl:gap-10 xl:pb-0">

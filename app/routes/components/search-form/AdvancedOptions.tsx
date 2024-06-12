@@ -2,10 +2,10 @@ import TagList from '@/app/routes/components/search-form/TagList';
 import {
   EQUIPMENT_TYPES,
   type EquipmentType,
-  SHIPMENT_FORMATS,
-  type ShipmentFormat,
-  SPECIAL_NOTES,
-  type SpecialNote,
+  // SHIPMENT_FORMATS,
+  // type ShipmentFormat,
+  // SPECIAL_NOTES,
+  // type SpecialNote,
 } from '@/types/search';
 import { useFormContext } from 'react-hook-form';
 import { toggleSelectingItem } from '@/utils/common';
@@ -18,20 +18,20 @@ interface AdvancedFormProps {
 const AdvancedOptions = ({ routeOption }: AdvancedFormProps) => {
   const { setValue, watch } = useFormContext();
   const equipmentTypes = watch('equipmentTypes');
-  const specialNotes = watch('specialNotes');
-  const shipmentFormats = watch('shipmentFormats');
+  // const specialNotes = watch('specialNotes');
+  // const shipmentFormats = watch('shipmentFormats');
 
   const handleChangeEquipmentTypes = (value: string) => {
     setValue('equipmentTypes', toggleSelectingItem(equipmentTypes, value, false, true));
   };
 
-  const handleChangeSpecialNotes = (value: string) => {
-    setValue('specialNotes', toggleSelectingItem(specialNotes, value, true, false));
-  };
+  // const handleChangeSpecialNotes = (value: string) => {
+  //   setValue('specialNotes', toggleSelectingItem(specialNotes, value, true, false));
+  // };
 
-  const handleChangeShipmentFormats = (value: string) => {
-    setValue('shipmentFormats', toggleSelectingItem(shipmentFormats, value, false, false));
-  };
+  // const handleChangeShipmentFormats = (value: string) => {
+  //   setValue('shipmentFormats', toggleSelectingItem(shipmentFormats, value, false, false));
+  // };
 
   return (
     <div className="py-10 text-[16px] font-normal">
@@ -41,7 +41,7 @@ const AdvancedOptions = ({ routeOption }: AdvancedFormProps) => {
       <div className="flex flex-wrap items-center gap-x-5 ">
         <Form.Select
           name="broker"
-          defaultValue="all"
+          defaultValue={routeOption === 'routeMyTruck' ? 'coyote' : 'all'}
           customClass="w-[200px]"
           options={
             routeOption === 'routeMyTruck'
